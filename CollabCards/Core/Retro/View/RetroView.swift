@@ -9,7 +9,35 @@ import SwiftUI
 
 struct RetroView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            VStack {
+                ProgressView(currentStep: 1, totalSteps: 4)
+                InputFieldView()
+                
+                HStack {
+                    Button(action: {
+                        
+                    }, label: {
+                        Text("CANCEL")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.blue)
+                            .cornerRadius(5)
+                    })
+                    NavigationLink(destination: TemplateSelectionView()) {
+                        Text("NEXT")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.blue)
+                            .cornerRadius(5)
+                    }
+                }
+                .padding()
+                Spacer()
+            }
+            .navigationTitle("New Retro")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
