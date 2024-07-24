@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021509C92C512824002BFFED /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* HomeView.swift */; };
+		021509CB2C51282A002BFFED /* RetroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509CA2C51282A002BFFED /* RetroView.swift */; };
 		02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */; };
 		02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABFB2C51254700234AF3 /* ContentView.swift */; };
 		02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6ABFD2C51254800234AF3 /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		021509C82C512824002BFFED /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		021509CA2C51282A002BFFED /* RetroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroView.swift; sourceTree = "<group>"; };
 		02A6ABF62C51254700234AF3 /* CollabCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsApp.swift; sourceTree = "<group>"; };
 		02A6ABFB2C51254700234AF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -52,6 +56,8 @@
 			isa = PBXGroup;
 			children = (
 				02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */,
+				021509C82C512824002BFFED /* HomeView.swift */,
+				021509CA2C51282A002BFFED /* RetroView.swift */,
 				02A6ABFB2C51254700234AF3 /* ContentView.swift */,
 				02A6ABFD2C51254800234AF3 /* Assets.xcassets */,
 				02A6ABFF2C51254800234AF3 /* Preview Content */,
@@ -137,6 +143,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				021509C92C512824002BFFED /* HomeView.swift in Sources */,
+				021509CB2C51282A002BFFED /* RetroView.swift in Sources */,
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
 				02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */,
 			);
