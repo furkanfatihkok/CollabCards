@@ -9,7 +9,21 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        Text("FFK!")
+        NavigationView {
+            VStack {
+                Image("nodata")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 300, height: 300)
+                    .padding()
+                
+                Text("No data available")
+                    .font(.title2)
+                    .foregroundStyle(.gray)
+            }
+            .navigationTitle("Home")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
