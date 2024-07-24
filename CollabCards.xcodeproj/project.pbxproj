@@ -36,6 +36,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		021509CC2C513227002BFFED /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				021509CF2C513235002BFFED /* Components */,
+				021509CE2C513231002BFFED /* Home */,
+				021509CD2C51322A002BFFED /* Retro */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		021509CD2C51322A002BFFED /* Retro */ = {
+			isa = PBXGroup;
+			children = (
+				021509D12C51323E002BFFED /* View */,
+			);
+			path = Retro;
+			sourceTree = "<group>";
+		};
+		021509CE2C513231002BFFED /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				021509C82C512824002BFFED /* HomeView.swift */,
+				021509D02C51323B002BFFED /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		021509CF2C513235002BFFED /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		021509D02C51323B002BFFED /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		021509D12C51323E002BFFED /* View */ = {
+			isa = PBXGroup;
+			children = (
+				021509CA2C51282A002BFFED /* RetroView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		021509D22C513256002BFFED /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				02A6ABFD2C51254800234AF3 /* Assets.xcassets */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		02A6ABED2C51254700234AF3 = {
 			isa = PBXGroup;
 			children = (
@@ -56,10 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */,
-				021509C82C512824002BFFED /* HomeView.swift */,
-				021509CA2C51282A002BFFED /* RetroView.swift */,
 				02A6ABFB2C51254700234AF3 /* ContentView.swift */,
-				02A6ABFD2C51254800234AF3 /* Assets.xcassets */,
+				021509D22C513256002BFFED /* Theme */,
+				021509CC2C513227002BFFED /* Core */,
 				02A6ABFF2C51254800234AF3 /* Preview Content */,
 			);
 			path = CollabCards;
