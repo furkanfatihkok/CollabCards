@@ -9,7 +9,9 @@ import SwiftUI
 
 struct AddTaskView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel = BoardViewModel()
+    
+    var viewModel: BoardViewModel
+    
     @State private var title = ""
     @State private var description = ""
     @State private var status = "todo"
@@ -33,7 +35,7 @@ struct AddTaskView: View {
                             print("Title or Description is empty")
                             return
                         }
-                        let task = Task(title: title, description: description, status: status)
+                        let task = Board(id: UUID().uuidString, title: title, description: description, status: status)
                         viewModel.addTask(task)
                         presentationMode.wrappedValue.dismiss()
                     }
@@ -41,8 +43,4 @@ struct AddTaskView: View {
             }
         }
     }
-}
-
-#Preview {
-    AddTaskView()
 }
