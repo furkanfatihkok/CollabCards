@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import FirebaseCrashlytics
 
 struct RetroView: View {
     var body: some View {
         NavigationView {
             VStack {
-                ProgressView(currentStep: 1, totalSteps: 4)
+                WelcomSelectionView()
                 InputFieldView()
-                
                 HStack {
                     Button(action: {
-                        
+                        //TODO: cancel tıklandığında textField empty olsun.
+                        Crashlytics.log("Input field cleared.")
                     }, label: {
                         Text("CANCEL")
                             .foregroundColor(.white)
@@ -31,12 +32,16 @@ struct RetroView: View {
                             .background(.blue)
                             .cornerRadius(5)
                     }
+                    .simultaneousGesture(TapGesture().onEnded {
+                        Crashlytics.log("Navigated to TemplateSelectionView from RetroView.")
+                    })
                 }
                 .padding()
                 Spacer()
             }
             .navigationTitle("New Retro")
             .navigationBarTitleDisplayMode(.inline)
+
         }
     }
 }
