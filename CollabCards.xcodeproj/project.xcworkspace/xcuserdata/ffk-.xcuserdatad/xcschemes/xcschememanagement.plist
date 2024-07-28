@@ -6,22 +6,31 @@
 	<dict>
 		<key>Promises (Playground) 1.xcscheme</key>
 		<dict>
+<<<<<<< HEAD
 			<key>isShown</key>
 			<false/>
+=======
+>>>>>>> 5bdde57ad8d50f22613bd265d47436918c3aafdf
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 		<key>Promises (Playground) 2.xcscheme</key>
 		<dict>
+<<<<<<< HEAD
 			<key>isShown</key>
 			<false/>
+=======
+>>>>>>> 5bdde57ad8d50f22613bd265d47436918c3aafdf
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
 		<key>Promises (Playground).xcscheme</key>
 		<dict>
+<<<<<<< HEAD
 			<key>isShown</key>
 			<false/>
+=======
+>>>>>>> 5bdde57ad8d50f22613bd265d47436918c3aafdf
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>

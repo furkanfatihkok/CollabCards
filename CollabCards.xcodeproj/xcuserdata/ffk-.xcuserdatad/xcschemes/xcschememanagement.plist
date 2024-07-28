@@ -8,6 +8,7 @@
 		<dict>
 			<key>orderHint</key>
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<integer>3</integer>
 		</dict>
 =======
@@ -38,6 +39,10 @@
 			<integer>0</integer>
 		</dict>
 >>>>>>> 0320d87953b27c3b5ce3c01449c23db64b38c908
+=======
+			<integer>3</integer>
+		</dict>
+>>>>>>> 5bdde57ad8d50f22613bd265d47436918c3aafdf
 		<key>Promises (Playground) 1.xcscheme</key>
 		<dict>
 			<key>isShown</key>
