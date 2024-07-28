@@ -15,11 +15,11 @@ struct TaskColumnView: View {
     var viewModel: BoardViewModel
     var onEdit: (Board) -> Void
     var onDelete: (Board) -> Void
-
+    
     var filteredTasks: [Board] {
         allTasks.filter { $0.status == statusFilter }
     }
-
+    
     var body: some View {
         VStack {
             Text(title)

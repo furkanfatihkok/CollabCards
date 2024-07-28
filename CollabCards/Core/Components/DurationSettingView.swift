@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DurationSettingView: View {
-    
     var stepName: String
     @Binding var duration: Int
     

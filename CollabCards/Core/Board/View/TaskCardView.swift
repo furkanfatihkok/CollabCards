@@ -11,14 +11,15 @@ import UniformTypeIdentifiers
 struct TaskCardView: View {
     @Binding var task: Board
     @Binding var allTasks: [Board]
+    
     var onDelete: (Board) -> Void
     var onEdit: (Board) -> Void
     var viewModel: BoardViewModel
-
+    
     @State private var showEditSheet = false
-
+    
     var body: some View {
-        VStack {
+        HStack {
             Text(task.title)
                 .foregroundStyle(.white)
                 .padding()
@@ -32,7 +33,7 @@ struct TaskCardView: View {
                     return provider
                 }
                 .onDrop(of: [UTType.text], delegate: TaskDropDelegate(task: task, allTasks: $allTasks, viewModel: viewModel))
-
+            
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
                     Image(systemName: "pencil")
@@ -48,7 +49,7 @@ struct TaskCardView: View {
                         }
                     )
                 }
-
+                
                 Button(action: { onDelete(task) }) {
                     Image(systemName: "trash")
                         .foregroundColor(.red)
@@ -56,7 +57,7 @@ struct TaskCardView: View {
             }
         }
     }
-
+    
     func backgroundColor(for status: String) -> Color {
         switch status {
         case "todo":
@@ -68,5 +69,32 @@ struct TaskCardView: View {
         default:
             return Color.gray
         }
+    }
+}
+
+struct TaskCardView_Previews: PreviewProvider {
+    @State static var task = Board(id: UUID().uuidString, title: "Sample Task", description: "Description", status: "todo")
+    @State static var allTasks = [
+        Board(id: UUID().uuidString, title: "Task 1", description: "Description 1", status: "todo"),
+        Board(id: UUID().uuidString, title: "Task 2", description: "Description 2", status: "progress"),
+        Board(id: UUID().uuidString, title: "Task 3", description: "Description 3", status: "done")
+    ]
+    
+    static var previews: some View {
+        TaskCardView(
+            task: $task,
+            allTasks: $allTasks,
+            onDelete: { task in
+                // Sample onDelete implementation
+                print("Delete \(task.title)")
+            },
+            onEdit: { task in
+                // Sample onEdit implementation
+                print("Edit \(task.title)")
+            },
+            viewModel: BoardViewModel()
+        )
+        .previewLayout(.sizeThatFits)
+        .padding()
     }
 }

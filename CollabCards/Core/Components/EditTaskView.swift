@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+/*
+ Sadece bir sheet aç ve bir tane textField olsun
+ sağ aşağıda da save olsun sol aşağıda cancel.
+ */
+
 struct EditTaskView: View {
     @Binding var task: Board
     var viewModel: BoardViewModel
@@ -45,5 +50,13 @@ struct EditTaskView: View {
             }
             .navigationTitle("Edit Task")
         }
+    }
+}
+
+#Preview {
+    let sampleTask = Board(id: "1", title: "Sample Task", description: "Sample Description", status: "todo")
+    let sampleViewModel = BoardViewModel()
+    return EditTaskView(task: .constant(sampleTask), viewModel: sampleViewModel) { updatedTask in
+        print("Task saved: \(updatedTask)")
     }
 }

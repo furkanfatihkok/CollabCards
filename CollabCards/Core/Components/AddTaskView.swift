@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddTaskView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var dissmis
     
     var viewModel: BoardViewModel
     
@@ -37,10 +37,17 @@ struct AddTaskView: View {
                         }
                         let task = Board(id: UUID().uuidString, title: title, description: description, status: status)
                         viewModel.addTask(task)
-                        presentationMode.wrappedValue.dismiss()
+                        dissmis.wrappedValue.dismiss()
                     }
                 }
             }
         }
+    }
+}
+
+
+struct AddTaskView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddTaskView(viewModel: BoardViewModel())
     }
 }
