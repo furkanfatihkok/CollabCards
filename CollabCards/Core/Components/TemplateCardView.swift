@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TemplateCardView: View {
     
+    //TODO: Image Değiştir
+    
     let template: Template
     
     var body: some View {

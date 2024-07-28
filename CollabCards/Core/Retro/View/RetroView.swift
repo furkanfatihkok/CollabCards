@@ -10,6 +10,7 @@ import FirebaseCrashlytics
 
 struct RetroView: View {
     var body: some View {
+        
         NavigationView {
             VStack {
                 WelcomSelectionView()

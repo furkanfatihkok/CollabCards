@@ -7,32 +7,62 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		021509C92C512824002BFFED /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* HomeView.swift */; };
+		021509C92C512824002BFFED /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* EmptyView.swift */; };
 		021509CB2C51282A002BFFED /* RetroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509CA2C51282A002BFFED /* RetroView.swift */; };
 		021509D42C513577002BFFED /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D32C513577002BFFED /* ProgressView.swift */; };
 		021509D62C5137E2002BFFED /* InputFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D52C5137E2002BFFED /* InputFieldView.swift */; };
 		021509D92C513A32002BFFED /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D82C513A32002BFFED /* TemplateCardView.swift */; };
 		021509DC2C513A7A002BFFED /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DB2C513A7A002BFFED /* Template.swift */; };
 		021509DE2C513EF9002BFFED /* TemplateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DD2C513EF9002BFFED /* TemplateSelectionView.swift */; };
+		021509E02C522F50002BFFED /* WelcomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DF2C522F50002BFFED /* WelcomSelectionView.swift */; };
+		021509E22C52370E002BFFED /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */; };
+		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
+		021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021509E72C5250F6002BFFED /* GoogleService-Info.plist */; };
+		02150A252C525512002BFFED /* Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02150A242C525512002BFFED /* Crashlytics.swift */; };
 		02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */; };
 		02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABFB2C51254700234AF3 /* ContentView.swift */; };
 		02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6ABFD2C51254800234AF3 /* Assets.xcassets */; };
 		02A6AC012C51254800234AF3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6AC002C51254800234AF3 /* Preview Assets.xcassets */; };
+		02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5392C538BCA006C0BFB /* BoardView.swift */; };
+		02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */; };
+		02B5F53F2C538D40006C0BFB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53E2C538D40006C0BFB /* Board.swift */; };
+		02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5402C538F6E006C0BFB /* AddTaskView.swift */; };
+		02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */; };
+		02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */; };
+		02B5F5472C53AB17006C0BFB /* TaskDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */; };
+		02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5482C53B25A006C0BFB /* EditTaskView.swift */; };
+		02F080D52C56954C00BEDC5E /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 02F080D42C56954C00BEDC5E /* FirebaseCrashlytics */; };
+		02F080D72C56954C00BEDC5E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 02F080D62C56954C00BEDC5E /* FirebaseFirestore */; };
+		02F080D92C56954C00BEDC5E /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 02F080D82C56954C00BEDC5E /* FirebaseFirestoreCombine-Community */; };
+		02F080DB2C56954C00BEDC5E /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 02F080DA2C56954C00BEDC5E /* FirebaseFirestoreSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		021509C82C512824002BFFED /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		021509C82C512824002BFFED /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		021509CA2C51282A002BFFED /* RetroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroView.swift; sourceTree = "<group>"; };
 		021509D32C513577002BFFED /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		021509D52C5137E2002BFFED /* InputFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldView.swift; sourceTree = "<group>"; };
 		021509D82C513A32002BFFED /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
 		021509DB2C513A7A002BFFED /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
 		021509DD2C513EF9002BFFED /* TemplateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateSelectionView.swift; sourceTree = "<group>"; };
+		021509DF2C522F50002BFFED /* WelcomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomSelectionView.swift; sourceTree = "<group>"; };
+		021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
+		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
+		021509E72C5250F6002BFFED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		02150A242C525512002BFFED /* Crashlytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crashlytics.swift; sourceTree = "<group>"; };
 		02A6ABF62C51254700234AF3 /* CollabCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsApp.swift; sourceTree = "<group>"; };
 		02A6ABFB2C51254700234AF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02A6ABFD2C51254800234AF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02A6AC002C51254800234AF3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		02B5F5392C538BCA006C0BFB /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		02B5F53E2C538D40006C0BFB /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		02B5F5402C538F6E006C0BFB /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskColumnView.swift; sourceTree = "<group>"; };
+		02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
+		02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDropDelegate.swift; sourceTree = "<group>"; };
+		02B5F5482C53B25A006C0BFB /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +70,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02F080D92C56954C00BEDC5E /* FirebaseFirestoreCombine-Community in Frameworks */,
+				02F080D52C56954C00BEDC5E /* FirebaseCrashlytics in Frameworks */,
+				02F080D72C56954C00BEDC5E /* FirebaseFirestore in Frameworks */,
+				02F080DB2C56954C00BEDC5E /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +86,7 @@
 				021509CF2C513235002BFFED /* Components */,
 				021509CE2C513231002BFFED /* Home */,
 				021509CD2C51322A002BFFED /* Retro */,
+				02B5F5372C538BAC006C0BFB /* Board */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -67,7 +102,6 @@
 		021509CE2C513231002BFFED /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				021509C82C512824002BFFED /* HomeView.swift */,
 				021509D02C51323B002BFFED /* View */,
 			);
 			path = Home;
@@ -77,8 +111,13 @@
 			isa = PBXGroup;
 			children = (
 				021509D32C513577002BFFED /* ProgressView.swift */,
+				021509DF2C522F50002BFFED /* WelcomSelectionView.swift */,
 				021509D52C5137E2002BFFED /* InputFieldView.swift */,
 				021509D82C513A32002BFFED /* TemplateCardView.swift */,
+				021509E32C52374A002BFFED /* DurationSettingView.swift */,
+				02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */,
+				02B5F5402C538F6E006C0BFB /* AddTaskView.swift */,
+				02B5F5482C53B25A006C0BFB /* EditTaskView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -86,6 +125,7 @@
 		021509D02C51323B002BFFED /* View */ = {
 			isa = PBXGroup;
 			children = (
+				021509C82C512824002BFFED /* EmptyView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -95,6 +135,7 @@
 			children = (
 				021509CA2C51282A002BFFED /* RetroView.swift */,
 				021509DD2C513EF9002BFFED /* TemplateSelectionView.swift */,
+				021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -111,14 +152,24 @@
 			isa = PBXGroup;
 			children = (
 				021509DB2C513A7A002BFFED /* Template.swift */,
+				02B5F53E2C538D40006C0BFB /* Board.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		02150A232C525502002BFFED /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				02150A242C525512002BFFED /* Crashlytics.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		02A6ABED2C51254700234AF3 = {
 			isa = PBXGroup;
 			children = (
 				02A6ABF82C51254700234AF3 /* CollabCards */,
+				021509E72C5250F6002BFFED /* GoogleService-Info.plist */,
 				02A6ABF72C51254700234AF3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -136,6 +187,7 @@
 			children = (
 				02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */,
 				02A6ABFB2C51254700234AF3 /* ContentView.swift */,
+				02150A232C525502002BFFED /* Extensions */,
 				021509D22C513256002BFFED /* Theme */,
 				021509DA2C513A46002BFFED /* Model */,
 				021509CC2C513227002BFFED /* Core */,
@@ -150,6 +202,33 @@
 				02A6AC002C51254800234AF3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		02B5F5372C538BAC006C0BFB /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				02B5F53B2C538C6D006C0BFB /* ViewModel */,
+				02B5F5382C538BC0006C0BFB /* View */,
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
+		02B5F5382C538BC0006C0BFB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				02B5F5392C538BCA006C0BFB /* BoardView.swift */,
+				02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */,
+				02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		02B5F53B2C538C6D006C0BFB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +247,12 @@
 			dependencies = (
 			);
 			name = CollabCards;
+			packageProductDependencies = (
+				02F080D42C56954C00BEDC5E /* FirebaseCrashlytics */,
+				02F080D62C56954C00BEDC5E /* FirebaseFirestore */,
+				02F080D82C56954C00BEDC5E /* FirebaseFirestoreCombine-Community */,
+				02F080DA2C56954C00BEDC5E /* FirebaseFirestoreSwift */,
+			);
 			productName = CollabCards;
 			productReference = 02A6ABF62C51254700234AF3 /* CollabCards.app */;
 			productType = "com.apple.product-type.application";
@@ -196,6 +281,9 @@
 				Base,
 			);
 			mainGroup = 02A6ABED2C51254700234AF3;
+			packageReferences = (
+				02F080D32C56954C00BEDC5E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 02A6ABF72C51254700234AF3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -212,6 +300,7 @@
 			files = (
 				02A6AC012C51254800234AF3 /* Preview Assets.xcassets in Resources */,
 				02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */,
+				021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,13 +311,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				021509C92C512824002BFFED /* HomeView.swift in Sources */,
+				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
 				021509CB2C51282A002BFFED /* RetroView.swift in Sources */,
+				021509E22C52370E002BFFED /* RetrospectiveSettingsView.swift in Sources */,
+				02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */,
+				02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */,
+				02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */,
+				02B5F53F2C538D40006C0BFB /* Board.swift in Sources */,
+				02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */,
 				021509D62C5137E2002BFFED /* InputFieldView.swift in Sources */,
 				021509D42C513577002BFFED /* ProgressView.swift in Sources */,
+				021509E02C522F50002BFFED /* WelcomSelectionView.swift in Sources */,
 				021509D92C513A32002BFFED /* TemplateCardView.swift in Sources */,
+				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
+				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
 				021509DC2C513A7A002BFFED /* Template.swift in Sources */,
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
+				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
+				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
+				02B5F5472C53AB17006C0BFB /* TaskDropDelegate.swift in Sources */,
 				021509DE2C513EF9002BFFED /* TemplateSelectionView.swift in Sources */,
 				02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */,
 			);
@@ -436,6 +537,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		02F080D32C56954C00BEDC5E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.29.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		02F080D42C56954C00BEDC5E /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02F080D32C56954C00BEDC5E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		02F080D62C56954C00BEDC5E /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02F080D32C56954C00BEDC5E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		02F080D82C56954C00BEDC5E /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02F080D32C56954C00BEDC5E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		02F080DA2C56954C00BEDC5E /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02F080D32C56954C00BEDC5E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 02A6ABEE2C51254700234AF3 /* Project object */;
 }
