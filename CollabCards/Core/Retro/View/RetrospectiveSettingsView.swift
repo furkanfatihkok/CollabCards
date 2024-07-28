@@ -39,7 +39,7 @@ struct RetrospectiveSettingsView: View {
             
             HStack {
                 Button(action: {
-                    
+                    self.dissmis.wrappedValue.dismiss()
                 }, label: {
                     Text("CANCEL")
                         .foregroundColor(.white)
@@ -48,33 +48,15 @@ struct RetrospectiveSettingsView: View {
                         .cornerRadius(5)
                 })
                 Spacer()
-                Button(action: {
-                    
-                }, label: {
-                    NavigationLink(destination: BoardView()) {
-                        Text("NEXT")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(.blue)
-                            .cornerRadius(5)
-                    }
-                })
-            }
-            .padding()
-            .navigationTitle("Retrospective settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        self.dissmis.wrappedValue.dismiss()
-                        Crashlytics.log("Retrospective settings saved. Ideate Duration: \(ideateDuration) min, Discuss Duration: \(disscusDuration) min.")
-                    } label: {
-                        Image(systemName: "arrow.left")
-                    }
-                    
+                NavigationLink(destination: BoardView(ideateDuration: ideateDuration, discussDuration: disscusDuration)) {
+                    Text("NEXT")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(.blue)
+                        .cornerRadius(5)
                 }
             }
+            .padding()
         }
     }
 }
