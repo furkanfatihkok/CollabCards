@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 class BoardViewModel: ObservableObject {
-    @Published var tasks = [Task]()
+    @Published var tasks = [Board]()
     private var db = Firestore.firestore()
     
     func fetchTasks() {
@@ -26,7 +26,7 @@ class BoardViewModel: ObservableObject {
             
             self.tasks = documents.compactMap { queryDocumentSnapshot in
                 do {
-                    let task = try queryDocumentSnapshot.data(as: Task.self)
+                    let task = try queryDocumentSnapshot.data(as: Board.self)
                     return task
                 } catch {
                     print("Error decoding document into Task: \(error.localizedDescription)")
@@ -36,9 +36,9 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func addTask(_ task: Task) {
+    func addTask(_ task: Board) {
         do {
-            let _ = try db.collection("tasks").addDocument(from: task) { error in
+            let _ = try db.collection("tasks").document(task.id ?? "").setData(from: task) { error in
                 if let error = error {
                     print("Error adding document: \(error.localizedDescription)")
                 } else {
@@ -50,4 +50,43 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    func deleteTask(_ task: Board) {
+        guard let taskId = task.id else { return }
+        
+        db.collection("tasks").document(taskId).delete { error in
+            if let error = error {
+                print("Error deleting document: \(error.localizedDescription)")
+            } else {
+                print("Document deleted successfully")
+            }
+        }
+    }
+    
+    func moveTask(_ task: Board, toStatus newStatus: String) {
+        guard let taskId = task.id else { return }
+        
+        db.collection("tasks").document(taskId).updateData(["status": newStatus]) { error in
+            if let error = error {
+                print("Error updating document: \(error.localizedDescription)")
+            } else {
+                print("Document updated successfully")
+            }
+        }
+    }
+    
+    func editTask(_ task: Board) {
+        guard let taskId = task.id else { return }
+        
+        do {
+            let _ = try db.collection("tasks").document(taskId).setData(from: task) { error in
+                if let error = error {
+                    print("Error updating document: \(error.localizedDescription)")
+                } else {
+                    print("Document updated successfully")
+                }
+            }
+        } catch {
+            print("Error creating document: \(error.localizedDescription)")
+        }
+    }
 }

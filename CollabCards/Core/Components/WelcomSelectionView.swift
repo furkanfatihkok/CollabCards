@@ -10,7 +10,7 @@ import SwiftUI
 struct WelcomSelectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Welcome Furkan")
+            Text("Welcome CollabCards")
                 .font(.title)
                 .fontWeight(.bold)
             Text("Let us create new retrospective. What shall we call it?")
