@@ -9,11 +9,8 @@
 /* Begin PBXBuildFile section */
 		021509C92C512824002BFFED /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* EmptyView.swift */; };
 		021509CB2C51282A002BFFED /* RetroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509CA2C51282A002BFFED /* RetroView.swift */; };
-		021509D42C513577002BFFED /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D32C513577002BFFED /* ProgressView.swift */; };
 		021509D62C5137E2002BFFED /* InputFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D52C5137E2002BFFED /* InputFieldView.swift */; };
-		021509D92C513A32002BFFED /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D82C513A32002BFFED /* TemplateCardView.swift */; };
 		021509DC2C513A7A002BFFED /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DB2C513A7A002BFFED /* Template.swift */; };
-		021509DE2C513EF9002BFFED /* TemplateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DD2C513EF9002BFFED /* TemplateSelectionView.swift */; };
 		021509E02C522F50002BFFED /* WelcomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DF2C522F50002BFFED /* WelcomSelectionView.swift */; };
 		021509E22C52370E002BFFED /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */; };
 		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
@@ -40,11 +37,8 @@
 /* Begin PBXFileReference section */
 		021509C82C512824002BFFED /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		021509CA2C51282A002BFFED /* RetroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroView.swift; sourceTree = "<group>"; };
-		021509D32C513577002BFFED /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		021509D52C5137E2002BFFED /* InputFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldView.swift; sourceTree = "<group>"; };
-		021509D82C513A32002BFFED /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
 		021509DB2C513A7A002BFFED /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
-		021509DD2C513EF9002BFFED /* TemplateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateSelectionView.swift; sourceTree = "<group>"; };
 		021509DF2C522F50002BFFED /* WelcomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomSelectionView.swift; sourceTree = "<group>"; };
 		021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
 		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
@@ -110,10 +104,8 @@
 		021509CF2C513235002BFFED /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				021509D32C513577002BFFED /* ProgressView.swift */,
 				021509DF2C522F50002BFFED /* WelcomSelectionView.swift */,
 				021509D52C5137E2002BFFED /* InputFieldView.swift */,
-				021509D82C513A32002BFFED /* TemplateCardView.swift */,
 				021509E32C52374A002BFFED /* DurationSettingView.swift */,
 				02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */,
 				02B5F5402C538F6E006C0BFB /* AddTaskView.swift */,
@@ -134,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				021509CA2C51282A002BFFED /* RetroView.swift */,
-				021509DD2C513EF9002BFFED /* TemplateSelectionView.swift */,
 				021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */,
 			);
 			path = View;
@@ -320,9 +311,7 @@
 				02B5F53F2C538D40006C0BFB /* Board.swift in Sources */,
 				02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */,
 				021509D62C5137E2002BFFED /* InputFieldView.swift in Sources */,
-				021509D42C513577002BFFED /* ProgressView.swift in Sources */,
 				021509E02C522F50002BFFED /* WelcomSelectionView.swift in Sources */,
-				021509D92C513A32002BFFED /* TemplateCardView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
 				021509DC2C513A7A002BFFED /* Template.swift in Sources */,
@@ -330,7 +319,6 @@
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
 				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
 				02B5F5472C53AB17006C0BFB /* TaskDropDelegate.swift in Sources */,
-				021509DE2C513EF9002BFFED /* TemplateSelectionView.swift in Sources */,
 				02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

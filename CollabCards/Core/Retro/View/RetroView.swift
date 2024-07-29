@@ -26,7 +26,7 @@ struct RetroView: View {
                             .background(.blue)
                             .cornerRadius(5)
                     })
-                    NavigationLink(destination: TemplateSelectionView()) {
+                    NavigationLink(destination: RetrospectiveSettingsView()) {
                         Text("NEXT")
                             .foregroundColor(.white)
                             .padding()
