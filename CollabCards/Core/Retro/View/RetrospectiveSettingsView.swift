@@ -9,14 +9,16 @@ import SwiftUI
 import FirebaseCrashlytics
 
 struct RetrospectiveSettingsView: View {
+    @Environment(\.presentationMode) var dismiss
     
-    @Environment(\.presentationMode) var dissmis
+    @Binding var resetRetroName: String
     
     @State private var ideateDuration = 15
-    @State private var disscusDuration = 20
+    @State private var discussDuration = 20
     
+    var retroName: String
     var totalTime: Int {
-        ideateDuration + disscusDuration
+        ideateDuration + discussDuration
     }
     
     var body: some View {
@@ -26,8 +28,8 @@ struct RetrospectiveSettingsView: View {
                 .fontWeight(.semibold)
                 .padding(.top, 20)
             
-            DurationSettingView(stepName: "Ideate", duration: $ideateDuration)
-            DurationSettingView(stepName: "Discuss (5 Whys)", duration: $disscusDuration)
+            DurationSettingView(duration: $ideateDuration, stepName: "Ideate")
+            DurationSettingView(duration: $discussDuration, stepName: "Discuss (5 Whys)")
             
             HStack {
                 Text("Total Time")
@@ -39,28 +41,30 @@ struct RetrospectiveSettingsView: View {
             
             HStack {
                 Button(action: {
-                    self.dissmis.wrappedValue.dismiss()
+                    self.dismiss.wrappedValue.dismiss()
                 }, label: {
                     Text("CANCEL")
                         .foregroundColor(.white)
                         .padding()
-                        .background(.blue)
+                        .background(Color.blue)
                         .cornerRadius(5)
                 })
                 Spacer()
-                NavigationLink(destination: BoardView(ideateDuration: ideateDuration, discussDuration: disscusDuration)) {
+                NavigationLink(destination: BoardView(ideateDuration: ideateDuration, discussDuration: discussDuration)) {
                     Text("NEXT")
                         .foregroundColor(.white)
                         .padding()
-                        .background(.blue)
+                        .background(Color.blue)
                         .cornerRadius(5)
                 }
             }
             .padding()
         }
+        .navigationTitle(retroName)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    RetrospectiveSettingsView()
+    RetrospectiveSettingsView(resetRetroName: .constant(""), retroName: "Example Retro")
 }
