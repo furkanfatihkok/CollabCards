@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct DurationSettingView: View {
-    var stepName: String
     @Binding var duration: Int
+    
+    var stepName: String
     
     var body: some View {
         HStack {
@@ -30,6 +31,6 @@ struct DurationSettingView_Previews: PreviewProvider {
     @State static var duration = 20
     
     static var previews: some View {
-        DurationSettingView(stepName: "Duration", duration: $duration)
+        DurationSettingView(duration: $duration, stepName: "Duration")
     }
 }

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct InputFieldView: View {
-    
-    @State private var retroName: String = ""
+    @Binding var retroName: String
     
     var body: some View {
         TextField("Enter your name", text: $retroName)
@@ -21,5 +20,5 @@ struct InputFieldView: View {
 }
 
 #Preview {
-    InputFieldView()
+    InputFieldView(retroName: .constant(""))
 }
