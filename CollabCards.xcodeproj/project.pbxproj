@@ -9,22 +9,21 @@
 /* Begin PBXBuildFile section */
 		021509C92C512824002BFFED /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* EmptyView.swift */; };
 		021509CB2C51282A002BFFED /* RetroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509CA2C51282A002BFFED /* RetroView.swift */; };
-		021509D62C5137E2002BFFED /* InputFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509D52C5137E2002BFFED /* InputFieldView.swift */; };
 		021509DC2C513A7A002BFFED /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DB2C513A7A002BFFED /* Template.swift */; };
-		021509E02C522F50002BFFED /* WelcomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DF2C522F50002BFFED /* WelcomSelectionView.swift */; };
-		021509E22C52370E002BFFED /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */; };
 		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
 		021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021509E72C5250F6002BFFED /* GoogleService-Info.plist */; };
 		02150A252C525512002BFFED /* Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02150A242C525512002BFFED /* Crashlytics.swift */; };
 		0288CC832C58D5790083B540 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC822C58D5790083B540 /* HomeView.swift */; };
 		0288CC852C58D7530083B540 /* WorkspaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC842C58D7530083B540 /* WorkspaceItemView.swift */; };
+		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
+		0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */; };
 		02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */; };
 		02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABFB2C51254700234AF3 /* ContentView.swift */; };
 		02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6ABFD2C51254800234AF3 /* Assets.xcassets */; };
 		02A6AC012C51254800234AF3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6AC002C51254800234AF3 /* Preview Assets.xcassets */; };
 		02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5392C538BCA006C0BFB /* BoardView.swift */; };
 		02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */; };
-		02B5F53F2C538D40006C0BFB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53E2C538D40006C0BFB /* Board.swift */; };
+		02B5F53F2C538D40006C0BFB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53E2C538D40006C0BFB /* Card.swift */; };
 		02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5402C538F6E006C0BFB /* AddTaskView.swift */; };
 		02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */; };
 		02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */; };
@@ -39,15 +38,14 @@
 /* Begin PBXFileReference section */
 		021509C82C512824002BFFED /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		021509CA2C51282A002BFFED /* RetroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroView.swift; sourceTree = "<group>"; };
-		021509D52C5137E2002BFFED /* InputFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldView.swift; sourceTree = "<group>"; };
 		021509DB2C513A7A002BFFED /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
-		021509DF2C522F50002BFFED /* WelcomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomSelectionView.swift; sourceTree = "<group>"; };
-		021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
 		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
 		021509E72C5250F6002BFFED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02150A242C525512002BFFED /* Crashlytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crashlytics.swift; sourceTree = "<group>"; };
 		0288CC822C58D5790083B540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0288CC842C58D7530083B540 /* WorkspaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceItemView.swift; sourceTree = "<group>"; };
+		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
+		0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
 		02A6ABF62C51254700234AF3 /* CollabCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsApp.swift; sourceTree = "<group>"; };
 		02A6ABFB2C51254700234AF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -55,7 +53,7 @@
 		02A6AC002C51254800234AF3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02B5F5392C538BCA006C0BFB /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
-		02B5F53E2C538D40006C0BFB /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		02B5F53E2C538D40006C0BFB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		02B5F5402C538F6E006C0BFB /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskColumnView.swift; sourceTree = "<group>"; };
 		02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
@@ -108,13 +106,12 @@
 		021509CF2C513235002BFFED /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				021509DF2C522F50002BFFED /* WelcomSelectionView.swift */,
-				021509D52C5137E2002BFFED /* InputFieldView.swift */,
+				0288CC862C58F1080083B540 /* NewBoardView.swift */,
+				0288CC842C58D7530083B540 /* WorkspaceItemView.swift */,
 				021509E32C52374A002BFFED /* DurationSettingView.swift */,
 				02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */,
 				02B5F5402C538F6E006C0BFB /* AddTaskView.swift */,
 				02B5F5482C53B25A006C0BFB /* EditTaskView.swift */,
-				0288CC842C58D7530083B540 /* WorkspaceItemView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -132,7 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				021509CA2C51282A002BFFED /* RetroView.swift */,
-				021509E12C52370E002BFFED /* RetrospectiveSettingsView.swift */,
+				0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -149,7 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				021509DB2C513A7A002BFFED /* Template.swift */,
-				02B5F53E2C538D40006C0BFB /* Board.swift */,
+				02B5F53E2C538D40006C0BFB /* Card.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -308,16 +305,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */,
 				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
 				021509CB2C51282A002BFFED /* RetroView.swift in Sources */,
-				021509E22C52370E002BFFED /* RetrospectiveSettingsView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */,
 				02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */,
 				02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */,
-				02B5F53F2C538D40006C0BFB /* Board.swift in Sources */,
+				0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */,
+				02B5F53F2C538D40006C0BFB /* Card.swift in Sources */,
 				02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */,
-				021509D62C5137E2002BFFED /* InputFieldView.swift in Sources */,
-				021509E02C522F50002BFFED /* WelcomSelectionView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
 				021509DC2C513A7A002BFFED /* Template.swift in Sources */,

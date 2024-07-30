@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EmptyView: View {
+    @State private var showNewBoardSheet = false
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -15,9 +16,19 @@ struct EmptyView: View {
                     .resizable()
                     .frame(width: 30, height: 30)
                 Spacer()
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 20, height: 20)
+                Menu {
+                    Button(action: {
+                        showNewBoardSheet = true
+                    }, label: {
+                        Text("Create a board")
+                        Image(systemName: "doc.on.doc")
+                    })
+                } label: {
+                    Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.white)
+                }
             }
             .padding()
             .background(.blue)
@@ -87,6 +98,9 @@ struct EmptyView: View {
             
             Spacer()
         }
+        .sheet(isPresented: $showNewBoardSheet, content: {
+            NewBoardView()
+        })
         .navigationBarHidden(true)
     }
 }

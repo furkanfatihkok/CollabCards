@@ -9,8 +9,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TaskDropDelegate: DropDelegate {
-    let task: Board
-    @Binding var allTasks: [Board]
+    let task: Card
+    @Binding var allTasks: [Card]
     @ObservedObject var viewModel: BoardViewModel
 
     func performDrop(info: DropInfo) -> Bool {
