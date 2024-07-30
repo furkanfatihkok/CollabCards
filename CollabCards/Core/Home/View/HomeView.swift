@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var showNewBoardSheet = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
