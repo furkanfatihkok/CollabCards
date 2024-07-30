@@ -8,28 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var hasData: Bool = false
+    
     var body: some View {
-        TabView {
-            EmptyView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-            RetroView()
-                .tabItem {
-                    Image(systemName: "plus.circle")
-                    Text("Add retro")
-                }
-            Text("Notifications")
-                .tabItem {
-                    Image(systemName: "bell")
-                    Text("Notifications")
-                }
-            Text("Profile")
-                .tabItem {
-                    Image(systemName: "person.circle")
-                    Text("Profile")
-                }
+        VStack {
+            if hasData {
+                HomeView()
+            } else {
+                EmptyView()
+            }
         }
     }
 }
