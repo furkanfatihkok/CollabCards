@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @State private var hasData: Bool = false
+    @Query private var boards: [Board]
     
     var body: some View {
         VStack {
-            if hasData {
+            if boards.isEmpty {
                 HomeView()
             } else {
                 EmptyView()
@@ -23,4 +24,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Board.self)
 }

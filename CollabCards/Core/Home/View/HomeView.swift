@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @State private var showNewBoardSheet = false
+    @Query private var boards: [Board]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -54,10 +56,8 @@ struct HomeView: View {
             Text("YOUR WORKSPACES")
                 .font(.headline)
                 .padding(.horizontal)
-            List {
-                WorkspaceItemView(color: .blue, title: "deneme")
-                WorkspaceItemView(color: .red, title: "Sirius")
-                WorkspaceItemView(color: .purple, title: "Belatrix")
+            List(boards) { board in
+                WorkspaceItemView(color: .blue, title: board.name)
             }
             .listStyle(PlainListStyle())
         }
@@ -69,4 +69,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .modelContainer(for: Board.self)
 }

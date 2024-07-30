@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NewBoardView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var context: ModelContext
     @State private var ideateDuration = 15
+    @State private var boardName: String = ""
     
-    //    var retroName: String
     var totalTime: Int {
         ideateDuration
     }
@@ -21,7 +22,7 @@ struct NewBoardView: View {
         NavigationView {
             Form {
                 Section {
-                    TextField("New Board", text: .constant(""))
+                    TextField("New Board", text: $boardName)
                 }
                 
                 Section {
@@ -67,11 +68,18 @@ struct NewBoardView: View {
             .navigationBarTitle("Board", displayMode: .inline)
             .navigationBarItems(
                 leading: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }) {
                     Text("Cancel")
                 }, trailing: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
+                    let newBoard = Board(name: boardName)
+                    context.insert(newBoard)
+                    do {
+                        try context.save()
+                        dismiss()
+                    } catch {
+                        print("Error saving context: \(error)")
+                    }
                 }) {
                     Text("Create").bold()
                 })
@@ -79,8 +87,7 @@ struct NewBoardView: View {
     }
 }
 
-struct NewBoardView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewBoardView()
-    }
+#Preview {
+    NewBoardView()
+        .modelContainer(for: Board.self)
 }

@@ -17,6 +17,7 @@
 		0288CC852C58D7530083B540 /* WorkspaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC842C58D7530083B540 /* WorkspaceItemView.swift */; };
 		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
 		0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */; };
+		028B9DC42C5913450068C0B9 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B9DC32C5913450068C0B9 /* Board.swift */; };
 		02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */; };
 		02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABFB2C51254700234AF3 /* ContentView.swift */; };
 		02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6ABFD2C51254800234AF3 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		0288CC842C58D7530083B540 /* WorkspaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceItemView.swift; sourceTree = "<group>"; };
 		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
 		0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
+		028B9DC32C5913450068C0B9 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		02A6ABF62C51254700234AF3 /* CollabCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsApp.swift; sourceTree = "<group>"; };
 		02A6ABFB2C51254700234AF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				021509DB2C513A7A002BFFED /* Template.swift */,
 				02B5F53E2C538D40006C0BFB /* Card.swift */,
+				028B9DC32C5913450068C0B9 /* Board.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 			files = (
 				0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */,
 				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
+				028B9DC42C5913450068C0B9 /* Board.swift in Sources */,
 				021509CB2C51282A002BFFED /* RetroView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */,
 				02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */,

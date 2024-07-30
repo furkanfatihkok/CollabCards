@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
+    @Query private var boards: [Board]
     
     var body: some View {
         VStack(spacing: 20) {
@@ -85,7 +87,7 @@ struct EmptyView: View {
                 .padding(.horizontal, 40)
             
             Button(action: {
-                // Action for create board
+                showNewBoardSheet = true
             }) {
                 Text("Create your first CollabBoards")
                     .fontWeight(.bold)
@@ -102,10 +104,19 @@ struct EmptyView: View {
         .sheet(isPresented: $showNewBoardSheet, content: {
             NewBoardView()
         })
+        .onChange(of: boards) { newValue in
+            if !newValue.isEmpty {
+                // Eğer yeni bir board eklenmişse HomeView'a geç
+                DispatchQueue.main.async {
+                    UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView())
+                }
+            }
+        }
         .navigationBarHidden(true)
     }
 }
 
 #Preview {
     EmptyView()
+        .modelContainer(for: Board.self)
 }

@@ -25,6 +25,7 @@ struct CollabCardsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: Board.self)
         }
     }
 }
