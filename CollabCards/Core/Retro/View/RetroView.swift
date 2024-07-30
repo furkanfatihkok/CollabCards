@@ -15,8 +15,6 @@ struct RetroView: View {
     var body: some View {
         NavigationView {
             VStack {
-                WelcomSelectionView()
-                InputFieldView(retroName: $retroName)
                 HStack {
                     Button(action: {
                         retroName = ""

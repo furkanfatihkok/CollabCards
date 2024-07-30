@@ -13,15 +13,15 @@ import SwiftUI
  */
 
 struct EditTaskView: View {
-    @Binding var task: Board
+    @Binding var task: Card
     var viewModel: BoardViewModel
-    var onSave: (Board) -> Void
+    var onSave: (Card) -> Void
     
     @State private var title: String
     @State private var description: String
     @State private var status: String
 
-    init(task: Binding<Board>, viewModel: BoardViewModel, onSave: @escaping (Board) -> Void) {
+    init(task: Binding<Card>, viewModel: BoardViewModel, onSave: @escaping (Card) -> Void) {
         self._task = task
         self.viewModel = viewModel
         self.onSave = onSave
@@ -44,7 +44,7 @@ struct EditTaskView: View {
                 }
 
                 Button("Save") {
-                    let updatedTask = Board(id: task.id, title: title, description: description, status: status)
+                    let updatedTask = Card(id: task.id, title: title, description: description, status: status)
                     onSave(updatedTask)
                 }
             }
@@ -54,7 +54,7 @@ struct EditTaskView: View {
 }
 
 #Preview {
-    let sampleTask = Board(id: "1", title: "Sample Task", description: "Sample Description", status: "todo")
+    let sampleTask = Card(id: "1", title: "Sample Task", description: "Sample Description", status: "todo")
     let sampleViewModel = BoardViewModel()
     return EditTaskView(task: .constant(sampleTask), viewModel: sampleViewModel) { updatedTask in
         print("Task saved: \(updatedTask)")

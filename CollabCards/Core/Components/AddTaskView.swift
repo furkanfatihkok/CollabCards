@@ -35,7 +35,7 @@ struct AddTaskView: View {
                             print("Title or Description is empty")
                             return
                         }
-                        let task = Board(id: UUID().uuidString, title: title, description: description, status: status)
+                        let task = Card(id: UUID().uuidString, title: title, description: description, status: status)
                         viewModel.addTask(task)
                         dissmis.wrappedValue.dismiss()
                     }

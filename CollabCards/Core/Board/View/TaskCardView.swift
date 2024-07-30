@@ -9,11 +9,11 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TaskCardView: View {
-    @Binding var task: Board
-    @Binding var allTasks: [Board]
+    @Binding var task: Card
+    @Binding var allTasks: [Card]
     
-    var onDelete: (Board) -> Void
-    var onEdit: (Board) -> Void
+    var onDelete: (Card) -> Void
+    var onEdit: (Card) -> Void
     var viewModel: BoardViewModel
     
     @State private var showEditSheet = false
@@ -73,11 +73,11 @@ struct TaskCardView: View {
 }
 
 struct TaskCardView_Previews: PreviewProvider {
-    @State static var task = Board(id: UUID().uuidString, title: "Sample Task", description: "Description", status: "todo")
+    @State static var task = Card(id: UUID().uuidString, title: "Sample Task", description: "Description", status: "todo")
     @State static var allTasks = [
-        Board(id: UUID().uuidString, title: "Task 1", description: "Description 1", status: "todo"),
-        Board(id: UUID().uuidString, title: "Task 2", description: "Description 2", status: "progress"),
-        Board(id: UUID().uuidString, title: "Task 3", description: "Description 3", status: "done")
+        Card(id: UUID().uuidString, title: "Task 1", description: "Description 1", status: "todo"),
+        Card(id: UUID().uuidString, title: "Task 2", description: "Description 2", status: "progress"),
+        Card(id: UUID().uuidString, title: "Task 3", description: "Description 3", status: "done")
     ]
     
     static var previews: some View {

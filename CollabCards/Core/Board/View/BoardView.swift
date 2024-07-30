@@ -15,7 +15,7 @@ struct BoardView: View {
     
     @State private var showAddSheet = false
     @State private var showEditSheet = false
-    @State private var taskToEdit: Board? = nil
+    @State private var taskToEdit: Card? = nil
     @State private var isPaused = true
     
     var ideateDuration: Int
