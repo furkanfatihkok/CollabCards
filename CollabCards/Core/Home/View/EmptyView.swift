@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
+    
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -34,16 +35,16 @@ struct EmptyView: View {
             .background(.blue)
             .foregroundColor(.white)
             
-            HStack(spacing: 20) {
-                Image(systemName: "person.crop.circle")
+            HStack() {
+                Image("person1")
                     .resizable()
-                    .frame(width: 60, height: 60)
-                Image(systemName: "person.crop.circle")
+                    .frame(width: 80, height: 80)
+                Image("person2")
                     .resizable()
-                    .frame(width: 60, height: 60)
-                Image(systemName: "person.crop.circle")
+                    .frame(width: 80, height: 80)
+                Image("person3")
                     .resizable()
-                    .frame(width: 60, height: 60)
+                    .frame(width: 80, height: 80)
             }
             .padding(.top, 50)
             
@@ -69,7 +70,7 @@ struct EmptyView: View {
             }
             .padding(.horizontal, 40)
             
-            Image(systemName: "person.crop.circle")
+            Image("person1")
                 .resizable()
                 .frame(width: 100, height: 100)
                 .padding(.top, 30)
