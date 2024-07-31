@@ -7,15 +7,31 @@
 
 import SwiftUI
 import SwiftData
+import EFQRCode
+
+func generateShortID() -> String {
+    let uuid = UUID().uuidString
+    let shortID = uuid.split(separator: "-").prefix(3).joined(separator: "-").prefix(6)
+    return String(shortID)
+}
 
 struct NewBoardView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var context: ModelContext
     @State private var ideateDuration = 15
     @State private var boardName: String = ""
+    @State private var boardID: String = generateShortID()
     
     var totalTime: Int {
         ideateDuration
+    }
+    
+    var qrCode: UIImage? {
+        let generator = EFQRCodeGenerator(content: boardID)
+        if let cgImage = generator.generate() {
+            return UIImage(cgImage: cgImage)
+        }
+        return nil
     }
     
     var body: some View {
@@ -29,7 +45,7 @@ struct NewBoardView: View {
                     HStack {
                         Text("Workspace")
                         Spacer()
-                        TextField("Furkan Kök's workspace",text: .constant(""))
+                        TextField("Furkan Kök's workspace", text: .constant(""))
                     }
                     
                     HStack {
@@ -64,6 +80,18 @@ struct NewBoardView: View {
                         .padding()
                     }
                 }
+                
+                Section(header: Text("QR Code & Board ID")) {
+                    if let qrCodeImage = qrCode {
+                        Image(uiImage: qrCodeImage)
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .padding()
+                    }
+                    Text("Board ID: \(boardID)")
+                        .font(.body)
+                        .foregroundColor(.gray)
+                }
             }
             .navigationBarTitle("Board", displayMode: .inline)
             .navigationBarItems(
@@ -72,7 +100,7 @@ struct NewBoardView: View {
                 }) {
                     Text("Cancel")
                 }, trailing: Button(action: {
-                    let newBoard = Board(name: boardName)
+                    let newBoard = Board(id: UUID(uuidString: boardID) ?? UUID(), name: boardName)
                     context.insert(newBoard)
                     do {
                         try context.save()
@@ -91,3 +119,4 @@ struct NewBoardView: View {
     NewBoardView()
         .modelContainer(for: Board.self)
 }
+
