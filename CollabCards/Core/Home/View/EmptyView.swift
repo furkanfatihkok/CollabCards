@@ -15,7 +15,7 @@ struct EmptyView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack {
-                Image(systemName: "trello")//Logo eklenecek buraya
+                Image("trello")
                     .resizable()
                     .frame(width: 30, height: 30)
                 Spacer()
@@ -106,7 +106,6 @@ struct EmptyView: View {
         })
         .onChange(of: boards) { newValue in
             if !newValue.isEmpty {
-                // Eğer yeni bir board eklenmişse HomeView'a geç
                 DispatchQueue.main.async {
                     UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView())
                 }

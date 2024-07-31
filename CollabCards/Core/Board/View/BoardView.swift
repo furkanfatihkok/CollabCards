@@ -10,27 +10,27 @@ import FirebaseCrashlytics
 
 struct BoardView: View {
     @Environment(\.presentationMode) var dismiss
-    
     @StateObject var viewModel = CardViewModel()
-    
     @State private var showAddSheet = false
     @State private var showEditSheet = false
     @State private var taskToEdit: Card? = nil
     @State private var isPaused = true
-    
+
     var ideateDuration: Int
     var discussDuration: Int
-    
+    var board: Board
+
     @State private var timerValue: TimeInterval
-    
-    init(ideateDuration: Int, discussDuration: Int) {
+
+    init(ideateDuration: Int = 15, discussDuration: Int = 20, board: Board) {
         self.ideateDuration = ideateDuration
         self.discussDuration = discussDuration
+        self.board = board
         _timerValue = State(initialValue: TimeInterval(ideateDuration * 60))
     }
-    
+
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -38,14 +38,14 @@ struct BoardView: View {
                     .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-                
+
                 VStack(alignment: .leading) {
                     Text("Step 2/6 :")
                     Text("Ideate")
                 }
-                
+
                 Spacer()
-                
+
                 Text(timerString(from: timerValue))
                     .onReceive(timer) { _ in
                         if !isPaused {
@@ -57,21 +57,21 @@ struct BoardView: View {
                             }
                         }
                     }
-                
+
                 Button(action: {
                     isPaused.toggle()
                     Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
                 }) {
                     Image(systemName: isPaused ? "play.fill" : "pause.fill")
                 }
-                
+
                 Button(action: {
                     timerValue = TimeInterval(ideateDuration * 60)
                     Crashlytics.log("Timer reset to initial duration.")
                 }) {
                     Image(systemName: "stop.fill")
                 }
-                
+
                 Button(action: {
                     // Add action for next step
                     Crashlytics.log("Next step button pressed.")
@@ -80,7 +80,7 @@ struct BoardView: View {
                 }
             }
             .padding()
-            
+
             GeometryReader { geometry in
                 ScrollView(.vertical) {
                     ScrollView(.horizontal) {
@@ -102,7 +102,7 @@ struct BoardView: View {
                                 }
                             )
                             .frame(width: geometry.size.width * 0.75)
-                            
+
                             TaskColumnView(
                                 title: "In Progress",
                                 tasks: $viewModel.tasks,
@@ -120,7 +120,7 @@ struct BoardView: View {
                                 }
                             )
                             .frame(width: geometry.size.width * 0.75)
-                            
+
                             TaskColumnView(
                                 title: "Done",
                                 tasks: $viewModel.tasks,
@@ -143,7 +143,7 @@ struct BoardView: View {
                     }
                 }
             }
-            
+
             Button(action: {
                 showAddSheet.toggle()
                 Crashlytics.log("Add card button pressed.")
@@ -155,8 +155,8 @@ struct BoardView: View {
                     .cornerRadius(8)
             }
             .padding()
-            
-            .navigationTitle("Task Board")
+
+            .navigationTitle(board.name) // Board adını başlık olarak kullanıyoruz
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -198,11 +198,11 @@ struct BoardView: View {
         .onAppear {
             viewModel.fetchTasks()
             Crashlytics.log("BoardView appeared.")
-            Crashlytics.setCustomValue(ideateDuration, forkey: "ideateDuration")
-            Crashlytics.setCustomValue(discussDuration, forkey: "discussDuration")
+//            Crashlytics.setCustomValue(ideateDuration, forKey: "ideateDuration")
+//            Crashlytics.setCustomValue(discussDuration, forKey: "discussDuration")
         }
     }
-    
+
     func timerString(from timeInterval: TimeInterval) -> String {
         let minutes = Int(timeInterval) / 60
         let seconds = Int(timeInterval) % 60
@@ -211,5 +211,5 @@ struct BoardView: View {
 }
 
 #Preview {
-    BoardView(ideateDuration: 15, discussDuration: 20)
+    BoardView(ideateDuration: 15, discussDuration: 20, board: Board(name: "Sample Board"))
 }

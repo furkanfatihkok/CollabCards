@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct HomeView: View {
     @State private var showNewBoardSheet = false
@@ -14,12 +15,17 @@ struct HomeView: View {
     @State private var boardToDelete: Board?
     @Environment(\.modelContext) private var context: ModelContext
     @Query private var boards: [Board]
-    
+    @State private var scannedBoardID: String = ""
+    @State private var showQRScanner = false
+    @State private var showBoardView = false
+    @State private var selectedBoard: Board?
+    @State private var showBoardInfo = false
+
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
                 HStack {
-                    Image(systemName: "trello") // Logo eklenecek buraya
+                    Image("trello") 
                         .resizable()
                         .frame(width: 30, height: 30)
                     Spacer()
@@ -31,10 +37,10 @@ struct HomeView: View {
                             Image(systemName: "doc.on.doc")
                         }
                         Button(action: {
-                            // Browse templates action
+                            showQRScanner = true
                         }) {
-                            Text("Create a card")
-                            Image(systemName: "square.on.square")
+                            Text("Scan QR Code")
+                            Image(systemName: "qrcode.viewfinder")
                         }
                     } label: {
                         Image(systemName: "plus")
@@ -63,17 +69,35 @@ struct HomeView: View {
                 
                 List {
                     ForEach(boards, id: \.id) { board in
-                        NavigationLink(destination: BoardView(ideateDuration: 15, discussDuration: 20)) {
-                            WorkspaceItemView(color: .blue, title: board.name)
+                        HStack {
+                            NavigationLink(destination: BoardView(ideateDuration: 15, discussDuration: 20, board: board)) {
+                                WorkspaceItemView(color: .blue, title: board.name)
+                            }
+                            Spacer()
+                            Button(action: {
+                                selectedBoard = board
+                                showBoardInfo = true
+                            }) {
+                                Image(systemName: "info.circle")
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     .onDelete(perform: confirmDeleteBoards)
                 }
                 .listStyle(PlainListStyle())
             }
-            .sheet(isPresented: $showNewBoardSheet, content: {
+            .sheet(isPresented: $showNewBoardSheet) {
                 NewBoardView()
-            })
+            }
+            .sheet(isPresented: $showQRScanner) {
+                QRScannerView { scannedCode in
+                    self.scannedBoardID = scannedCode
+                    self.showBoardView = true
+                    self.showQRScanner = false
+                }
+            }
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Delete Board?"),
@@ -85,8 +109,19 @@ struct HomeView: View {
                         }
                     }
                 )
+            }
+//            .sheet(isPresented: $showBoardInfo) {
+//                if let board = selectedBoard {
+//                    NavigationView {
+//                        BoardInfoView(board: board)
+//                    }
+//                }
+//            }
         }
-        }
+    }
+    
+    private func boardFromID(_ id: String) -> Board? {
+        return boards.first { $0.id.uuidString == id }
     }
     
     private func confirmDeleteBoards(at offsets: IndexSet) {
