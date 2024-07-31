@@ -14,7 +14,7 @@ struct TaskCardView: View {
     
     var onDelete: (Card) -> Void
     var onEdit: (Card) -> Void
-    var viewModel: BoardViewModel
+    var viewModel: CardViewModel
     
     @State private var showEditSheet = false
     
@@ -92,7 +92,7 @@ struct TaskCardView_Previews: PreviewProvider {
                 // Sample onEdit implementation
                 print("Edit \(task.title)")
             },
-            viewModel: BoardViewModel()
+            viewModel: CardViewModel()
         )
         .previewLayout(.sizeThatFits)
         .padding()
