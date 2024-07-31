@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 struct TaskDropDelegate: DropDelegate {
     let task: Card
     @Binding var allTasks: [Card]
-    @ObservedObject var viewModel: BoardViewModel
+    @ObservedObject var viewModel: CardViewModel
 
     func performDrop(info: DropInfo) -> Bool {
         guard let item = info.itemProviders(for: [UTType.text]).first else { return false }

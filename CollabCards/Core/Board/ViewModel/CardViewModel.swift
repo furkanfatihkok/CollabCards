@@ -1,5 +1,5 @@
 //
-//  BoardViewModel.swift
+//  CardViewModel.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class BoardViewModel: ObservableObject {
+class CardViewModel: ObservableObject {
     @Published var tasks = [Card]()
     private var db = Firestore.firestore()
     

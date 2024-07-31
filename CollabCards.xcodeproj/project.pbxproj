@@ -23,7 +23,7 @@
 		02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6ABFD2C51254800234AF3 /* Assets.xcassets */; };
 		02A6AC012C51254800234AF3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6AC002C51254800234AF3 /* Preview Assets.xcassets */; };
 		02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5392C538BCA006C0BFB /* BoardView.swift */; };
-		02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */; };
+		02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */; };
 		02B5F53F2C538D40006C0BFB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53E2C538D40006C0BFB /* Card.swift */; };
 		02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5402C538F6E006C0BFB /* AddTaskView.swift */; };
 		02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */; };
@@ -54,7 +54,7 @@
 		02A6ABFD2C51254800234AF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02A6AC002C51254800234AF3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02B5F5392C538BCA006C0BFB /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
-		02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		02B5F53E2C538D40006C0BFB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		02B5F5402C538F6E006C0BFB /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskColumnView.swift; sourceTree = "<group>"; };
@@ -223,7 +223,7 @@
 		02B5F53B2C538C6D006C0BFB /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				02B5F53C2C538C7F006C0BFB /* BoardViewModel.swift */,
+				02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -313,7 +313,7 @@
 				028B9DC42C5913450068C0B9 /* Board.swift in Sources */,
 				021509CB2C51282A002BFFED /* RetroView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */,
-				02B5F53D2C538C7F006C0BFB /* BoardViewModel.swift in Sources */,
+				02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */,
 				02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */,
 				0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */,
 				02B5F53F2C538D40006C0BFB /* Card.swift in Sources */,
