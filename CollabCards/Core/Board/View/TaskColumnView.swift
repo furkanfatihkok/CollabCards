@@ -12,7 +12,7 @@ struct TaskColumnView: View {
     @Binding var tasks: [Card]
     let statusFilter: String
     @Binding var allTasks: [Card]
-    var viewModel: BoardViewModel
+    var viewModel: CardViewModel
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
     
@@ -55,7 +55,7 @@ struct TaskColumnView: View {
         tasks: .constant([]),
         statusFilter: "todo",
         allTasks: .constant([]),
-        viewModel: BoardViewModel(),
+        viewModel: CardViewModel(),
         onEdit: { _ in },
         onDelete: { _ in }
     )

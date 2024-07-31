@@ -10,7 +10,7 @@ import SwiftUI
 struct AddTaskView: View {
     @Environment(\.presentationMode) var dissmis
     
-    var viewModel: BoardViewModel
+    var viewModel: CardViewModel
     
     @State private var title = ""
     @State private var description = ""
@@ -48,6 +48,6 @@ struct AddTaskView: View {
 
 struct AddTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTaskView(viewModel: BoardViewModel())
+        AddTaskView(viewModel: CardViewModel())
     }
 }

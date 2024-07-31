@@ -14,9 +14,9 @@ struct ContentView: View {
     var body: some View {
         VStack {
             if boards.isEmpty {
-                HomeView()
-            } else {
                 EmptyView()
+            } else {
+                HomeView()
             }
         }
     }
