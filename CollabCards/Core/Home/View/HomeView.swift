@@ -20,12 +20,12 @@ struct HomeView: View {
     @State private var showBoardView = false
     @State private var selectedBoard: Board?
     @State private var showBoardInfo = false
-
+    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
                 HStack {
-                    Image("trello") 
+                    Image("trello")
                         .resizable()
                         .frame(width: 30, height: 30)
                     Spacer()
@@ -110,13 +110,13 @@ struct HomeView: View {
                     }
                 )
             }
-//            .sheet(isPresented: $showBoardInfo) {
-//                if let board = selectedBoard {
-//                    NavigationView {
-//                        BoardInfoView(board: board)
-//                    }
-//                }
-//            }
+            .sheet(isPresented: $showBoardInfo) {
+                if let board = selectedBoard {
+                    NavigationView {
+                        BoardInfoView(board: board)
+                    }
+                }
+            }
         }
     }
     
