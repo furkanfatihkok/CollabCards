@@ -12,9 +12,6 @@
 		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
 		021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021509E72C5250F6002BFFED /* GoogleService-Info.plist */; };
 		02150A252C525512002BFFED /* Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02150A242C525512002BFFED /* Crashlytics.swift */; };
-<<<<<<< HEAD
-		0288CC7F2C58D2960083B540 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC7E2C58D2960083B540 /* ContentView.swift */; };
-=======
 		022051D32C5A3BB500DFAC41 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 022051D22C5A3BB500DFAC41 /* FirebaseCrashlytics */; };
 		022051D52C5A3BB500DFAC41 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 022051D42C5A3BB500DFAC41 /* FirebaseFirestore */; };
 		022051D72C5A3BB500DFAC41 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 022051D62C5A3BB500DFAC41 /* FirebaseFirestoreCombine-Community */; };
@@ -25,8 +22,8 @@
 		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
 		0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */; };
 		028B9DC42C5913450068C0B9 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B9DC32C5913450068C0B9 /* Board.swift */; };
->>>>>>> 2a63ece2b067c8b71e22571d65286965fa7ecfba
 		02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */; };
+		02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABFB2C51254700234AF3 /* ContentView.swift */; };
 		02A6ABFE2C51254800234AF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6ABFD2C51254800234AF3 /* Assets.xcassets */; };
 		02A6AC012C51254800234AF3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A6AC002C51254800234AF3 /* Preview Assets.xcassets */; };
 		02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5392C538BCA006C0BFB /* BoardView.swift */; };
@@ -46,9 +43,6 @@
 		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
 		021509E72C5250F6002BFFED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02150A242C525512002BFFED /* Crashlytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crashlytics.swift; sourceTree = "<group>"; };
-<<<<<<< HEAD
-		0288CC7E2C58D2960083B540 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-=======
 		022051DB2C5A3DDD00DFAC41 /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
 		022051DD2C5A404C00DFAC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0288CC822C58D5790083B540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -56,9 +50,9 @@
 		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
 		0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
 		028B9DC32C5913450068C0B9 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
->>>>>>> 2a63ece2b067c8b71e22571d65286965fa7ecfba
 		02A6ABF62C51254700234AF3 /* CollabCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsApp.swift; sourceTree = "<group>"; };
+		02A6ABFB2C51254700234AF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02A6ABFD2C51254800234AF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02A6AC002C51254800234AF3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02B5F5392C538BCA006C0BFB /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
@@ -194,12 +188,7 @@
 			children = (
 				022051DD2C5A404C00DFAC41 /* Info.plist */,
 				02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */,
-<<<<<<< HEAD
-				0288CC7E2C58D2960083B540 /* ContentView.swift */,
-				02150A232C525502002BFFED /* Extensions */,
-=======
 				02A6ABFB2C51254700234AF3 /* ContentView.swift */,
->>>>>>> 2a63ece2b067c8b71e22571d65286965fa7ecfba
 				021509D22C513256002BFFED /* Theme */,
 				02150A232C525502002BFFED /* Extensions */,
 				021509DA2C513A46002BFFED /* Model */,
@@ -338,13 +327,8 @@
 				02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
-<<<<<<< HEAD
-				021509DC2C513A7A002BFFED /* Template.swift in Sources */,
-=======
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
->>>>>>> 2a63ece2b067c8b71e22571d65286965fa7ecfba
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
-				0288CC7F2C58D2960083B540 /* ContentView.swift in Sources */,
 				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
 				02B5F5472C53AB17006C0BFB /* TaskDropDelegate.swift in Sources */,
 				0288CC852C58D7530083B540 /* WorkspaceItemView.swift in Sources */,
