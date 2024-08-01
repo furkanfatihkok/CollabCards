@@ -32,7 +32,6 @@ struct BoardInfoView: View {
                     .frame(width: 200, height: 200)
                     .padding()
             }
-            
             Text("Board ID: \(board.id.uuidString)")
                 .font(.body)
                 .foregroundColor(.gray)
@@ -40,14 +39,11 @@ struct BoardInfoView: View {
             
             Spacer()
         }
-        .navigationBarTitle("Board Info", displayMode: .inline)
         .padding()
     }
 }
 
 #Preview {
-    BoardInfoView(board: Board(name: "Sample Board"))
+    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board"))
         .modelContainer(for: Board.self)
 }
-
-
