@@ -9,25 +9,20 @@ import SwiftUI
 import SwiftData
 import EFQRCode
 
-func generateShortID() -> String {
-    let uuid = UUID().uuidString
-    let shortID = uuid.split(separator: "-").prefix(3).joined(separator: "-").prefix(6)
-    return String(shortID)
-}
-
 struct NewBoardView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var context: ModelContext
     @State private var ideateDuration = 15
     @State private var boardName: String = ""
-    @State private var boardID: String = generateShortID()
+    @State private var boardID = UUID()
+    var onSave: (Board) -> Void
     
     var totalTime: Int {
         ideateDuration
     }
     
     var qrCode: UIImage? {
-        let generator = EFQRCodeGenerator(content: boardID)
+        let generator = EFQRCodeGenerator(content: boardID.uuidString)
         if let cgImage = generator.generate() {
             return UIImage(cgImage: cgImage)
         }
@@ -88,35 +83,33 @@ struct NewBoardView: View {
                             .frame(width: 200, height: 200)
                             .padding()
                     }
-                    Text("Board ID: \(boardID)")
+                    Text("Board ID: \(boardID.uuidString)")
                         .font(.body)
                         .foregroundColor(.gray)
                 }
             }
             .navigationBarTitle("Board", displayMode: .inline)
             .navigationBarItems(
-                leading: Button(action: {
+                leading: Button("Cancel") {
                     dismiss()
-                }) {
-                    Text("Cancel")
-                }, trailing: Button(action: {
-                    let newBoard = Board(id: UUID(uuidString: boardID) ?? UUID(), name: boardName)
+                },
+                trailing: Button("Create") {
+                    let newBoard = Board(id: boardID, name: boardName)
                     context.insert(newBoard)
                     do {
                         try context.save()
+                        onSave(newBoard)
                         dismiss()
                     } catch {
                         print("Error saving context: \(error)")
                     }
-                }) {
-                    Text("Create").bold()
-                })
+                }
+            )
         }
     }
 }
 
 #Preview {
-    NewBoardView()
+    NewBoardView { _ in }
         .modelContainer(for: Board.self)
 }
-

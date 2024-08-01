@@ -11,6 +11,7 @@ import SwiftData
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
     @Query private var boards: [Board]
+    @Environment(\.modelContext) private var context: ModelContext
     
     var body: some View {
         VStack(spacing: 20) {
@@ -101,9 +102,12 @@ struct EmptyView: View {
             
             Spacer()
         }
-        .sheet(isPresented: $showNewBoardSheet, content: {
-            NewBoardView()
-        })
+        .sheet(isPresented: $showNewBoardSheet) {
+            NewBoardView { newBoard in
+                context.insert(newBoard)
+                try? context.save()
+            }
+        }
         .onChange(of: boards) { newValue in
             if !newValue.isEmpty {
                 DispatchQueue.main.async {

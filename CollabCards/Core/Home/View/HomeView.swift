@@ -89,7 +89,14 @@ struct HomeView: View {
                 .listStyle(PlainListStyle())
             }
             .sheet(isPresented: $showNewBoardSheet) {
-                NewBoardView()
+                NewBoardView { newBoard in
+                    selectedBoard = newBoard
+                }
+            }
+            .sheet(isPresented: $showBoardInfo) {
+                if let board = selectedBoard {
+                    BoardInfoView(board: board)
+                }
             }
             .sheet(isPresented: $showQRScanner) {
                 QRScannerView { scannedCode in
@@ -110,18 +117,7 @@ struct HomeView: View {
                     }
                 )
             }
-            .sheet(isPresented: $showBoardInfo) {
-                if let board = selectedBoard {
-                    NavigationView {
-                        BoardInfoView(board: board)
-                    }
-                }
-            }
         }
-    }
-    
-    private func boardFromID(_ id: String) -> Board? {
-        return boards.first { $0.id.uuidString == id }
     }
     
     private func confirmDeleteBoards(at offsets: IndexSet) {
@@ -133,11 +129,7 @@ struct HomeView: View {
     
     private func deleteBoard(_ board: Board) {
         context.delete(board)
-        do {
-            try context.save()
-        } catch {
-            print("Error deleting board: \(error)")
-        }
+        try? context.save()
     }
 }
 
