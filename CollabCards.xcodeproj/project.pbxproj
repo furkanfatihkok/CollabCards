@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		021509C92C512824002BFFED /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* EmptyView.swift */; };
 		021509CB2C51282A002BFFED /* RetroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509CA2C51282A002BFFED /* RetroView.swift */; };
-		021509DC2C513A7A002BFFED /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509DB2C513A7A002BFFED /* Template.swift */; };
 		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
 		021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021509E72C5250F6002BFFED /* GoogleService-Info.plist */; };
 		02150A252C525512002BFFED /* Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02150A242C525512002BFFED /* Crashlytics.swift */; };
@@ -41,7 +40,6 @@
 /* Begin PBXFileReference section */
 		021509C82C512824002BFFED /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		021509CA2C51282A002BFFED /* RetroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroView.swift; sourceTree = "<group>"; };
-		021509DB2C513A7A002BFFED /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
 		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
 		021509E72C5250F6002BFFED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02150A242C525512002BFFED /* Crashlytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crashlytics.swift; sourceTree = "<group>"; };
@@ -154,7 +152,6 @@
 		021509DA2C513A46002BFFED /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				021509DB2C513A7A002BFFED /* Template.swift */,
 				02B5F53E2C538D40006C0BFB /* Card.swift */,
 				028B9DC32C5913450068C0B9 /* Board.swift */,
 			);
@@ -330,7 +327,6 @@
 				02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
-				021509DC2C513A7A002BFFED /* Template.swift in Sources */,
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
 				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
