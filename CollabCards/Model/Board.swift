@@ -2,15 +2,21 @@
 //  Board.swift
 //  CollabCards
 //
-//  Created by FFK on 26.07.2024.
+//  Created by FFK on 30.07.2024.
 //
 
 import Foundation
-import FirebaseFirestore
+import SwiftData
 
-struct Board: Identifiable, Codable {
-    @DocumentID var id: String?
-    var title: String
-    var description: String
-    var status: String
+@Model
+class Board {
+    @Attribute(.unique) var id: UUID
+    @Attribute var name: String
+
+    init(id: UUID = UUID(), name: String) {
+        self.id = id
+        self.name = name
+    }
 }
+
+

@@ -1,5 +1,5 @@
 //
-//  BoardViewModel.swift
+//  CardViewModel.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -8,8 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-class BoardViewModel: ObservableObject {
-    @Published var tasks = [Board]()
+class CardViewModel: ObservableObject {
+    @Published var tasks = [Card]()
     private var db = Firestore.firestore()
     
     func fetchTasks() {
@@ -26,7 +26,7 @@ class BoardViewModel: ObservableObject {
             
             self.tasks = documents.compactMap { queryDocumentSnapshot in
                 do {
-                    let task = try queryDocumentSnapshot.data(as: Board.self)
+                    let task = try queryDocumentSnapshot.data(as: Card.self)
                     return task
                 } catch {
                     print("Error decoding document into Task: \(error.localizedDescription)")
@@ -36,7 +36,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func addTask(_ task: Board) {
+    func addTask(_ task: Card) {
         do {
             let _ = try db.collection("tasks").document(task.id ?? "").setData(from: task) { error in
                 if let error = error {
@@ -50,7 +50,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func deleteTask(_ task: Board) {
+    func deleteTask(_ task: Card) {
         guard let taskId = task.id else { return }
         
         db.collection("tasks").document(taskId).delete { error in
@@ -62,7 +62,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func moveTask(_ task: Board, toStatus newStatus: String) {
+    func moveTask(_ task: Card, toStatus newStatus: String) {
         guard let taskId = task.id else { return }
         
         db.collection("tasks").document(taskId).updateData(["status": newStatus]) { error in
@@ -74,7 +74,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func editTask(_ task: Board) {
+    func editTask(_ task: Card) {
         guard let taskId = task.id else { return }
         
         do {

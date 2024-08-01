@@ -7,25 +7,26 @@
 
 import SwiftUI
 import FirebaseCrashlytics
+import SwiftData
 
 struct BoardView: View {
     @Environment(\.presentationMode) var dismiss
-    
-    @StateObject var viewModel = BoardViewModel()
-    
+    @StateObject var viewModel = CardViewModel()
     @State private var showAddSheet = false
     @State private var showEditSheet = false
-    @State private var taskToEdit: Board? = nil
+    @State private var taskToEdit: Card? = nil
     @State private var isPaused = true
     
     var ideateDuration: Int
     var discussDuration: Int
+    var board: Board
     
     @State private var timerValue: TimeInterval
     
-    init(ideateDuration: Int, discussDuration: Int) {
+    init(ideateDuration: Int = 15, discussDuration: Int = 20, board: Board) {
         self.ideateDuration = ideateDuration
         self.discussDuration = discussDuration
+        self.board = board
         _timerValue = State(initialValue: TimeInterval(ideateDuration * 60))
     }
     
@@ -82,8 +83,8 @@ struct BoardView: View {
             .padding()
             
             GeometryReader { geometry in
-                ScrollView(.vertical) {
-                    ScrollView(.horizontal) {
+                ScrollView(.vertical, showsIndicators: false) {
+                    ScrollView(.horizontal, showsIndicators: false ) {
                         HStack(spacing: 16) {
                             TaskColumnView(
                                 title: "To Do",
@@ -143,73 +144,72 @@ struct BoardView: View {
                     }
                 }
             }
-            
-            Button(action: {
-                showAddSheet.toggle()
-                Crashlytics.log("Add card button pressed.")
-            }) {
-                Text("Add Card")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+        }
+        
+        Button(action: {
+            showAddSheet.toggle()
+            Crashlytics.log("Add card button pressed.")
+        }) {
+            Text("Add Card")
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+        }
+        .padding()
+        
+        .navigationTitle(board.name) // Board adını başlık olarak kullanıyoruz
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    self.dismiss.wrappedValue.dismiss()
+                    Crashlytics.log("Back button pressed, dismissing BoardView.")
+                }, label: {
+                    Image(systemName: "arrow.left")
+                })
             }
-            .padding()
-            
-            .navigationTitle("Task Board")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        self.dismiss.wrappedValue.dismiss()
-                        Crashlytics.log("Back button pressed, dismissing BoardView.")
-                    }, label: {
-                        Image(systemName: "arrow.left")
-                    })
-                }
-            }
-            .sheet(isPresented: $showAddSheet) {
-                AddTaskView(viewModel: viewModel)
-            }
-            .sheet(isPresented: $showEditSheet) {
-                if let task = taskToEdit {
-                    EditTaskView(
-                        task: Binding(
-                            get: { task },
-                            set: { updatedTask in
-                                if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
-                                    viewModel.tasks[index] = updatedTask
-                                    viewModel.editTask(updatedTask)
-                                }
-                                taskToEdit = nil
-                                showEditSheet = false
-                                Crashlytics.log("Task edited with id: \(String(describing: task.id))")
+        }
+        .sheet(isPresented: $showAddSheet) {
+            AddTaskView(viewModel: viewModel)
+        }
+        .sheet(isPresented: $showEditSheet) {
+            if let task = taskToEdit {
+                EditTaskView(
+                    task: Binding(
+                        get: { task },
+                        set: { updatedTask in
+                            if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
+                                viewModel.tasks[index] = updatedTask
+                                viewModel.editTask(updatedTask)
                             }
-                        ), viewModel: viewModel,
-                        onSave: { updatedTask in
-                            viewModel.editTask(updatedTask)
-                            Crashlytics.log("Task saved with id: \(String(describing: updatedTask.id))")
+                            taskToEdit = nil
+                            showEditSheet = false
+                            Crashlytics.log("Task edited with id: \(String(describing: task.id))")
                         }
-                    )
-                }
+                    ), viewModel: viewModel,
+                    onSave: { updatedTask in
+                        viewModel.editTask(updatedTask)
+                        Crashlytics.log("Task saved with id: \(String(describing: updatedTask.id))")
+                    }
+                )
             }
         }
         .onAppear {
             viewModel.fetchTasks()
             Crashlytics.log("BoardView appeared.")
-            Crashlytics.setCustomValue(ideateDuration, forkey: "ideateDuration")
-            Crashlytics.setCustomValue(discussDuration, forkey: "discussDuration")
         }
-    }
-    
-    func timerString(from timeInterval: TimeInterval) -> String {
-        let minutes = Int(timeInterval) / 60
-        let seconds = Int(timeInterval) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 
+func timerString(from timeInterval: TimeInterval) -> String {
+    let minutes = Int(timeInterval) / 60
+    let seconds = Int(timeInterval) % 60
+    return String(format: "%02d:%02d", minutes, seconds)
+}
+
 #Preview {
-    BoardView(ideateDuration: 15, discussDuration: 20)
+    BoardView(ideateDuration: 15, discussDuration: 20, board: Board(name: "Sample Board"))
+        .modelContainer(for: Board.self)
 }

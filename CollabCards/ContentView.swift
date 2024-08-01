@@ -6,34 +6,23 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query private var boards: [Board]
+    
     var body: some View {
-        TabView {
-            EmptyView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-            RetroView()
-                .tabItem {
-                    Image(systemName: "plus.circle")
-                    Text("Add retro")
-                }
-            Text("Notifications")
-                .tabItem {
-                    Image(systemName: "bell")
-                    Text("Notifications")
-                }
-            Text("Profile")
-                .tabItem {
-                    Image(systemName: "person.circle")
-                    Text("Profile")
-                }
+        VStack {
+            if boards.isEmpty {
+                EmptyView()
+            } else {
+                HomeView()
+            }
         }
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: Board.self)
 }

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct TaskColumnView: View {
     let title: String
-    @Binding var tasks: [Board]
+    @Binding var tasks: [Card]
     let statusFilter: String
-    @Binding var allTasks: [Board]
-    var viewModel: BoardViewModel
-    var onEdit: (Board) -> Void
-    var onDelete: (Board) -> Void
+    @Binding var allTasks: [Card]
+    var viewModel: CardViewModel
+    var onEdit: (Card) -> Void
+    var onDelete: (Card) -> Void
     
-    var filteredTasks: [Board] {
+    var filteredTasks: [Card] {
         allTasks.filter { $0.status == statusFilter }
     }
     
@@ -55,7 +55,7 @@ struct TaskColumnView: View {
         tasks: .constant([]),
         statusFilter: "todo",
         allTasks: .constant([]),
-        viewModel: BoardViewModel(),
+        viewModel: CardViewModel(),
         onEdit: { _ in },
         onDelete: { _ in }
     )
