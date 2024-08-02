@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 import EFQRCode
 
 struct BoardInfoView: View {
@@ -43,6 +42,6 @@ struct BoardInfoView: View {
     }
 }
 
-//#Preview {
-//    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board", deviceID: "12343", participants: ["12231","sadfdsfds"]))
-//}
+#Preview {
+    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board", deviceID: "12343", participants: ["12231","sadfdsfds"]))
+}

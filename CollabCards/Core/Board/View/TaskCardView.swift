@@ -33,7 +33,7 @@ struct TaskCardView: View {
                     let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                     return provider
                 }
-                .onDrop(of: [UTType.text], delegate: TaskDropDelegate(task: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
+                .onDrop(of: [UTType.text], delegate: TaskDropDelegate(card: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
             
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
@@ -44,11 +44,13 @@ struct TaskCardView: View {
                     EditTaskView(
                         task: $task,
                         viewModel: viewModel,
-                        boardID: boardID,
                         onSave: { updatedTask in
                             viewModel.editTask(updatedTask, in: boardID)
                             showEditSheet = false
-                        }
+                        }, boardID: boardID,
+                        title: $task.title,
+                        description: $task.description,
+                        status: $task.status
                     )
                 }
                 
@@ -71,31 +73,5 @@ struct TaskCardView: View {
         default:
             return Color.gray
         }
-    }
-}
-
-struct TaskCardView_Previews: PreviewProvider {
-    @State static var task = Card(id: UUID().uuidString, title: "Sample Task", description: "Description", status: "todo")
-    @State static var allTasks = [
-        Card(id: UUID().uuidString, title: "Task 1", description: "Description 1", status: "todo"),
-        Card(id: UUID().uuidString, title: "Task 2", description: "Description 2", status: "progress"),
-        Card(id: UUID().uuidString, title: "Task 3", description: "Description 3", status: "done")
-    ]
-    
-    static var previews: some View {
-        TaskCardView(
-            task: $task,
-            allTasks: $allTasks,
-            onDelete: { task in
-                print("Delete \(task.title)")
-            },
-            onEdit: { task in
-                print("Edit \(task.title)")
-            },
-            viewModel: CardViewModel(),
-            boardID: UUID().uuidString
-        )
-        .previewLayout(.sizeThatFits)
-        .padding()
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
