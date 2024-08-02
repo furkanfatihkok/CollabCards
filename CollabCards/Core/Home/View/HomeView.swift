@@ -6,20 +6,18 @@
 //
 
 import SwiftUI
-import SwiftData
-import AVFoundation
+import FirebaseFirestore
 
 struct HomeView: View {
-    @Environment(\.modelContext) private var context: ModelContext
-    @Query private var boards: [Board]
     @State private var showNewBoardSheet = false
     @State private var showAlert = false
     @State private var boardToDelete: Board?
     @State private var scannedBoardID: String = ""
     @State private var showQRScanner = false
     @State private var showBoardView = false
-    @State private var selectedBoard: Board?
+    @State private var selectedBoardUUID: UUID?
     @State private var showBoardInfo = false
+    @ObservedObject var viewModel = BoardViewModel()
     
     var body: some View {
         NavigationView {
@@ -68,14 +66,14 @@ struct HomeView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(boards, id: \.id) { board in
+                    ForEach(viewModel.boards, id: \.id) { board in
                         HStack {
-                            NavigationLink(destination: BoardView(ideateDuration: 15, discussDuration: 20, board: board)) {
+                            NavigationLink(destination: BoardView(boardID: board.id)) {
                                 WorkspaceItemView(color: .blue, title: board.name)
                             }
                             Spacer()
                             Button(action: {
-                                selectedBoard = board
+                                selectedBoardUUID = board.id
                                 showBoardInfo = true
                             }) {
                                 Image(systemName: "info.circle")
@@ -90,19 +88,24 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showNewBoardSheet) {
                 NewBoardView { newBoard in
-                    selectedBoard = newBoard
+                    selectedBoardUUID = newBoard.id
+                    viewModel.addBoard(newBoard)
                 }
             }
             .sheet(isPresented: $showBoardInfo) {
-                if let board = selectedBoard {
-                    BoardInfoView(board: board)
+                if let boardUUID = selectedBoardUUID {
+                    if let board = viewModel.boards.first(where: { $0.id == boardUUID }) {
+                        BoardInfoView(board: board)
+                    }
                 }
             }
             .sheet(isPresented: $showQRScanner) {
                 QRScannerView { scannedCode in
-                    self.scannedBoardID = scannedCode
-                    self.showBoardView = true
-                    self.showQRScanner = false
+                    if let scannedUUID = UUID(uuidString: scannedCode) {
+                        self.selectedBoardUUID = scannedUUID
+                        self.showBoardView = true
+                        self.showQRScanner = false
+                    }
                 }
             }
             .alert(isPresented: $showAlert) {
@@ -112,28 +115,25 @@ struct HomeView: View {
                     primaryButton: .cancel(),
                     secondaryButton: .destructive(Text("Delete")) {
                         if let board = boardToDelete {
-                            deleteBoard(board)
+                            viewModel.deleteBoard(board)
                         }
                     }
                 )
+            }
+            .onAppear {
+                viewModel.fetchBoards()
             }
         }
     }
     
     private func confirmDeleteBoards(at offsets: IndexSet) {
         if let index = offsets.first {
-            boardToDelete = boards[index]
+            boardToDelete = viewModel.boards[index]
             showAlert = true
         }
-    }
-    
-    private func deleteBoard(_ board: Board) {
-        context.delete(board)
-        try? context.save()
     }
 }
 
 #Preview {
     HomeView()
-        .modelContainer(for: Board.self)
 }

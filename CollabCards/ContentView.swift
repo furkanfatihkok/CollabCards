@@ -9,20 +9,22 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Query private var boards: [Board]
+    @ObservedObject var viewModel = BoardViewModel()
     
     var body: some View {
         VStack {
-            if boards.isEmpty {
-                EmptyView()
+            if viewModel.boards.isEmpty {
+                EmptyView(viewModel: viewModel)
             } else {
-                HomeView()
+                HomeView(viewModel: viewModel)
             }
+        }
+        .onAppear {
+            viewModel.fetchBoards()
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Board.self)
 }

@@ -15,6 +15,7 @@ struct TaskColumnView: View {
     var viewModel: CardViewModel
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
+    var boardID: String
     
     var filteredTasks: [Card] {
         allTasks.filter { $0.status == statusFilter }
@@ -42,7 +43,8 @@ struct TaskColumnView: View {
                     onEdit: { task in
                         onEdit(task)
                     },
-                    viewModel: viewModel
+                    viewModel: viewModel,
+                    boardID: boardID
                 )
             }
         }
@@ -57,6 +59,7 @@ struct TaskColumnView: View {
         allTasks: .constant([]),
         viewModel: CardViewModel(),
         onEdit: { _ in },
-        onDelete: { _ in }
+        onDelete: { _ in },
+        boardID: UUID().uuidString
     )
 }

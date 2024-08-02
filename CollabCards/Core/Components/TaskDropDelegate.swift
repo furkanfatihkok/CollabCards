@@ -12,6 +12,7 @@ struct TaskDropDelegate: DropDelegate {
     let task: Card
     @Binding var allTasks: [Card]
     @ObservedObject var viewModel: CardViewModel
+    let boardID: String
 
     func performDrop(info: DropInfo) -> Bool {
         guard let item = info.itemProviders(for: [UTType.text]).first else { return false }
@@ -23,7 +24,7 @@ struct TaskDropDelegate: DropDelegate {
                 if let draggedTask = allTasks.first(where: { $0.id == id }) {
                     if let index = allTasks.firstIndex(where: { $0.id == draggedTask.id }) {
                         allTasks[index].status = task.status
-                        viewModel.moveTask(draggedTask, toStatus: task.status)
+                        viewModel.moveTask(draggedTask, toStatus: task.status, in: boardID)
                     }
                 }
             }

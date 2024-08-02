@@ -45,5 +45,4 @@ struct BoardInfoView: View {
 
 #Preview {
     BoardInfoView(board: Board(id: UUID(), name: "Örnek Board"))
-        .modelContainer(for: Board.self)
 }

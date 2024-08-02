@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct AddTaskView: View {
-    @Environment(\.presentationMode) var dissmis
-    
+    @Environment(\.presentationMode) var dismiss
     var viewModel: CardViewModel
+    var boardID: String
     
     @State private var title = ""
     @State private var description = ""
@@ -26,9 +26,15 @@ struct AddTaskView: View {
                     Text("In Progress").tag("progress")
                     Text("Done").tag("done")
                 }
+                .pickerStyle(SegmentedPickerStyle())
             }
             .navigationTitle("New Task")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss.wrappedValue.dismiss()
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         guard !title.isEmpty, !description.isEmpty else {
@@ -36,8 +42,8 @@ struct AddTaskView: View {
                             return
                         }
                         let task = Card(id: UUID().uuidString, title: title, description: description, status: status)
-                        viewModel.addTask(task)
-                        dissmis.wrappedValue.dismiss()
+                        viewModel.addTask(task, to: boardID)
+                        dismiss.wrappedValue.dismiss()
                     }
                 }
             }
@@ -45,9 +51,6 @@ struct AddTaskView: View {
     }
 }
 
-
-struct AddTaskView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddTaskView(viewModel: CardViewModel())
-    }
+#Preview {
+    AddTaskView(viewModel: CardViewModel(), boardID: UUID().uuidString)
 }
