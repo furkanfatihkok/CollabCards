@@ -23,9 +23,10 @@ struct HomeView: View {
         NavigationView {
             VStack(alignment: .leading) {
                 HStack {
+                    Spacer()
                     Image("trello")
                         .resizable()
-                        .frame(width: 30, height: 30)
+                        .frame(width: 130, height: 65)
                     Spacer()
                     Menu {
                         Button(action: {
@@ -45,9 +46,9 @@ struct HomeView: View {
                             .resizable()
                             .frame(width: 20, height: 20)
                             .foregroundColor(.white)
+                            .padding()
                     }
                 }
-                .padding()
                 .background(.blue)
                 .foregroundColor(.white)
                 

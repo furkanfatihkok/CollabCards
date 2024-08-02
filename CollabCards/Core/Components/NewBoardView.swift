@@ -56,7 +56,7 @@ struct NewBoardView: View {
                     }
                 }
                 
-                Section {
+                Section(header: Text("Timer")) {
                     VStack {
                         Text("Set the time for your retrospective steps.")
                             .font(.title3)
@@ -82,7 +82,7 @@ struct NewBoardView: View {
                             .padding()
                     }
                     Text("Board ID: \(boardID.uuidString)")
-                        .font(.body)
+                        .font(.footnote)
                         .foregroundColor(.gray)
                 }
             }
