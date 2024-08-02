@@ -1,4 +1,3 @@
-//
 //  HomeView.swift
 //  CollabCards
 //
@@ -7,6 +6,7 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseCrashlytics
 
 struct HomeView: View {
     @State private var showNewBoardSheet = false
@@ -32,12 +32,14 @@ struct HomeView: View {
                     Menu {
                         Button(action: {
                             showNewBoardSheet = true
+                            Crashlytics.log("Create a board button tapped")
                         }) {
                             Text("Create a board")
                             Image(systemName: "doc.on.doc")
                         }
                         Button(action: {
                             showQRScanner = true
+                            Crashlytics.log("Scan or Enter Board ID button tapped")
                         }) {
                             Text("Scan or Enter Board ID")
                             Image(systemName: "qrcode.viewfinder")
@@ -77,6 +79,7 @@ struct HomeView: View {
                             Button(action: {
                                 selectedBoardUUID = board.id
                                 showBoardInfo = true
+                                Crashlytics.log("Board info button tapped for board ID: \(board.id)")
                             }) {
                                 Image(systemName: "info.circle")
                                     .foregroundColor(.blue)
@@ -92,6 +95,7 @@ struct HomeView: View {
                 NewBoardView { newBoard in
                     selectedBoardUUID = newBoard.id
                     viewModel.addBoard(newBoard)
+                    Crashlytics.log("New board created with ID: \(newBoard.id)")
                 }
             }
             .sheet(isPresented: $showBoardInfo) {
@@ -107,9 +111,11 @@ struct HomeView: View {
                         self.selectedBoardUUID = scannedUUID
                         self.showBoardView = true
                         self.showQRScanner = false
+                        Crashlytics.log("QR code scanned with valid UUID: \(scannedUUID)")
                     } else {
                         self.showAlert = true
                         self.alertMessage = "Invalid QR code. Please try again."
+                        Crashlytics.log("Invalid QR code scanned: \(scannedCode)")
                     }
                 }
             }
@@ -127,6 +133,7 @@ struct HomeView: View {
             }
             .onAppear {
                 viewModel.fetchBoards()
+                Crashlytics.log("HomeView appeared")
             }
         }
     }
@@ -135,6 +142,7 @@ struct HomeView: View {
         if let index = offsets.first {
             boardToDelete = viewModel.boards[index]
             showAlert = true
+            Crashlytics.log("Delete board action initiated for board ID: \(boardToDelete?.id ?? UUID())")
         }
     }
 }
