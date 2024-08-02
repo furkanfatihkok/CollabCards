@@ -53,7 +53,6 @@ struct BoardView: View {
                             if timerValue > 0 {
                                 timerValue -= 1
                             } else {
-                                // Log when the timer reaches zero
                                 Crashlytics.log("Timer reached zero.")
                             }
                         }
@@ -74,7 +73,6 @@ struct BoardView: View {
                 }
                 
                 Button(action: {
-                    // Add action for next step
                     Crashlytics.log("Next step button pressed.")
                 }) {
                     Text("NEXT")
@@ -158,7 +156,7 @@ struct BoardView: View {
         }
         .padding()
         
-        .navigationTitle(board.name) // Board adını başlık olarak kullanıyoruz
+        .navigationTitle(board.name)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {

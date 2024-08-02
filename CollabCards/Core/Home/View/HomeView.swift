@@ -10,11 +10,11 @@ import SwiftData
 import AVFoundation
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var context: ModelContext
+    @Query private var boards: [Board]
     @State private var showNewBoardSheet = false
     @State private var showAlert = false
     @State private var boardToDelete: Board?
-    @Environment(\.modelContext) private var context: ModelContext
-    @Query private var boards: [Board]
     @State private var scannedBoardID: String = ""
     @State private var showQRScanner = false
     @State private var showBoardView = false
