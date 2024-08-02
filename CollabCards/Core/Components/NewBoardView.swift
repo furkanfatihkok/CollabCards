@@ -92,7 +92,11 @@ struct NewBoardView: View {
                     dismiss()
                 },
                 trailing: Button("Create") {
-                    let newBoard = Board(id: boardID, name: boardName)
+                    guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
+                        print("Device ID is not available")
+                        return
+                    }
+                    let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID])
                     onSave(newBoard)
                     dismiss()
                 }

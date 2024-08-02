@@ -13,7 +13,8 @@ class BoardViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
     func fetchBoards() {
-        db.collection("boards").addSnapshotListener { (querySnapshot, error) in
+        guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else { return }
+        db.collection("boards").whereField("participants", arrayContains: deviceID).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 print("Error fetching boards: \(error.localizedDescription)")
                 return
@@ -38,8 +39,11 @@ class BoardViewModel: ObservableObject {
     }
     
     func addBoard(_ board: Board) {
+        guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else { return }
+        var newBoard = board
+        newBoard.deviceID = deviceID
         do {
-            let _ = try db.collection("boards").document(board.id.uuidString).setData(from: board) { error in
+            let _ = try db.collection("boards").document(board.id.uuidString).setData(from: newBoard) { error in
                 if let error = error {
                     print("Error adding board: \(error.localizedDescription)")
                 } else {
