@@ -14,7 +14,7 @@ struct AddTaskView: View {
     
     @State private var title = ""
     @State private var description = ""
-    @State private var status = "todo"
+    @State private var status = "went well"
     
     var body: some View {
         NavigationView {

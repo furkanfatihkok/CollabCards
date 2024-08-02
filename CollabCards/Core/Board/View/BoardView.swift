@@ -16,18 +16,11 @@ struct BoardView: View {
     @State private var taskToEdit: Card? = nil
     @State private var isPaused = true
     @State private var board: Board?
-    @State private var timerValue: TimeInterval
+    @State private var timerValue: TimeInterval = 15 * 60
     
-    var ideateDuration: Int
-    var discussDuration: Int
+    var ideateDuration: Int = 15
+    var discussDuration: Int = 20
     var boardID: UUID
-    
-    init(ideateDuration: Int = 15, discussDuration: Int = 20, boardID: UUID) {
-        self.ideateDuration = ideateDuration
-        self.discussDuration = discussDuration
-        self.boardID = boardID
-        _timerValue = State(initialValue: TimeInterval(ideateDuration * 60))
-    }
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -53,7 +46,6 @@ struct BoardView: View {
                                 if timerValue > 0 {
                                     timerValue -= 1
                                 } else {
-                                    // Log when the timer reaches zero
                                     print("Timer reached zero.")
                                 }
                             }
@@ -149,6 +141,7 @@ struct BoardView: View {
                 }
             } else {
                 Text("Loading...")
+                //TODO: Activity Indicator oluştur.
                     .onAppear {
                         loadBoard()
                     }
@@ -186,24 +179,21 @@ struct BoardView: View {
         .sheet(isPresented: $showEditSheet) {
             if let task = taskToEdit {
                 EditTaskView(
-                    task: Binding(
-                        get: { task },
-                        set: { updatedTask in
-                            if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
-                                viewModel.tasks[index] = updatedTask
-                                viewModel.editTask(updatedTask, in: boardID.uuidString)
-                            }
-                            taskToEdit = nil
-                            showEditSheet = false
-                            print("Task edited with id: \(String(describing: task.id))")
-                        }
-                    ),
+                    task: .constant(task),
                     viewModel: viewModel,
-                    boardID: boardID.uuidString
-                ) { updatedTask in
-                    viewModel.editTask(updatedTask, in: boardID.uuidString)
-                    print("Task saved with id: \(String(describing: updatedTask.id))")
-                }
+                    onSave: { updatedTask in
+                        if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
+                            viewModel.tasks[index] = updatedTask
+                            viewModel.editTask(updatedTask, in: boardID.uuidString)
+                        }
+                        taskToEdit = nil
+                        showEditSheet = false
+                        print("Task edited with id: \(String(describing: task.id))")
+                    }, boardID: boardID.uuidString,
+                    title: .constant(task.title),
+                    description: .constant(task.description),
+                    status: .constant(task.status)
+                )
             }
         }
         .onAppear {
@@ -235,5 +225,5 @@ func timerString(from timeInterval: TimeInterval) -> String {
 }
 
 #Preview {
-    BoardView(ideateDuration: 15, discussDuration: 20, boardID: UUID())
+    BoardView(boardID: UUID())
 }

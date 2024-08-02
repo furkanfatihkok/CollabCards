@@ -14,20 +14,10 @@ struct EditTaskView: View {
     var onSave: (Card) -> Void
     var boardID: String
     
-    @State private var title: String
-    @State private var description: String
-    @State private var status: String
-
-    init(task: Binding<Card>, viewModel: CardViewModel, boardID: String, onSave: @escaping (Card) -> Void) {
-        self._task = task
-        self.viewModel = viewModel
-        self.onSave = onSave
-        self.boardID = boardID
-        _title = State(initialValue: task.wrappedValue.title)
-        _description = State(initialValue: task.wrappedValue.description)
-        _status = State(initialValue: task.wrappedValue.status)
-    }
-
+    @Binding var title: String
+    @Binding var description: String
+    @Binding var status: String
+    
     var body: some View {
         NavigationView {
             Form {
@@ -58,13 +48,5 @@ struct EditTaskView: View {
                 }
             }
         }
-    }
-}
-
-#Preview {
-    let sampleTask = Card(id: "1", title: "Sample Task", description: "Sample Description", status: "todo")
-    let sampleViewModel = CardViewModel()
-    return EditTaskView(task: .constant(sampleTask), viewModel: sampleViewModel, boardID: UUID().uuidString) { updatedTask in
-        print("Task saved: \(updatedTask)")
     }
 }

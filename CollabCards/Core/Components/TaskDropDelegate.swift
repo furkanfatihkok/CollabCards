@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TaskDropDelegate: DropDelegate {
-    let task: Card
+    let card: Card
     @Binding var allTasks: [Card]
     @ObservedObject var viewModel: CardViewModel
     let boardID: String
@@ -23,8 +23,8 @@ struct TaskDropDelegate: DropDelegate {
             DispatchQueue.main.async {
                 if let draggedTask = allTasks.first(where: { $0.id == id }) {
                     if let index = allTasks.firstIndex(where: { $0.id == draggedTask.id }) {
-                        allTasks[index].status = task.status
-                        viewModel.moveTask(draggedTask, toStatus: task.status, in: boardID)
+                        allTasks[index].status = card.status
+                        viewModel.moveTask(draggedTask, toStatus: card.status, in: boardID)
                     }
                 }
             }
