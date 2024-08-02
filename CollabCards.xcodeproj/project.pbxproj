@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		021509C92C512824002BFFED /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* EmptyView.swift */; };
-		021509CB2C51282A002BFFED /* RetroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509CA2C51282A002BFFED /* RetroView.swift */; };
 		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
 		021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021509E72C5250F6002BFFED /* GoogleService-Info.plist */; };
 		02150A252C525512002BFFED /* Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02150A242C525512002BFFED /* Crashlytics.swift */; };
@@ -20,7 +19,6 @@
 		0288CC832C58D5790083B540 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC822C58D5790083B540 /* HomeView.swift */; };
 		0288CC852C58D7530083B540 /* WorkspaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC842C58D7530083B540 /* WorkspaceItemView.swift */; };
 		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
-		0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */; };
 		028B9DC42C5913450068C0B9 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B9DC32C5913450068C0B9 /* Board.swift */; };
 		02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */; };
 		02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A6ABFB2C51254700234AF3 /* ContentView.swift */; };
@@ -39,7 +37,6 @@
 
 /* Begin PBXFileReference section */
 		021509C82C512824002BFFED /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
-		021509CA2C51282A002BFFED /* RetroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroView.swift; sourceTree = "<group>"; };
 		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
 		021509E72C5250F6002BFFED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02150A242C525512002BFFED /* Crashlytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crashlytics.swift; sourceTree = "<group>"; };
@@ -48,7 +45,6 @@
 		0288CC822C58D5790083B540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0288CC842C58D7530083B540 /* WorkspaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceItemView.swift; sourceTree = "<group>"; };
 		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
-		0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetrospectiveSettingsView.swift; sourceTree = "<group>"; };
 		028B9DC32C5913450068C0B9 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		02A6ABF62C51254700234AF3 /* CollabCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A6ABF92C51254700234AF3 /* CollabCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsApp.swift; sourceTree = "<group>"; };
@@ -86,18 +82,9 @@
 			children = (
 				021509CF2C513235002BFFED /* Components */,
 				021509CE2C513231002BFFED /* Home */,
-				021509CD2C51322A002BFFED /* Retro */,
 				02B5F5372C538BAC006C0BFB /* Board */,
 			);
 			path = Core;
-			sourceTree = "<group>";
-		};
-		021509CD2C51322A002BFFED /* Retro */ = {
-			isa = PBXGroup;
-			children = (
-				021509D12C51323E002BFFED /* View */,
-			);
-			path = Retro;
 			sourceTree = "<group>";
 		};
 		021509CE2C513231002BFFED /* Home */ = {
@@ -128,15 +115,6 @@
 			children = (
 				021509C82C512824002BFFED /* EmptyView.swift */,
 				0288CC822C58D5790083B540 /* HomeView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		021509D12C51323E002BFFED /* View */ = {
-			isa = PBXGroup;
-			children = (
-				021509CA2C51282A002BFFED /* RetroView.swift */,
-				0288CC882C58F5610083B540 /* RetrospectiveSettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -314,10 +292,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0288CC892C58F5610083B540 /* RetrospectiveSettingsView.swift in Sources */,
 				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
 				028B9DC42C5913450068C0B9 /* Board.swift in Sources */,
-				021509CB2C51282A002BFFED /* RetroView.swift in Sources */,
 				022051DC2C5A3DDD00DFAC41 /* QRScannerView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */,
 				02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */,

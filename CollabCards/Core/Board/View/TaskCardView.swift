@@ -85,11 +85,9 @@ struct TaskCardView_Previews: PreviewProvider {
             task: $task,
             allTasks: $allTasks,
             onDelete: { task in
-                // Sample onDelete implementation
                 print("Delete \(task.title)")
             },
             onEdit: { task in
-                // Sample onEdit implementation
                 print("Edit \(task.title)")
             },
             viewModel: CardViewModel()
