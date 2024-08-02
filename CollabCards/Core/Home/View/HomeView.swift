@@ -106,17 +106,10 @@ struct HomeView: View {
                 }
             }
             .sheet(isPresented: $showQRScanner) {
-                QRScannerAndManualEntryView { scannedCode in
-                    if let scannedUUID = UUID(uuidString: scannedCode) {
-                        self.selectedBoardUUID = scannedUUID
-                        self.showBoardView = true
-                        self.showQRScanner = false
-                        Crashlytics.log("QR code scanned with valid UUID: \(scannedUUID)")
-                    } else {
-                        self.showAlert = true
-                        self.alertMessage = "Invalid QR code. Please try again."
-                        Crashlytics.log("Invalid QR code scanned: \(scannedCode)")
-                    }
+                QRScannerAndManualEntryView { board in
+                    viewModel.boards.append(board)
+                    selectedBoardUUID = board.id
+                    showBoardView = true
                 }
             }
             .background(
