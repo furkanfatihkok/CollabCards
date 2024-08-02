@@ -9,6 +9,7 @@ import FirebaseCrashlytics
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
+    @State private var isShareSheetPresented = false
     @ObservedObject var viewModel: BoardViewModel
     
     var body: some View {
@@ -61,7 +62,7 @@ struct EmptyView: View {
                 .padding(.horizontal, 40)
             
             Button(action: {
-                // Action for share profile
+                isShareSheetPresented = true
                 Crashlytics.log("Share your Trello profile button tapped in EmptyView")
             }) {
                 Text("Share your Trello profile")
@@ -73,6 +74,10 @@ struct EmptyView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal, 40)
+            .sheet(isPresented: $isShareSheetPresented) {
+                ShareSheet(activityItems: [URL(string: "https://trello.com")!, "Let's collaborate! Tap to share your Trello profile."])
+                    .presentationDetents([.medium, .large])
+            }
             
             Image("person1")
                 .resizable()
