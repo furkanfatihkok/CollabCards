@@ -1,4 +1,3 @@
-//
 //  BoardView.swift
 //  CollabCards
 //
@@ -7,14 +6,16 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseCrashlytics
 
 struct BoardView: View {
     @Environment(\.presentationMode) var dismiss
     @ObservedObject var viewModel = CardViewModel()
     @State private var showAddSheet = false
     @State private var showEditSheet = false
-    @State private var taskToEdit: Card? = nil
     @State private var isPaused = true
+    @State private var isLoading = true
+    @State private var taskToEdit: Card? = nil
     @State private var board: Board?
     @State private var timerValue: TimeInterval = 15 * 60
     
@@ -46,28 +47,28 @@ struct BoardView: View {
                                 if timerValue > 0 {
                                     timerValue -= 1
                                 } else {
-                                    print("Timer reached zero.")
+                                    Crashlytics.log("Timer reached zero.")
                                 }
                             }
                         }
                     
                     Button(action: {
                         isPaused.toggle()
-                        print(isPaused ? "Timer paused." : "Timer resumed.")
+                        Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
                     }) {
                         Image(systemName: isPaused ? "play.fill" : "pause.fill")
                     }
                     
                     Button(action: {
                         timerValue = TimeInterval(ideateDuration * 60)
-                        print("Timer reset to initial duration.")
+                        Crashlytics.log("Timer reset to initial duration.")
                     }) {
                         Image(systemName: "stop.fill")
                     }
                     
                     Button(action: {
                         // Add action for next step
-                        print("Next step button pressed.")
+                        Crashlytics.log("Next step button pressed.")
                     }) {
                         Text("NEXT")
                     }
@@ -87,11 +88,11 @@ struct BoardView: View {
                                     onEdit: { task in
                                         taskToEdit = task
                                         showEditSheet = true
-                                        print("Editing task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Editing task with id: \(String(describing: task.id))")
                                     },
                                     onDelete: { task in
                                         viewModel.deleteTask(task, from: boardID.uuidString)
-                                        print("Deleted task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
                                     boardID: boardID.uuidString
                                 )
@@ -106,11 +107,11 @@ struct BoardView: View {
                                     onEdit: { task in
                                         taskToEdit = task
                                         showEditSheet = true
-                                        print("Editing task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Editing task with id: \(String(describing: task.id))")
                                     },
                                     onDelete: { task in
                                         viewModel.deleteTask(task, from: boardID.uuidString)
-                                        print("Deleted task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
                                     boardID: boardID.uuidString
                                 )
@@ -119,17 +120,17 @@ struct BoardView: View {
                                 TaskColumnView(
                                     title: "Action Items",
                                     tasks: $viewModel.tasks,
-                                    statusFilter: "actions items",
+                                    statusFilter: "action items",
                                     allTasks: $viewModel.tasks,
                                     viewModel: viewModel,
                                     onEdit: { task in
                                         taskToEdit = task
                                         showEditSheet = true
-                                        print("Editing task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Editing task with id: \(String(describing: task.id))")
                                     },
                                     onDelete: { task in
                                         viewModel.deleteTask(task, from: boardID.uuidString)
-                                        print("Deleted task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
                                     boardID: boardID.uuidString
                                 )
@@ -139,26 +140,31 @@ struct BoardView: View {
                         }
                     }
                 }
+                
+                Button(action: {
+                    showAddSheet.toggle()
+                    Crashlytics.log("Add card button pressed.")
+                }) {
+                    Text("Add Card")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+            } else if isLoading {
+                VStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                }
+                .onAppear {
+                    loadBoard()
+                    Crashlytics.log("BoardView loading board with ID: \(boardID.uuidString)")
+                }
             } else {
-                Text("Loading...")
-                //TODO: Activity Indicator oluştur.
-                    .onAppear {
-                        loadBoard()
-                    }
+                Text("Failed to load board.")
             }
         }
-        
-        Button(action: {
-            showAddSheet.toggle()
-            print("Add card button pressed.")
-        }) {
-            Text("Add Card")
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-        }
-        .padding()
         
         .navigationTitle(board?.name ?? "Board")
         .navigationBarTitleDisplayMode(.inline)
@@ -167,7 +173,7 @@ struct BoardView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
                     self.dismiss.wrappedValue.dismiss()
-                    print("Back button pressed, dismissing BoardView.")
+                    Crashlytics.log("Back button pressed, dismissing BoardView.")
                 }, label: {
                     Image(systemName: "arrow.left")
                 })
@@ -185,10 +191,10 @@ struct BoardView: View {
                         if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
                             viewModel.tasks[index] = updatedTask
                             viewModel.editTask(updatedTask, in: boardID.uuidString)
+                            Crashlytics.log("Task edited with id: \(String(describing: task.id))")
                         }
                         taskToEdit = nil
                         showEditSheet = false
-                        print("Task edited with id: \(String(describing: task.id))")
                     }, boardID: boardID.uuidString,
                     title: .constant(task.title),
                     description: .constant(task.description),
@@ -198,7 +204,7 @@ struct BoardView: View {
         }
         .onAppear {
             viewModel.fetchTasks(for: boardID.uuidString)
-            print("BoardView appeared.")
+            Crashlytics.log("BoardView appeared for board ID: \(boardID.uuidString)")
         }
     }
     
@@ -208,12 +214,14 @@ struct BoardView: View {
             if let document = document, document.exists {
                 do {
                     self.board = try document.data(as: Board.self)
+                    Crashlytics.log("Board loaded with ID: \(boardID.uuidString)")
                 } catch {
-                    print("Error decoding board: \(error.localizedDescription)")
+                    Crashlytics.log("Error decoding board: \(error.localizedDescription)")
                 }
             } else {
-                print("Document does not exist")
+                Crashlytics.log("Document does not exist for board ID: \(boardID.uuidString)")
             }
+            self.isLoading = false
         }
     }
 }

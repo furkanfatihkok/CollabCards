@@ -1,4 +1,3 @@
-//
 //  EmptyView.swift
 //  CollabCards
 //
@@ -6,6 +5,7 @@
 //
 
 import SwiftUI
+import FirebaseCrashlytics
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
@@ -22,6 +22,7 @@ struct EmptyView: View {
                 Menu {
                     Button(action: {
                         showNewBoardSheet = true
+                        Crashlytics.log("Create a board button tapped in EmptyView")
                     }, label: {
                         Text("Create a board")
                         Image(systemName: "doc.on.doc")
@@ -61,6 +62,7 @@ struct EmptyView: View {
             
             Button(action: {
                 // Action for share profile
+                Crashlytics.log("Share your Trello profile button tapped in EmptyView")
             }) {
                 Text("Share your Trello profile")
                     .fontWeight(.bold)
@@ -88,6 +90,7 @@ struct EmptyView: View {
             
             Button(action: {
                 showNewBoardSheet = true
+                Crashlytics.log("Create your first CollabBoards button tapped in EmptyView")
             }) {
                 Text("Create your first CollabBoards")
                     .fontWeight(.bold)
@@ -104,15 +107,18 @@ struct EmptyView: View {
         .sheet(isPresented: $showNewBoardSheet) {
             NewBoardView { newBoard in
                 viewModel.addBoard(newBoard)
+                Crashlytics.log("New board created in EmptyView with ID: \(newBoard.id)")
             }
         }
         .onAppear {
             viewModel.fetchBoards()
+            Crashlytics.log("EmptyView appeared")
         }
         .onChange(of: viewModel.boards.isEmpty) { isEmpty in
             if !isEmpty {
                 DispatchQueue.main.async {
                     UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView(viewModel: viewModel))
+                    Crashlytics.log("Navigated from EmptyView to HomeView as boards are not empty")
                 }
             }
         }
