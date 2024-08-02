@@ -114,14 +114,20 @@ struct HomeView: View {
             }
             .background(
                 NavigationLink(destination: BoardView(boardID: selectedBoardUUID ?? UUID()), isActive: $showBoardView) {
-//                    EmptyView()
+                    //                    EmptyView()
                 }
             )
             .alert(isPresented: $showAlert) {
                 Alert(
-                    title: Text("Invalid Code"),
-                    message: Text(alertMessage),
-                    dismissButton: .default(Text("OK"))
+                    title: Text("Delete board?"),
+                    message: Text("Once deleted, you can't recover the board or its cards"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        if let board = boardToDelete {
+                            viewModel.deleteBoard(board)
+                            Crashlytics.log("Board deleted with ID: \(board.id)")
+                        }
+                    },
+                    secondaryButton: .cancel()
                 )
             }
             .onAppear {
@@ -143,3 +149,4 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
+

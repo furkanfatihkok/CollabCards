@@ -19,6 +19,7 @@
 		024795422C5C855900C27F61 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795412C5C855900C27F61 /* BoardViewModel.swift */; };
 		024795452C5CC29200C27F61 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 024795442C5CC29200C27F61 /* FirebaseAuth */; };
 		024795472C5CD00100C27F61 /* QRScannerAndManualEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */; };
+		024795552C5D108900C27F61 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795542C5D108900C27F61 /* ShareSheet.swift */; };
 		0288CC832C58D5790083B540 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC822C58D5790083B540 /* HomeView.swift */; };
 		0288CC852C58D7530083B540 /* WorkspaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC842C58D7530083B540 /* WorkspaceItemView.swift */; };
 		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
@@ -47,6 +48,7 @@
 		022051DD2C5A404C00DFAC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		024795412C5C855900C27F61 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
 		024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerAndManualEntryView.swift; sourceTree = "<group>"; };
+		024795542C5D108900C27F61 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		0288CC822C58D5790083B540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0288CC842C58D7530083B540 /* WorkspaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceItemView.swift; sourceTree = "<group>"; };
 		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				0288CC842C58D7530083B540 /* WorkspaceItemView.swift */,
 				024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */,
 				022051DB2C5A3DDD00DFAC41 /* QRScannerView.swift */,
+				024795542C5D108900C27F61 /* ShareSheet.swift */,
 				021509E32C52374A002BFFED /* DurationSettingView.swift */,
 				02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */,
 				02B5F5402C538F6E006C0BFB /* AddTaskView.swift */,
@@ -336,6 +339,7 @@
 				02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */,
 				0288CC832C58D5790083B540 /* HomeView.swift in Sources */,
 				02F832212C5A5BEC00827482 /* BoardInfoView.swift in Sources */,
+				024795552C5D108900C27F61 /* ShareSheet.swift in Sources */,
 				024795422C5C855900C27F61 /* BoardViewModel.swift in Sources */,
 				024795472C5CD00100C27F61 /* QRScannerAndManualEntryView.swift in Sources */,
 			);
