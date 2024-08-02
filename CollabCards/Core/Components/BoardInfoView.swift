@@ -44,5 +44,5 @@ struct BoardInfoView: View {
 }
 
 #Preview {
-    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board"))
+    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board", deviceID: "12343", participants: ["12231","sadfdsfds"]))
 }
