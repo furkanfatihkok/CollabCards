@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 import AVFoundation
 
 struct QRScannerAndManualEntryView: View {
@@ -13,7 +14,8 @@ struct QRScannerAndManualEntryView: View {
     @State private var scannedCode: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
-    var onCodeScanned: (String) -> Void
+    @ObservedObject var viewModel = BoardViewModel()
+    var onCodeScanned: (Board) -> Void
 
     var body: some View {
         VStack {
@@ -21,10 +23,7 @@ struct QRScannerAndManualEntryView: View {
                 .font(.headline)
                 .padding()
 
-            QRScannerView()
-                .found(r: { result in
-                    handleScannedCode(result)
-                })
+            QRScannerView(scannedCode: $scannedCode)
                 .frame(width: 300, height: 300)
                 .cornerRadius(12)
                 .padding()
@@ -54,21 +53,35 @@ struct QRScannerAndManualEntryView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .onChange(of: scannedCode) { newCode in
+            handleScannedCode(newCode)
+        }
     }
 
     private func handleScannedCode(_ code: String) {
         if let scannedUUID = UUID(uuidString: code) {
-            onCodeScanned(code)
-            dismiss()
+            fetchBoard(withID: scannedUUID)
         } else {
             alertMessage = "The scanned code is not a valid Board ID."
             showAlert = true
         }
     }
+
+    private func fetchBoard(withID id: UUID) {
+        viewModel.addBoardToCurrentDevice(boardID: id) { board in
+            if let board = board {
+                onCodeScanned(board)
+                dismiss()
+            } else {
+                alertMessage = "Failed to decode board data or board not found."
+                showAlert = true
+            }
+        }
+    }
 }
 
 #Preview {
-    QRScannerAndManualEntryView { code in
-        print("Scanned or entered code: \(code)")
+    QRScannerAndManualEntryView { board in
+        print("Scanned or entered board: \(board)")
     }
 }

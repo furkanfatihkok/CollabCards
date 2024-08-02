@@ -48,6 +48,7 @@ class BoardViewModel: ObservableObject {
         }
         var newBoard = board
         newBoard.deviceID = deviceID
+        newBoard.participants = [deviceID]
         do {
             let _ = try db.collection("boards").document(board.id.uuidString).setData(from: newBoard) { error in
                 if let error = error {
@@ -68,6 +69,53 @@ class BoardViewModel: ObservableObject {
             } else {
                 Crashlytics.log("Board deleted successfully with ID: \(board.id)")
             }
+        }
+    }
+    
+    func addBoardToCurrentDevice(boardID: UUID, completion: @escaping (Board?) -> Void) {
+        guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
+            Crashlytics.log("Failed to add board to current device: deviceID not found")
+            completion(nil)
+            return
+        }
+        
+        let docRef = db.collection("boards").document(boardID.uuidString)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                do {
+                    var board = try document.data(as: Board.self)
+                    if board.participants == nil {
+                        board.participants = []
+                    }
+                    board.participants.append(deviceID)
+                    self.updateBoard(board) { updatedBoard in
+                        completion(updatedBoard)
+                    }
+                } catch {
+                    Crashlytics.log("Error decoding board document: \(error.localizedDescription)")
+                    completion(nil)
+                }
+            } else {
+                Crashlytics.log("Board not found for ID: \(boardID.uuidString)")
+                completion(nil)
+            }
+        }
+    }
+    
+    private func updateBoard(_ board: Board, completion: @escaping (Board?) -> Void) {
+        do {
+            let _ = try db.collection("boards").document(board.id.uuidString).setData(from: board) { error in
+                if let error = error {
+                    Crashlytics.log("Error updating board: \(error.localizedDescription)")
+                    completion(nil)
+                } else {
+                    Crashlytics.log("Board updated successfully with ID: \(board.id)")
+                    completion(board)
+                }
+            }
+        } catch {
+            Crashlytics.log("Error updating board document: \(error.localizedDescription)")
+            completion(nil)
         }
     }
 }
