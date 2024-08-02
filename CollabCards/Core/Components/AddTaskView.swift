@@ -22,9 +22,9 @@ struct AddTaskView: View {
                 TextField("Title", text: $title)
                 TextField("Description", text: $description)
                 Picker("Status", selection: $status) {
-                    Text("To Do").tag("todo")
-                    Text("In Progress").tag("progress")
-                    Text("Done").tag("done")
+                    Text("Went Well").tag("went well")
+                    Text("To Improve").tag("to improve")
+                    Text("Actions Items").tag("actions items")
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }

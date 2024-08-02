@@ -87,9 +87,9 @@ struct BoardView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
                                 TaskColumnView(
-                                    title: "To Do",
+                                    title: "Went Well",
                                     tasks: $viewModel.tasks,
-                                    statusFilter: "todo",
+                                    statusFilter: "went well",
                                     allTasks: $viewModel.tasks,
                                     viewModel: viewModel,
                                     onEdit: { task in
@@ -106,9 +106,9 @@ struct BoardView: View {
                                 .frame(width: geometry.size.width * 0.75)
                                 
                                 TaskColumnView(
-                                    title: "In Progress",
+                                    title: "To Improve",
                                     tasks: $viewModel.tasks,
-                                    statusFilter: "progress",
+                                    statusFilter: "to improve",
                                     allTasks: $viewModel.tasks,
                                     viewModel: viewModel,
                                     onEdit: { task in
@@ -125,9 +125,9 @@ struct BoardView: View {
                                 .frame(width: geometry.size.width * 0.75)
                                 
                                 TaskColumnView(
-                                    title: "Done",
+                                    title: "Action Items",
                                     tasks: $viewModel.tasks,
-                                    statusFilter: "done",
+                                    statusFilter: "actions items",
                                     allTasks: $viewModel.tasks,
                                     viewModel: viewModel,
                                     onEdit: { task in
@@ -213,7 +213,6 @@ struct BoardView: View {
     }
     
     private func loadBoard() {
-        // Firestore'dan board'u yükleyin
         let docRef = Firestore.firestore().collection("boards").document(boardID.uuidString)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {

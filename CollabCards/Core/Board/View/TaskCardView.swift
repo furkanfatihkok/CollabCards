@@ -62,12 +62,12 @@ struct TaskCardView: View {
     
     func backgroundColor(for status: String) -> Color {
         switch status {
-        case "todo":
-            return Color.red
-        case "progress":
-            return Color.yellow
-        case "done":
-            return Color.green
+        case "went well":
+            return Color(red: 0.0, green: 100.0/255.0, blue: 0.0)
+        case "to improve":
+            return Color(red: 255.0/255.0, green: 69.0/255.0, blue: 0.0)
+        case "actions items":
+            return Color.purple
         default:
             return Color.gray
         }
