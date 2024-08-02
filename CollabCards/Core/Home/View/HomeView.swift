@@ -11,6 +11,7 @@ import FirebaseFirestore
 struct HomeView: View {
     @State private var showNewBoardSheet = false
     @State private var showAlert = false
+    @State private var alertMessage = ""
     @State private var boardToDelete: Board?
     @State private var scannedBoardID: String = ""
     @State private var showQRScanner = false
@@ -38,7 +39,7 @@ struct HomeView: View {
                         Button(action: {
                             showQRScanner = true
                         }) {
-                            Text("Scan QR Code")
+                            Text("Scan or Enter Board ID")
                             Image(systemName: "qrcode.viewfinder")
                         }
                     } label: {
@@ -101,29 +102,27 @@ struct HomeView: View {
                 }
             }
             .sheet(isPresented: $showQRScanner) {
-                QRScannerView { scannedCode in
+                QRScannerAndManualEntryView { scannedCode in
                     if let scannedUUID = UUID(uuidString: scannedCode) {
                         self.selectedBoardUUID = scannedUUID
                         self.showBoardView = true
                         self.showQRScanner = false
+                    } else {
+                        self.showAlert = true
+                        self.alertMessage = "Invalid QR code. Please try again."
                     }
                 }
             }
             .background(
                 NavigationLink(destination: BoardView(boardID: selectedBoardUUID ?? UUID()), isActive: $showBoardView) {
-                    //                        EmptyView()
+//                    EmptyView()
                 }
             )
             .alert(isPresented: $showAlert) {
                 Alert(
-                    title: Text("Delete Board?"),
-                    message: Text("Once deleted, you can't recover the board or its cards."),
-                    primaryButton: .cancel(),
-                    secondaryButton: .destructive(Text("Delete")) {
-                        if let board = boardToDelete {
-                            viewModel.deleteBoard(board)
-                        }
-                    }
+                    title: Text("Invalid Code"),
+                    message: Text(alertMessage),
+                    dismissButton: .default(Text("OK"))
                 )
             }
             .onAppear {
