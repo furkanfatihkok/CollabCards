@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
-import SwiftData
 import EFQRCode
 
 struct NewBoardView: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) private var context: ModelContext
     @State private var ideateDuration = 15
     @State private var boardName: String = ""
     @State private var boardID = UUID()
@@ -95,14 +93,8 @@ struct NewBoardView: View {
                 },
                 trailing: Button("Create") {
                     let newBoard = Board(id: boardID, name: boardName)
-                    context.insert(newBoard)
-                    do {
-                        try context.save()
-                        onSave(newBoard)
-                        dismiss()
-                    } catch {
-                        print("Error saving context: \(error)")
-                    }
+                    onSave(newBoard)
+                    dismiss()
                 }
             )
         }
@@ -111,5 +103,4 @@ struct NewBoardView: View {
 
 #Preview {
     NewBoardView { _ in }
-        .modelContainer(for: Board.self)
 }

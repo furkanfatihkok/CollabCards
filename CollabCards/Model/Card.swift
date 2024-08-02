@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct Card: Identifiable, Codable {
-    @DocumentID var id: String?
+    var id: String?
     var title: String
     var description: String
     var status: String

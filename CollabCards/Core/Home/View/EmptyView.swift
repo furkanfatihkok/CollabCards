@@ -10,8 +10,7 @@ import SwiftData
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
-    @Query private var boards: [Board]
-    @Environment(\.modelContext) private var context: ModelContext
+    @ObservedObject var viewModel: BoardViewModel
     
     var body: some View {
         VStack(spacing: 20) {
@@ -104,14 +103,16 @@ struct EmptyView: View {
         }
         .sheet(isPresented: $showNewBoardSheet) {
             NewBoardView { newBoard in
-                context.insert(newBoard)
-                try? context.save()
+                viewModel.addBoard(newBoard)
             }
         }
-        .onChange(of: boards) { newValue in
-            if !newValue.isEmpty {
+        .onAppear {
+            viewModel.fetchBoards()
+        }
+        .onChange(of: viewModel.boards.isEmpty) { isEmpty in
+            if !isEmpty {
                 DispatchQueue.main.async {
-                    UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView())
+                    UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView(viewModel: viewModel))
                 }
             }
         }
@@ -120,6 +121,5 @@ struct EmptyView: View {
 }
 
 #Preview {
-    EmptyView()
-        .modelContainer(for: Board.self)
+    EmptyView(viewModel: BoardViewModel())
 }

@@ -15,6 +15,7 @@ struct TaskCardView: View {
     var onDelete: (Card) -> Void
     var onEdit: (Card) -> Void
     var viewModel: CardViewModel
+    var boardID: String
     
     @State private var showEditSheet = false
     
@@ -32,7 +33,7 @@ struct TaskCardView: View {
                     let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                     return provider
                 }
-                .onDrop(of: [UTType.text], delegate: TaskDropDelegate(task: task, allTasks: $allTasks, viewModel: viewModel))
+                .onDrop(of: [UTType.text], delegate: TaskDropDelegate(task: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
             
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
@@ -43,8 +44,9 @@ struct TaskCardView: View {
                     EditTaskView(
                         task: $task,
                         viewModel: viewModel,
+                        boardID: boardID,
                         onSave: { updatedTask in
-                            viewModel.editTask(updatedTask)
+                            viewModel.editTask(updatedTask, in: boardID)
                             showEditSheet = false
                         }
                     )
@@ -90,7 +92,8 @@ struct TaskCardView_Previews: PreviewProvider {
             onEdit: { task in
                 print("Edit \(task.title)")
             },
-            viewModel: CardViewModel()
+            viewModel: CardViewModel(),
+            boardID: UUID().uuidString
         )
         .previewLayout(.sizeThatFits)
         .padding()
