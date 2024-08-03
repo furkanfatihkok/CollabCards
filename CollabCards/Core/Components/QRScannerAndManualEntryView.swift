@@ -53,9 +53,6 @@ struct QRScannerAndManualEntryView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .onChange(of: scannedCode) { newCode in
-            handleScannedCode(newCode)
-        }
     }
 
     private func handleScannedCode(_ code: String) {
