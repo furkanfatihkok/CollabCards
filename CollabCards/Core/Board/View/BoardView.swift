@@ -165,7 +165,6 @@ struct BoardView: View {
                 Text("Failed to load board.")
             }
         }
-        
         .navigationTitle(board?.name ?? "Board")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
@@ -180,11 +179,11 @@ struct BoardView: View {
             }
         }
         .sheet(isPresented: $showAddSheet) {
-            AddTaskView(viewModel: viewModel, boardID: boardID.uuidString)
+            AddCardView(viewModel: viewModel, boardID: boardID.uuidString)
         }
         .sheet(isPresented: $showEditSheet) {
             if let task = taskToEdit {
-                EditTaskView(
+                EditCardView(
                     task: .constant(task),
                     viewModel: viewModel,
                     onSave: { updatedTask in

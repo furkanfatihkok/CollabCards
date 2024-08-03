@@ -1,5 +1,5 @@
 //
-//  TaskDropDelegate.swift
+//  CardDropDelegate.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct TaskDropDelegate: DropDelegate {
+struct CardDropDelegate: DropDelegate {
     let card: Card
     @Binding var allTasks: [Card]
     @ObservedObject var viewModel: CardViewModel

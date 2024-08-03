@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EditTaskView: View {
+struct EditCardView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var task: Card
     var viewModel: CardViewModel
@@ -25,9 +25,9 @@ struct EditTaskView: View {
                     TextField("Title", text: $title)
                     TextField("Description", text: $description)
                     Picker("Status", selection: $status) {
-                        Text("To Do").tag("todo")
-                        Text("In Progress").tag("progress")
-                        Text("Done").tag("done")
+                        Text("Went Well").tag("went well")
+                        Text("To Improve").tag("to improve")
+                        Text("Actions Items").tag("actions items")
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }

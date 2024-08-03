@@ -31,11 +31,11 @@
 		02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5392C538BCA006C0BFB /* BoardView.swift */; };
 		02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */; };
 		02B5F53F2C538D40006C0BFB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53E2C538D40006C0BFB /* Card.swift */; };
-		02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5402C538F6E006C0BFB /* AddTaskView.swift */; };
+		02B5F5412C538F6E006C0BFB /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5402C538F6E006C0BFB /* AddCardView.swift */; };
 		02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */; };
 		02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */; };
-		02B5F5472C53AB17006C0BFB /* TaskDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */; };
-		02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5482C53B25A006C0BFB /* EditTaskView.swift */; };
+		02B5F5472C53AB17006C0BFB /* CardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */; };
+		02B5F5492C53B25A006C0BFB /* EditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5482C53B25A006C0BFB /* EditCardView.swift */; };
 		02F832212C5A5BEC00827482 /* BoardInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F832202C5A5BEC00827482 /* BoardInfoView.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,11 +61,11 @@
 		02B5F5392C538BCA006C0BFB /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		02B5F53E2C538D40006C0BFB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		02B5F5402C538F6E006C0BFB /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		02B5F5402C538F6E006C0BFB /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskColumnView.swift; sourceTree = "<group>"; };
 		02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
-		02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDropDelegate.swift; sourceTree = "<group>"; };
-		02B5F5482C53B25A006C0BFB /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
+		02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDropDelegate.swift; sourceTree = "<group>"; };
+		02B5F5482C53B25A006C0BFB /* EditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardView.swift; sourceTree = "<group>"; };
 		02F832202C5A5BEC00827482 /* BoardInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardInfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,9 +114,9 @@
 				022051DB2C5A3DDD00DFAC41 /* QRScannerView.swift */,
 				024795542C5D108900C27F61 /* ShareSheet.swift */,
 				021509E32C52374A002BFFED /* DurationSettingView.swift */,
-				02B5F5462C53AB17006C0BFB /* TaskDropDelegate.swift */,
-				02B5F5402C538F6E006C0BFB /* AddTaskView.swift */,
-				02B5F5482C53B25A006C0BFB /* EditTaskView.swift */,
+				02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */,
+				02B5F5402C538F6E006C0BFB /* AddCardView.swift */,
+				02B5F5482C53B25A006C0BFB /* EditCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -323,18 +323,18 @@
 				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
 				028B9DC42C5913450068C0B9 /* Board.swift in Sources */,
 				022051DC2C5A3DDD00DFAC41 /* QRScannerView.swift in Sources */,
-				02B5F5412C538F6E006C0BFB /* AddTaskView.swift in Sources */,
+				02B5F5412C538F6E006C0BFB /* AddCardView.swift in Sources */,
 				02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */,
 				02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */,
 				0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */,
 				02B5F53F2C538D40006C0BFB /* Card.swift in Sources */,
-				02B5F5492C53B25A006C0BFB /* EditTaskView.swift in Sources */,
+				02B5F5492C53B25A006C0BFB /* EditCardView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
 				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
-				02B5F5472C53AB17006C0BFB /* TaskDropDelegate.swift in Sources */,
+				02B5F5472C53AB17006C0BFB /* CardDropDelegate.swift in Sources */,
 				0288CC852C58D7530083B540 /* WorkspaceItemView.swift in Sources */,
 				02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */,
 				0288CC832C58D5790083B540 /* HomeView.swift in Sources */,

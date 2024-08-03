@@ -33,7 +33,7 @@ struct TaskCardView: View {
                     let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                     return provider
                 }
-                .onDrop(of: [UTType.text], delegate: TaskDropDelegate(card: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
+                .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
             
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
@@ -41,7 +41,7 @@ struct TaskCardView: View {
                         .foregroundColor(.blue)
                 }
                 .sheet(isPresented: $showEditSheet) {
-                    EditTaskView(
+                    EditCardView(
                         task: $task,
                         viewModel: viewModel,
                         onSave: { updatedTask in

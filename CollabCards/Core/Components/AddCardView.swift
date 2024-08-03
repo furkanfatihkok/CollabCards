@@ -1,5 +1,5 @@
 //
-//  AddTaskView.swift
+//  AddCardView.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddTaskView: View {
+struct AddCardView: View {
     @Environment(\.presentationMode) var dismiss
     var viewModel: CardViewModel
     var boardID: String
@@ -52,5 +52,5 @@ struct AddTaskView: View {
 }
 
 #Preview {
-    AddTaskView(viewModel: CardViewModel(), boardID: UUID().uuidString)
+    AddCardView(viewModel: CardViewModel(), boardID: UUID().uuidString)
 }
