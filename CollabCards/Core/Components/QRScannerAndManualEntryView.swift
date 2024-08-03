@@ -12,6 +12,7 @@ import AVFoundation
 struct QRScannerAndManualEntryView: View {
     @Environment(\.dismiss) var dismiss
     @State private var scannedCode: String = ""
+    @State private var manualCode: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
     @ObservedObject var viewModel = BoardViewModel()
@@ -31,12 +32,12 @@ struct QRScannerAndManualEntryView: View {
             Text("or")
                 .padding()
 
-            TextField("Enter Board ID", text: $scannedCode)
+            TextField("Enter Board ID", text: $manualCode)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
             Button("Submit") {
-                handleScannedCode(scannedCode)
+                handleScannedCode(manualCode)
             }
             .padding()
             .background(Color.blue)
@@ -48,19 +49,29 @@ struct QRScannerAndManualEntryView: View {
         .padding()
         .alert(isPresented: $showAlert) {
             Alert(
-                title: Text("Invalid Code"),
+                title: Text("Invalid Code "),
                 message: Text(alertMessage),
                 dismissButton: .default(Text("OK"))
             )
         }
+        .onChange(of: scannedCode) { newCode in
+            handleScannedCode(newCode)
+        }
     }
 
     private func handleScannedCode(_ code: String) {
+        if code.isEmpty { return }
+        
         if let scannedUUID = UUID(uuidString: code) {
             fetchBoard(withID: scannedUUID)
         } else {
-            alertMessage = "The scanned code is not a valid Board ID."
+            alertMessage = "he scanned code is not a valid Board ID."
             showAlert = true
+            if scannedCode == code {
+                scannedCode = ""
+            } else {
+                manualCode = ""
+            }
         }
     }
 
@@ -72,6 +83,11 @@ struct QRScannerAndManualEntryView: View {
             } else {
                 alertMessage = "Failed to decode board data or board not found."
                 showAlert = true
+                if scannedCode == id.uuidString {
+                    scannedCode = ""
+                } else {
+                    manualCode = ""
+                }
             }
         }
     }

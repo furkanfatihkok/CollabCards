@@ -10,7 +10,6 @@ import AVFoundation
 
 struct QRScannerView: UIViewControllerRepresentable {
     @Binding var scannedCode: String
-    @Environment(\.presentationMode) var presentationMode
 
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: QRScannerView
@@ -26,7 +25,6 @@ struct QRScannerView: UIViewControllerRepresentable {
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 DispatchQueue.main.async {
                     self.parent.scannedCode = stringValue
-                    self.parent.presentationMode.wrappedValue.dismiss()
                 }
             }
         }
