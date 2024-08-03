@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddCardView: View {
-    @Environment(\.presentationMode) var dismiss
+    @Environment(\.dismiss) var dismiss
     var viewModel: CardViewModel
     var boardID: String
     
@@ -24,29 +24,27 @@ struct AddCardView: View {
                 Picker("Status", selection: $status) {
                     Text("Went Well").tag("went well")
                     Text("To Improve").tag("to improve")
-                    Text("Actions Items").tag("actions items")
+                    Text("Action Items").tag("action items")
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }
             .navigationTitle("New Task")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss.wrappedValue.dismiss()
+            .navigationBarItems(
+                leading: Button("Cancel") {
+                    dismiss()
+                },
+                trailing: Button("Save") {
+                    guard !title.isEmpty, !description.isEmpty else {
+                        print("Title or Description is empty")
+                        return
+                    }
+                    let task = Card(id: UUID().uuidString, title: title, description: description, status: status)
+                    viewModel.addTask(task, to: boardID) {
+                        viewModel.fetchTasks(for: boardID)
+                        dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        guard !title.isEmpty, !description.isEmpty else {
-                            print("Title or Description is empty")
-                            return
-                        }
-                        let task = Card(id: UUID().uuidString, title: title, description: description, status: status)
-                        viewModel.addTask(task, to: boardID)
-                        dismiss.wrappedValue.dismiss()
-                    }
-                }
-            }
+            )
         }
     }
 }

@@ -1,3 +1,4 @@
+//
 //  BoardView.swift
 //  CollabCards
 //
@@ -9,7 +10,7 @@ import FirebaseFirestore
 import FirebaseCrashlytics
 
 struct BoardView: View {
-    @Environment(\.presentationMode) var dismiss
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel = CardViewModel()
     @State private var showAddSheet = false
     @State private var showEditSheet = false
@@ -168,16 +169,14 @@ struct BoardView: View {
         .navigationTitle(board?.name ?? "Board")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    self.dismiss.wrappedValue.dismiss()
-                    Crashlytics.log("Back button pressed, dismissing BoardView.")
-                }, label: {
-                    Image(systemName: "arrow.left")
-                })
-            }
-        }
+        .navigationBarItems(
+            leading: Button(action: {
+                dismiss()
+                Crashlytics.log("Back button pressed, dismissing BoardView.")
+            }, label: {
+                Image(systemName: "arrow.left")
+            })
+        )
         .sheet(isPresented: $showAddSheet) {
             AddCardView(viewModel: viewModel, boardID: boardID.uuidString)
         }
@@ -230,6 +229,7 @@ func timerString(from timeInterval: TimeInterval) -> String {
     let seconds = Int(timeInterval) % 60
     return String(format: "%02d:%02d", minutes, seconds)
 }
+
 
 #Preview {
     BoardView(boardID: UUID())

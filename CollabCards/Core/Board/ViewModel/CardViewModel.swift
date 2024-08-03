@@ -37,13 +37,14 @@ class CardViewModel: ObservableObject {
         }
     }
     
-    func addTask(_ task: Card, to boardID: String) {
+    func addTask(_ task: Card, to boardID: String, completion: @escaping () -> Void) {
         do {
             let _ = try db.collection("boards").document(boardID).collection("tasks").document(task.id ?? "").setData(from: task) { error in
                 if let error = error {
                     Crashlytics.log("Error adding task: \(error.localizedDescription)")
                 } else {
                     Crashlytics.log("Task added successfully with ID: \(task.id ?? "")")
+                    completion()
                 }
             }
         } catch {

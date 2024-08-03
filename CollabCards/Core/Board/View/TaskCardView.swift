@@ -68,7 +68,7 @@ struct TaskCardView: View {
             return Color(red: 0.0, green: 100.0/255.0, blue: 0.0)
         case "to improve":
             return Color(red: 255.0/255.0, green: 69.0/255.0, blue: 0.0)
-        case "actions items":
+        case "action items":
             return Color.purple
         default:
             return Color.gray

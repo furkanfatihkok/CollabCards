@@ -27,26 +27,23 @@ struct EditCardView: View {
                     Picker("Status", selection: $status) {
                         Text("Went Well").tag("went well")
                         Text("To Improve").tag("to improve")
-                        Text("Actions Items").tag("actions items")
+                        Text("Action Items").tag("action items")
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
-
-                Button("Save") {
+            }
+            .navigationTitle("Edit Task")
+            .navigationBarItems(
+                leading: Button("Cancel") {
+                    dismiss()
+                },
+                trailing: Button("Save") {
                     let updatedTask = Card(id: task.id, title: title, description: description, status: status)
                     viewModel.editTask(updatedTask, in: boardID)
                     onSave(updatedTask)
                     dismiss()
                 }
-            }
-            .navigationTitle("Edit Task")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
+            )
         }
     }
 }
