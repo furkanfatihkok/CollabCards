@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TaskColumnView: View {
-    let title: String
     @Binding var tasks: [Card]
     let statusFilter: String
     @Binding var allTasks: [Card]
@@ -23,9 +22,6 @@ struct TaskColumnView: View {
     
     var body: some View {
         VStack {
-            Text(title)
-                .font(.headline)
-                .padding()
             ForEach(filteredTasks) { task in
                 TaskCardView(
                     task: Binding(
@@ -53,7 +49,6 @@ struct TaskColumnView: View {
 
 #Preview {
     TaskColumnView(
-        title: "To Do",
         tasks: .constant([]),
         statusFilter: "todo",
         allTasks: .constant([]),

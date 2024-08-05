@@ -13,14 +13,14 @@ struct AddCardView: View {
     var boardID: String
     
     @State private var title = ""
-    @State private var description = ""
     @State private var status = "went well"
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
     var body: some View {
         NavigationView {
             Form {
                 TextField("Title", text: $title)
-                TextField("Description", text: $description)
                 Picker("Status", selection: $status) {
                     Text("Went Well").tag("went well")
                     Text("To Improve").tag("to improve")
@@ -34,17 +34,26 @@ struct AddCardView: View {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    guard !title.isEmpty, !description.isEmpty else {
-                        print("Title or Description is empty")
-                        return
-                    }
-                    let task = Card(id: UUID().uuidString, title: title, description: description, status: status)
-                    viewModel.addTask(task, to: boardID) {
-                        viewModel.fetchTasks(for: boardID)
-                        dismiss()
-                    }
+                    saveTask()
                 }
             )
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+    
+    private func saveTask() {
+        guard !title.isEmpty else {
+            alertMessage = "Title cannot be empty."
+            showAlert = true
+            return
+        }
+        
+        let task = Card(id: UUID().uuidString, title: title, status: status)
+        viewModel.addTask(task, to: boardID) {
+            viewModel.fetchTasks(for: boardID)
+            dismiss()
         }
     }
 }
