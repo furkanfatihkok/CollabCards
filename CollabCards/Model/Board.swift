@@ -12,6 +12,8 @@ struct Board: Identifiable, Codable {
     var name: String
     var deviceID: String
     var participants: [String] 
+    var timerValue: Int?
+    var isPaused: Bool?
 }
 
 

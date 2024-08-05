@@ -40,7 +40,33 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
+
+    func fetchBoardWithRealtimeUpdates(boardID: UUID, completion: @escaping (Board?) -> Void) {
+        let docRef = db.collection("boards").document(boardID.uuidString)
+        docRef.addSnapshotListener { documentSnapshot, error in
+            if let error = error {
+                Crashlytics.log("Error fetching board: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+
+            guard let document = documentSnapshot else {
+                Crashlytics.log("No document found for board with ID: \(boardID.uuidString)")
+                completion(nil)
+                return
+            }
+
+            do {
+                let board = try document.data(as: Board.self)
+                Crashlytics.log("Board fetched with realtime updates for ID: \(boardID.uuidString)")
+                completion(board)
+            } catch {
+                Crashlytics.log("Error decoding board: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+    }
+
     func addBoard(_ board: Board) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board: deviceID not found")
@@ -61,7 +87,7 @@ class BoardViewModel: ObservableObject {
             Crashlytics.log("Error creating board document: \(error.localizedDescription)")
         }
     }
-    
+
     func deleteBoard(_ board: Board) {
         db.collection("boards").document(board.id.uuidString).delete { error in
             if let error = error {
@@ -71,14 +97,14 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
+
     func addBoardToCurrentDevice(boardID: UUID, completion: @escaping (Board?) -> Void) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board to current device: deviceID not found")
             completion(nil)
             return
         }
-        
+
         let docRef = db.collection("boards").document(boardID.uuidString)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
@@ -101,7 +127,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func updateBoard(_ board: Board, completion: @escaping (Board?) -> Void) {
         do {
             let _ = try db.collection("boards").document(board.id.uuidString).setData(from: board) { error in
@@ -116,6 +142,26 @@ class BoardViewModel: ObservableObject {
         } catch {
             Crashlytics.log("Error updating board document: \(error.localizedDescription)")
             completion(nil)
+        }
+    }
+
+    func updateTimerInFirestore(boardID: UUID, timerValue: Int) {
+        db.collection("boards").document(boardID.uuidString).updateData(["timerValue": timerValue]) { error in
+            if let error = error {
+                Crashlytics.log("Error updating timer value: \(error.localizedDescription)")
+            } else {
+                Crashlytics.log("Timer value updated successfully for board ID: \(boardID.uuidString)")
+            }
+        }
+    }
+
+    func updateTimerStatusInFirestore(boardID: UUID, isPaused: Bool) {
+        db.collection("boards").document(boardID.uuidString).updateData(["isPaused": isPaused]) { error in
+            if let error = error {
+                Crashlytics.log("Error updating timer status: \(error.localizedDescription)")
+            } else {
+                Crashlytics.log("Timer status updated successfully for board ID: \(boardID.uuidString)")
+            }
         }
     }
 }

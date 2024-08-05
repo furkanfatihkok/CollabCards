@@ -96,7 +96,7 @@ struct NewBoardView: View {
                         print("Device ID is not available")
                         return
                     }
-                    let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID])
+                    let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60)
                     onSave(newBoard)
                     dismiss()
                 }
