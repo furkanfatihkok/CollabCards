@@ -12,20 +12,18 @@ import FirebaseCrashlytics
 struct BoardView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel = CardViewModel()
+    @ObservedObject var boardViewModel = BoardViewModel()
     @State private var showAddSheet = false
     @State private var showEditSheet = false
     @State private var isPaused = true
     @State private var isLoading = true
     @State private var taskToEdit: Card? = nil
     @State private var board: Board?
-    @State private var timerValue: TimeInterval = 15 * 60
-    
-    var ideateDuration: Int = 15
-    var discussDuration: Int = 20
+    @State private var timerValue: Int = 15 * 60
     var boardID: UUID
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+
     var body: some View {
         VStack {
             if let board = board {
@@ -48,27 +46,33 @@ struct BoardView: View {
                         }
                         Spacer()
                         HStack(spacing: 20) {
-                            Text(timerString(from: timerValue))
+                            Text(timerString(from: TimeInterval(timerValue)))
                                 .foregroundColor(.white)
                                 .onReceive(timer) { _ in
                                     if !isPaused {
                                         if timerValue > 0 {
                                             timerValue -= 1
+                                            boardViewModel.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
+                                            viewModel.fetchTasks(for: boardID.uuidString) // Timer çalışırken de görevleri yeniden yükleyin
                                         } else {
                                             Crashlytics.log("Timer reached zero.")
+                                            dismiss()
                                         }
                                     }
                                 }
                             Button(action: {
                                 isPaused.toggle()
+                                boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
                                 Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
                             }) {
                                 Image(systemName: isPaused ? "play.fill" : "pause.fill")
                                     .foregroundColor(.white)
                             }
-                            
+
                             Button(action: {
-                                timerValue = TimeInterval(ideateDuration * 60)
+                                timerValue = board.timerValue ?? 15 * 60
+                                isPaused = true
+                                boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
                                 Crashlytics.log("Timer reset to initial duration.")
                             }) {
                                 Image(systemName: "stop.fill")
@@ -79,7 +83,7 @@ struct BoardView: View {
                     .padding()
                     .background(Color.blue)
                 }
-                
+
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
                         VStack {
@@ -107,7 +111,7 @@ struct BoardView: View {
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width * 0.8)
-                        
+
                         VStack {
                             Text("To Improve")
                                 .font(.title2)
@@ -133,7 +137,7 @@ struct BoardView: View {
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width * 0.8)
-                        
+
                         VStack {
                             Text("Action Items")
                                 .font(.title2)
@@ -162,7 +166,7 @@ struct BoardView: View {
                     }
                     .padding(.horizontal)
                 }
-                
+
                 Button(action: {
                     showAddSheet.toggle()
                     Crashlytics.log("Add card button pressed.")
@@ -216,20 +220,24 @@ struct BoardView: View {
             viewModel.fetchTasks(for: boardID.uuidString)
             Crashlytics.log("BoardView appeared for board ID: \(boardID.uuidString)")
         }
+        .onDisappear {
+            timer.upstream.connect().cancel()
+        }
     }
-    
+
     private func loadBoard() {
-        let docRef = Firestore.firestore().collection("boards").document(boardID.uuidString)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                do {
-                    self.board = try document.data(as: Board.self)
-                    Crashlytics.log("Board loaded with ID: \(boardID.uuidString)")
-                } catch {
-                    Crashlytics.log("Error decoding board: \(error.localizedDescription)")
+        boardViewModel.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
+            if let fetchedBoard = fetchedBoard {
+                self.board = fetchedBoard
+                if let timerValue = self.board?.timerValue {
+                    self.timerValue = timerValue
                 }
+                if let isPaused = self.board?.isPaused {
+                    self.isPaused = isPaused
+                }
+                Crashlytics.log("Board loaded with ID: \(self.board?.id.uuidString ?? "")")
             } else {
-                Crashlytics.log("Document does not exist for board ID: \(boardID.uuidString)")
+                Crashlytics.log("Failed to load board with ID: \(self.board?.id.uuidString ?? "")")
             }
             self.isLoading = false
         }
@@ -241,7 +249,6 @@ func timerString(from timeInterval: TimeInterval) -> String {
     let seconds = Int(timeInterval) % 60
     return String(format: "%02d:%02d", minutes, seconds)
 }
-
 
 #Preview {
     BoardView(boardID: UUID())

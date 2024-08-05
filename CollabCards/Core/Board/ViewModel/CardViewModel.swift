@@ -11,19 +11,21 @@ import FirebaseCrashlytics
 class CardViewModel: ObservableObject {
     @Published var tasks = [Card]()
     private var db = Firestore.firestore()
-    
+    private var listener: ListenerRegistration?
+
     func fetchTasks(for boardID: String) {
-        db.collection("boards").document(boardID).collection("tasks").addSnapshotListener { (querySnapshot, error) in
+        listener?.remove()
+        listener = db.collection("boards").document(boardID).collection("tasks").addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 Crashlytics.log("Error fetching tasks: \(error.localizedDescription)")
                 return
             }
-            
+
             guard let documents = querySnapshot?.documents else {
                 Crashlytics.log("No documents found for tasks")
                 return
             }
-            
+
             self.tasks = documents.compactMap { queryDocumentSnapshot in
                 do {
                     let task = try queryDocumentSnapshot.data(as: Card.self)
@@ -36,7 +38,7 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-    
+
     func addTask(_ task: Card, to boardID: String, completion: @escaping () -> Void) {
         do {
             let _ = try db.collection("boards").document(boardID).collection("tasks").document(task.id ?? "").setData(from: task) { error in
@@ -51,13 +53,13 @@ class CardViewModel: ObservableObject {
             Crashlytics.log("Error creating task document: \(error.localizedDescription)")
         }
     }
-    
+
     func deleteTask(_ task: Card, from boardID: String) {
         guard let taskId = task.id else {
             Crashlytics.log("Failed to delete task: task ID is nil")
             return
         }
-        
+
         db.collection("boards").document(boardID).collection("tasks").document(taskId).delete { error in
             if let error = error {
                 Crashlytics.log("Error deleting task with ID: \(taskId). Error: \(error.localizedDescription)")
@@ -66,13 +68,13 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-    
+
     func moveTask(_ task: Card, toStatus newStatus: String, in boardID: String) {
         guard let taskId = task.id else {
             Crashlytics.log("Failed to move task: task ID is nil")
             return
         }
-        
+
         db.collection("boards").document(boardID).collection("tasks").document(taskId).updateData(["status": newStatus]) { error in
             if let error = error {
                 Crashlytics.log("Error updating task status with ID: \(taskId). Error: \(error.localizedDescription)")
@@ -81,13 +83,13 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-    
+
     func editTask(_ task: Card, in boardID: String) {
         guard let taskId = task.id else {
             Crashlytics.log("Failed to edit task: task ID is nil")
             return
         }
-        
+
         do {
             let _ = try db.collection("boards").document(boardID).collection("tasks").document(taskId).setData(from: task) { error in
                 if let error = error {

@@ -112,11 +112,11 @@ struct HomeView: View {
                     showBoardView = true
                 }
             }
-            .background(
-                NavigationLink(destination: BoardView(boardID: selectedBoardUUID ?? UUID()), isActive: $showBoardView) {
-                    //                    EmptyView()
-                }
-            )
+//            .background(
+//                NavigationLink(destination: BoardView(boardID: selectedBoardUUID ?? UUID()), isActive: $showBoardView) {
+//                    //                    EmptyView()
+//                }
+//            )
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Delete board?"),

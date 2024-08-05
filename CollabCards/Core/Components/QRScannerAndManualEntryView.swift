@@ -49,7 +49,7 @@ struct QRScannerAndManualEntryView: View {
         .padding()
         .alert(isPresented: $showAlert) {
             Alert(
-                title: Text("Invalid Code "),
+                title: Text("Invalid Code"),
                 message: Text(alertMessage),
                 dismissButton: .default(Text("OK"))
             )
@@ -65,7 +65,7 @@ struct QRScannerAndManualEntryView: View {
         if let scannedUUID = UUID(uuidString: code) {
             fetchBoard(withID: scannedUUID)
         } else {
-            alertMessage = "he scanned code is not a valid Board ID."
+            alertMessage = "The scanned code is not a valid Board ID."
             showAlert = true
             if scannedCode == code {
                 scannedCode = ""
