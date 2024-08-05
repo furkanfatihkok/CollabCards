@@ -49,7 +49,6 @@ struct TaskCardView: View {
                             showEditSheet = false
                         }, boardID: boardID,
                         title: $task.title,
-                        description: $task.description,
                         status: $task.status
                     )
                 }

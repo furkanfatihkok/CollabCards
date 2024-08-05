@@ -29,59 +29,66 @@ struct BoardView: View {
     var body: some View {
         VStack {
             if let board = board {
-                HStack {
-                    Image(systemName: "person.crop.circle")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                    
-                    VStack(alignment: .leading) {
-                        Text("Step 2/6 :")
-                        Text("Ideate")
-                    }
-                    
-                    Spacer()
-                    
-                    Text(timerString(from: timerValue))
-                        .onReceive(timer) { _ in
-                            if !isPaused {
-                                if timerValue > 0 {
-                                    timerValue -= 1
-                                } else {
-                                    Crashlytics.log("Timer reached zero.")
+                VStack {
+                    HStack {
+                        Button(action: {
+                            dismiss()
+                            Crashlytics.log("Back button pressed, dismissing BoardView.")
+                        }) {
+                            Image(systemName: "xmark")
+                                .foregroundColor(.white)
+                        }
+                        Spacer()
+                        VStack(alignment: .leading) {
+                            Text(board.name)
+                                .foregroundColor(.white)
+                                .font(.headline)
+                            Text("Furkan Kök's workspace")
+                                .foregroundColor(.white)
+                        }
+                        Spacer()
+                        HStack(spacing: 20) {
+                            Text(timerString(from: timerValue))
+                                .foregroundColor(.white)
+                                .onReceive(timer) { _ in
+                                    if !isPaused {
+                                        if timerValue > 0 {
+                                            timerValue -= 1
+                                        } else {
+                                            Crashlytics.log("Timer reached zero.")
+                                        }
+                                    }
                                 }
+                            Button(action: {
+                                isPaused.toggle()
+                                Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
+                            }) {
+                                Image(systemName: isPaused ? "play.fill" : "pause.fill")
+                                    .foregroundColor(.white)
+                            }
+                            
+                            Button(action: {
+                                timerValue = TimeInterval(ideateDuration * 60)
+                                Crashlytics.log("Timer reset to initial duration.")
+                            }) {
+                                Image(systemName: "stop.fill")
+                                    .foregroundColor(.white)
                             }
                         }
-                    
-                    Button(action: {
-                        isPaused.toggle()
-                        Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
-                    }) {
-                        Image(systemName: isPaused ? "play.fill" : "pause.fill")
                     }
-                    
-                    Button(action: {
-                        timerValue = TimeInterval(ideateDuration * 60)
-                        Crashlytics.log("Timer reset to initial duration.")
-                    }) {
-                        Image(systemName: "stop.fill")
-                    }
-                    
-                    Button(action: {
-                        // Add action for next step
-                        Crashlytics.log("Next step button pressed.")
-                    }) {
-                        Text("NEXT")
-                    }
+                    .padding()
+                    .background(Color.blue)
                 }
-                .padding()
                 
-                GeometryReader { geometry in
-                    ScrollView(.vertical, showsIndicators: false) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 16) {
+                        VStack {
+                            Text("Went Well")
+                                .font(.title2)
+                                .bold()
+                                .padding(.bottom, 8)
+                            ScrollView(.vertical, showsIndicators: false) {
                                 TaskColumnView(
-                                    title: "Went Well",
                                     tasks: $viewModel.tasks,
                                     statusFilter: "went well",
                                     allTasks: $viewModel.tasks,
@@ -97,10 +104,17 @@ struct BoardView: View {
                                     },
                                     boardID: boardID.uuidString
                                 )
-                                .frame(width: geometry.size.width * 0.75)
-                                
+                            }
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 0.8)
+                        
+                        VStack {
+                            Text("To Improve")
+                                .font(.title2)
+                                .bold()
+                                .padding(.bottom, 8)
+                            ScrollView(.vertical, showsIndicators: false) {
                                 TaskColumnView(
-                                    title: "To Improve",
                                     tasks: $viewModel.tasks,
                                     statusFilter: "to improve",
                                     allTasks: $viewModel.tasks,
@@ -116,10 +130,17 @@ struct BoardView: View {
                                     },
                                     boardID: boardID.uuidString
                                 )
-                                .frame(width: geometry.size.width * 0.75)
-                                
+                            }
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 0.8)
+                        
+                        VStack {
+                            Text("Action Items")
+                                .font(.title2)
+                                .bold()
+                                .padding(.bottom, 8)
+                            ScrollView(.vertical, showsIndicators: false) {
                                 TaskColumnView(
-                                    title: "Action Items",
                                     tasks: $viewModel.tasks,
                                     statusFilter: "action items",
                                     allTasks: $viewModel.tasks,
@@ -135,11 +156,11 @@ struct BoardView: View {
                                     },
                                     boardID: boardID.uuidString
                                 )
-                                .frame(width: geometry.size.width * 0.75)
                             }
-                            .padding(.horizontal)
                         }
+                        .frame(width: UIScreen.main.bounds.width * 0.8)
                     }
+                    .padding(.horizontal)
                 }
                 
                 Button(action: {
@@ -166,17 +187,9 @@ struct BoardView: View {
                 Text("Failed to load board.")
             }
         }
-        .navigationTitle(board?.name ?? "Board")
+        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(
-            leading: Button(action: {
-                dismiss()
-                Crashlytics.log("Back button pressed, dismissing BoardView.")
-            }, label: {
-                Image(systemName: "arrow.left")
-            })
-        )
+        .navigationBarHidden(true)
         .sheet(isPresented: $showAddSheet) {
             AddCardView(viewModel: viewModel, boardID: boardID.uuidString)
         }
@@ -195,7 +208,6 @@ struct BoardView: View {
                         showEditSheet = false
                     }, boardID: boardID.uuidString,
                     title: .constant(task.title),
-                    description: .constant(task.description),
                     status: .constant(task.status)
                 )
             }

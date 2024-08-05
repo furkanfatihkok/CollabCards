@@ -15,7 +15,6 @@ struct EditCardView: View {
     var boardID: String
     
     @Binding var title: String
-    @Binding var description: String
     @Binding var status: String
     
     var body: some View {
@@ -23,7 +22,6 @@ struct EditCardView: View {
             Form {
                 Section(header: Text("Task Details")) {
                     TextField("Title", text: $title)
-                    TextField("Description", text: $description)
                     Picker("Status", selection: $status) {
                         Text("Went Well").tag("went well")
                         Text("To Improve").tag("to improve")
@@ -38,7 +36,7 @@ struct EditCardView: View {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    let updatedTask = Card(id: task.id, title: title, description: description, status: status)
+                    let updatedTask = Card(id: task.id, title: title, status: status)
                     viewModel.editTask(updatedTask, in: boardID)
                     onSave(updatedTask)
                     dismiss()
