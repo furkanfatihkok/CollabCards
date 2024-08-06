@@ -124,8 +124,8 @@
 		021509DA2C513A46002BFFED /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				02B5F53E2C538D40006C0BFB /* Card.swift */,
 				028B9DC32C5913450068C0B9 /* Board.swift */,
+				02B5F53E2C538D40006C0BFB /* Card.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
