@@ -15,11 +15,12 @@ struct TaskColumnView: View {
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
     var boardID: String
-    
+    var isAnonymous: Bool 
+
     var filteredTasks: [Card] {
         allTasks.filter { $0.status == statusFilter }
     }
-    
+
     var body: some View {
         VStack {
             ForEach(filteredTasks) { task in
@@ -40,7 +41,8 @@ struct TaskColumnView: View {
                         onEdit(task)
                     },
                     viewModel: viewModel,
-                    boardID: boardID
+                    boardID: boardID,
+                    isAnonymous: isAnonymous
                 )
             }
         }
@@ -55,6 +57,8 @@ struct TaskColumnView: View {
         viewModel: CardViewModel(),
         onEdit: { _ in },
         onDelete: { _ in },
-        boardID: UUID().uuidString
+        boardID: UUID().uuidString,
+        isAnonymous: false
     )
 }
+

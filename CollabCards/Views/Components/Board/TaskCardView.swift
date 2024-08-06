@@ -16,24 +16,34 @@ struct TaskCardView: View {
     var onEdit: (Card) -> Void
     var viewModel: CardViewModel
     var boardID: String
+    var isAnonymous: Bool
     
     @State private var showEditSheet = false
     
     var body: some View {
         HStack {
-            Text(task.title)
-                .foregroundStyle(.white)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .center)
-                .background(backgroundColor(for: task.status))
-                .cornerRadius(8)
-                .shadow(radius: 3)
-                .onDrag {
-                    let data = task.id?.data(using: .utf8) ?? Data()
-                    let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
-                    return provider
+            VStack(alignment: .leading) {
+                Text(task.title)
+                    .foregroundStyle(.white)
+                    .padding(.bottom, 2)
+                
+                if !isAnonymous {
+                    Text(task.author)
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.7))
                 }
-                .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(backgroundColor(for: task.status))
+            .cornerRadius(8)
+            .shadow(radius: 3)
+            .onDrag {
+                let data = task.id?.data(using: .utf8) ?? Data()
+                let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
+                return provider
+            }
+            .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
             
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
@@ -49,7 +59,8 @@ struct TaskCardView: View {
                             showEditSheet = false
                         }, boardID: boardID,
                         title: $task.title,
-                        status: $task.status
+                        status: $task.status,
+                        author: $task.author
                     )
                 }
                 
@@ -58,6 +69,7 @@ struct TaskCardView: View {
                         .foregroundColor(.red)
                 }
             }
+            .padding(.trailing, 5)
         }
     }
     
@@ -74,3 +86,4 @@ struct TaskCardView: View {
         }
     }
 }
+

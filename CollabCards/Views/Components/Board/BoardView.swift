@@ -21,10 +21,11 @@ struct BoardView: View {
     @State private var board: Board?
     @State private var timerValue: Int = 15 * 60
     @State private var showAlert = false
+    @State private var isAnonymous = false
     var boardID: UUID
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+
     var body: some View {
         VStack {
             if let board = board {
@@ -76,7 +77,7 @@ struct BoardView: View {
                                     .foregroundColor(.white)
                             }
                             .disabled(board.isExpired ?? false)
-                            
+
                             Button(action: {
                                 timerValue = board.timerValue ?? 15 * 60
                                 isPaused = true
@@ -91,8 +92,22 @@ struct BoardView: View {
                     }
                     .padding()
                     .background(Color.blue)
+                    
+                    HStack {
+                        Spacer()
+                        Toggle(isOn: $isAnonymous) {
+                            Text("Yazılan isimleri gizle")
+                                .foregroundColor(.white)
+                        }
+                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+                        .padding(.trailing, 10)
+                        .onChange(of: isAnonymous) { value in
+                            boardViewModel.updateAnonymousStatus(boardID: boardID, isAnonymous: value)
+                            self.board?.isAnonymous = value
+                        }
+                    }
                 }
-                
+
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
                         VStack {
@@ -115,12 +130,13 @@ struct BoardView: View {
                                         viewModel.deleteTask(task, from: boardID.uuidString)
                                         Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
-                                    boardID: boardID.uuidString
+                                    boardID: boardID.uuidString,
+                                    isAnonymous: board.isAnonymous ?? false
                                 )
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width * 0.8)
-                        
+
                         VStack {
                             Text("To Improve")
                                 .font(.title2)
@@ -141,12 +157,13 @@ struct BoardView: View {
                                         viewModel.deleteTask(task, from: boardID.uuidString)
                                         Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
-                                    boardID: boardID.uuidString
+                                    boardID: boardID.uuidString,
+                                    isAnonymous: board.isAnonymous ?? false
                                 )
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width * 0.8)
-                        
+
                         VStack {
                             Text("Action Items")
                                 .font(.title2)
@@ -167,7 +184,8 @@ struct BoardView: View {
                                         viewModel.deleteTask(task, from: boardID.uuidString)
                                         Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
-                                    boardID: boardID.uuidString
+                                    boardID: boardID.uuidString,
+                                    isAnonymous: board.isAnonymous ?? false
                                 )
                             }
                         }
@@ -175,7 +193,7 @@ struct BoardView: View {
                     }
                     .padding(.horizontal)
                 }
-                
+
                 Button(action: {
                     showAddSheet.toggle()
                     Crashlytics.log("Add card button pressed.")
@@ -187,7 +205,7 @@ struct BoardView: View {
                         .cornerRadius(8)
                 }
                 .padding()
-                .disabled(board.isExpired ?? false) 
+                .disabled(board.isExpired ?? false)
             } else if isLoading {
                 VStack {
                     ProgressView()
@@ -222,7 +240,8 @@ struct BoardView: View {
                         showEditSheet = false
                     }, boardID: boardID.uuidString,
                     title: .constant(task.title),
-                    status: .constant(task.status)
+                    status: .constant(task.status),
+                    author: .constant(task.author)
                 )
             }
         }
@@ -235,13 +254,13 @@ struct BoardView: View {
         }
         .alert(isPresented: $showAlert) {
             Alert(
-                title: Text("Dikkat"),
-                message: Text("Son 1 dakika sonra otomatik olarak kapanacaktır."),
+                title: Text("Warning"),
+                message: Text("It will switch off automatically after the last 1 minute."),
                 dismissButton: .default(Text("Tamam"))
             )
         }
     }
-    
+
     private func loadBoard() {
         boardViewModel.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
             if let fetchedBoard = fetchedBoard {
@@ -254,6 +273,9 @@ struct BoardView: View {
                 }
                 if let isExpired = self.board?.isExpired {
                     self.board?.isExpired = isExpired
+                }
+                if let isAnonymous = self.board?.isAnonymous {
+                    self.isAnonymous = isAnonymous
                 }
                 Crashlytics.log("Board loaded with ID: \(self.board?.id.uuidString ?? "")")
             } else {

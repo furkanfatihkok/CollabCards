@@ -14,6 +14,7 @@ struct AddCardView: View {
     
     @State private var title = ""
     @State private var status = "went well"
+    @State private var author = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
     
@@ -21,6 +22,7 @@ struct AddCardView: View {
         NavigationView {
             Form {
                 TextField("Title", text: $title)
+                TextField("Author", text: $author) 
                 Picker("Status", selection: $status) {
                     Text("Went Well").tag("went well")
                     Text("To Improve").tag("to improve")
@@ -50,7 +52,13 @@ struct AddCardView: View {
             return
         }
         
-        let task = Card(id: UUID().uuidString, title: title, status: status)
+        guard !author.isEmpty else {
+            alertMessage = "Author cannot be empty."
+            showAlert = true
+            return
+        }
+        
+        let task = Card(id: UUID().uuidString, title: title, status: status, author: author)
         viewModel.addTask(task, to: boardID) {
             viewModel.fetchTasks(for: boardID)
             dismiss()
