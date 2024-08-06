@@ -1,4 +1,3 @@
-//
 //  NewBoardView.swift
 //  CollabCards
 //
@@ -13,6 +12,7 @@ struct NewBoardView: View {
     @State private var ideateDuration = 15
     @State private var boardName: String = ""
     @State private var boardID = UUID()
+    @State private var isBoardNameValid = true
     var onSave: (Board) -> Void
     
     var totalTime: Int {
@@ -32,7 +32,15 @@ struct NewBoardView: View {
             Form {
                 Section {
                     TextField("New Board", text: $boardName)
+                        .onChange(of: boardName) { newValue in
+                            isBoardNameValid = !newValue.isEmpty
+                        }
                 }
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .stroke(isBoardNameValid ? Color.clear : Color.red, lineWidth: 2)
+                        .padding(-10)
+                )
                 
                 Section {
                     HStack {
@@ -44,7 +52,7 @@ struct NewBoardView: View {
                     HStack {
                         Text("Visibility")
                         Spacer()
-                        Text("Workspace")
+                        Text("Public")
                     }
                     
                     HStack {
@@ -92,13 +100,16 @@ struct NewBoardView: View {
                     dismiss()
                 },
                 trailing: Button("Create") {
-                    guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
-                        print("Device ID is not available")
-                        return
+                    isBoardNameValid = !boardName.isEmpty
+                    if isBoardNameValid {
+                        guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
+                            print("Device ID is not available")
+                            return
+                        }
+                        let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60)
+                        onSave(newBoard)
+                        dismiss()
                     }
-                    let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60)
-                    onSave(newBoard)
-                    dismiss()
                 }
             )
         }
