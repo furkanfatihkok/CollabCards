@@ -20,10 +20,11 @@ struct BoardView: View {
     @State private var taskToEdit: Card? = nil
     @State private var board: Board?
     @State private var timerValue: Int = 15 * 60
+    @State private var showAlert = false
     var boardID: UUID
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
+    
     var body: some View {
         VStack {
             if let board = board {
@@ -53,9 +54,15 @@ struct BoardView: View {
                                         if timerValue > 0 {
                                             timerValue -= 1
                                             boardViewModel.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
-                                            viewModel.fetchTasks(for: boardID.uuidString) // Timer çalışırken de görevleri yeniden yükleyin
+                                            viewModel.fetchTasks(for: boardID.uuidString)
+                                            if timerValue == 60 {
+                                                showAlert = true
+                                            }
                                         } else {
                                             Crashlytics.log("Timer reached zero.")
+                                            isPaused = true
+                                            boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                            boardViewModel.setBoardExpired(boardID: boardID)
                                             dismiss()
                                         }
                                     }
@@ -68,7 +75,8 @@ struct BoardView: View {
                                 Image(systemName: isPaused ? "play.fill" : "pause.fill")
                                     .foregroundColor(.white)
                             }
-
+                            .disabled(board.isExpired ?? false)
+                            
                             Button(action: {
                                 timerValue = board.timerValue ?? 15 * 60
                                 isPaused = true
@@ -78,12 +86,13 @@ struct BoardView: View {
                                 Image(systemName: "stop.fill")
                                     .foregroundColor(.white)
                             }
+                            .disabled(board.isExpired ?? false)
                         }
                     }
                     .padding()
                     .background(Color.blue)
                 }
-
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
                         VStack {
@@ -111,7 +120,7 @@ struct BoardView: View {
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width * 0.8)
-
+                        
                         VStack {
                             Text("To Improve")
                                 .font(.title2)
@@ -137,7 +146,7 @@ struct BoardView: View {
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width * 0.8)
-
+                        
                         VStack {
                             Text("Action Items")
                                 .font(.title2)
@@ -166,7 +175,7 @@ struct BoardView: View {
                     }
                     .padding(.horizontal)
                 }
-
+                
                 Button(action: {
                     showAddSheet.toggle()
                     Crashlytics.log("Add card button pressed.")
@@ -178,6 +187,7 @@ struct BoardView: View {
                         .cornerRadius(8)
                 }
                 .padding()
+                .disabled(board.isExpired ?? false) 
             } else if isLoading {
                 VStack {
                     ProgressView()
@@ -223,8 +233,15 @@ struct BoardView: View {
         .onDisappear {
             timer.upstream.connect().cancel()
         }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Dikkat"),
+                message: Text("Son 1 dakika sonra otomatik olarak kapanacaktır."),
+                dismissButton: .default(Text("Tamam"))
+            )
+        }
     }
-
+    
     private func loadBoard() {
         boardViewModel.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
             if let fetchedBoard = fetchedBoard {
@@ -234,6 +251,9 @@ struct BoardView: View {
                 }
                 if let isPaused = self.board?.isPaused {
                     self.isPaused = isPaused
+                }
+                if let isExpired = self.board?.isExpired {
+                    self.board?.isExpired = isExpired
                 }
                 Crashlytics.log("Board loaded with ID: \(self.board?.id.uuidString ?? "")")
             } else {

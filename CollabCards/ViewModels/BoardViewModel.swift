@@ -186,4 +186,16 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func setBoardExpired(boardID: UUID) {
+        db.collection("boards").document(boardID.uuidString).updateData(["isExpired": true]) { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    Crashlytics.log("Error updating isExpired status: \(error.localizedDescription)")
+                } else {
+                    Crashlytics.log("Board expired status updated successfully for board ID: \(boardID.uuidString)")
+                }
+            }
+        }
+    }
 }
