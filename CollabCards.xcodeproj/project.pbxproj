@@ -163,20 +163,12 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		024795432C5CC29200C27F61 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		02A6ABED2C51254700234AF3 = {
 			isa = PBXGroup;
 			children = (
 				02A6ABF82C51254700234AF3 /* CollabCards */,
 				021509E72C5250F6002BFFED /* GoogleService-Info.plist */,
 				02A6ABF72C51254700234AF3 /* Products */,
-				024795432C5CC29200C27F61 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
