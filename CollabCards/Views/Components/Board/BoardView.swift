@@ -11,8 +11,8 @@ import FirebaseCrashlytics
 
 struct BoardView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var viewModel = CardViewModel()
-    @ObservedObject var boardViewModel = BoardViewModel()
+    @StateObject var viewModel = CardViewModel()
+    @StateObject var boardViewModel = BoardViewModel()
     @State private var showAddSheet = false
     @State private var showEditSheet = false
     @State private var isPaused = true
