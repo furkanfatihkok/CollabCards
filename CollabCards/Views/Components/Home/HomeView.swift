@@ -18,6 +18,7 @@ struct HomeView: View {
     @State private var showBoardView = false
     @State private var selectedBoardUUID: UUID?
     @State private var showBoardInfo = false
+    @State private var searchText: String = ""
     @ObservedObject var viewModel = BoardViewModel()
     
     var body: some View {
@@ -58,7 +59,7 @@ struct HomeView: View {
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
-                    TextField("Boards", text: .constant(""))
+                    TextField("Boards", text: $searchText)
                         .padding(.vertical, 10)
                 }
                 .padding(.horizontal)
@@ -70,7 +71,9 @@ struct HomeView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(viewModel.boards, id: \.id) { board in
+                    ForEach(viewModel.boards.filter {
+                        searchText.isEmpty ? true : $0.name.lowercased().contains(searchText.lowercased())
+                    }, id: \.id) { board in
                         HStack {
                             NavigationLink(destination: BoardView(boardID: board.id)) {
                                 WorkspaceItemView(color: .blue, title: board.name)
@@ -96,6 +99,9 @@ struct HomeView: View {
                     selectedBoardUUID = newBoard.id
                     viewModel.addBoard(newBoard)
                     Crashlytics.log("New board created with ID: \(newBoard.id)")
+                    DispatchQueue.main.async {
+                        showBoardView = true
+                    }
                 }
             }
             .sheet(isPresented: $showBoardInfo) {
@@ -144,4 +150,3 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
-
