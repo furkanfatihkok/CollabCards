@@ -198,4 +198,16 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func updateAnonymousStatus(boardID: UUID, isAnonymous: Bool) {
+        db.collection("boards").document(boardID.uuidString).updateData(["isAnonymous": isAnonymous]) { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    Crashlytics.log("Error updating anonymous status: \(error.localizedDescription)")
+                } else {
+                    Crashlytics.log("Anonymous status updated successfully for board ID: \(boardID.uuidString)")
+                }
+            }
+        }
+    }
 }
