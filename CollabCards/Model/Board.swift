@@ -14,6 +14,7 @@ struct Board: Identifiable, Codable {
     var participants: [String] 
     var timerValue: Int?
     var isPaused: Bool?
+    var isExpired: Bool?
 }
 
 
