@@ -9,6 +9,9 @@ import FirebaseCrashlytics
 
 struct EmptyView: View {
     @State private var showNewBoardSheet = false
+    @State private var showQRScanner = false
+    @State private var showBoardView = false
+    @State private var selectedBoardUUID: UUID?
     @State private var isShareSheetPresented = false
     @ObservedObject var viewModel: BoardViewModel
     
@@ -22,11 +25,11 @@ struct EmptyView: View {
                 Spacer()
                 Menu {
                     Button(action: {
-                        showNewBoardSheet = true
-                        Crashlytics.log("Create a board button tapped in EmptyView")
+                        showQRScanner = true
+                        Crashlytics.log("Scan or Enter Board ID button tapped")
                     }, label: {
-                        Text("Create a board")
-                        Image(systemName: "doc.on.doc")
+                        Text("Scan or Enter Board ID")
+                        Image(systemName: "qrcode.viewfinder")
                     })
                 } label: {
                     Image(systemName: "plus")
@@ -78,7 +81,13 @@ struct EmptyView: View {
                 ShareSheet(activityItems: [URL(string: "https://trello.com")!, "Let's collaborate! Tap to share your Trello profile."])
                     .presentationDetents([.medium, .large])
             }
-            
+            .sheet(isPresented: $showQRScanner) {
+                QRScannerAndManualEntryView { board in
+                    viewModel.boards.append(board)
+                    selectedBoardUUID = board.id
+                    showBoardView = true
+                }
+            }
             Image("person1")
                 .resizable()
                 .frame(width: 100, height: 100)
