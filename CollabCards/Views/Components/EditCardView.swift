@@ -13,17 +13,16 @@ struct EditCardView: View {
     var viewModel: CardViewModel
     var onSave: (Card) -> Void
     var boardID: String
-    
+    var boardUsername: String
+
     @Binding var title: String
     @Binding var status: String
-    @Binding var author: String
-    
+
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Task Details")) {
                     TextField("Title", text: $title)
-                    TextField("Author", text: $author)
                     Picker("Status", selection: $status) {
                         Text("Went Well").tag("went well")
                         Text("To Improve").tag("to improve")
@@ -38,7 +37,7 @@ struct EditCardView: View {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    let updatedTask = Card(id: task.id, title: title, status: status, author: author)
+                    let updatedTask = Card(id: task.id, title: title, status: status)
                     viewModel.editTask(updatedTask, in: boardID)
                     onSave(updatedTask)
                     dismiss()
@@ -50,12 +49,13 @@ struct EditCardView: View {
 
 #Preview {
     EditCardView(
-        task: .constant(Card(id: "1", title: "Sample Task", status: "went well", author: "FFK ")),
+        task: .constant(Card(id: "1", title: "Sample Task", status: "went well")),
         viewModel: CardViewModel(),
         onSave: { _ in },
         boardID: UUID().uuidString,
+        boardUsername: "Furkan", 
         title: .constant("Sample Task"),
-        status: .constant("went well"),
-        author: .constant("FFK")
+        status: .constant("went well")
     )
 }
+

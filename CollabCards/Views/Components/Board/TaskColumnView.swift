@@ -15,7 +15,8 @@ struct TaskColumnView: View {
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
     var boardID: String
-    var isAnonymous: Bool 
+    var isAnonymous: Bool
+    var boardUsername: String
 
     var filteredTasks: [Card] {
         allTasks.filter { $0.status == statusFilter }
@@ -42,7 +43,8 @@ struct TaskColumnView: View {
                     },
                     viewModel: viewModel,
                     boardID: boardID,
-                    isAnonymous: isAnonymous
+                    isAnonymous: isAnonymous,
+                    boardUsername: boardUsername 
                 )
             }
         }
@@ -58,7 +60,9 @@ struct TaskColumnView: View {
         onEdit: { _ in },
         onDelete: { _ in },
         boardID: UUID().uuidString,
-        isAnonymous: false
+        isAnonymous: false,
+        boardUsername: "Furkan"
     )
 }
+
 

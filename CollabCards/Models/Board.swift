@@ -16,6 +16,8 @@ struct Board: Identifiable, Codable {
     var isPaused: Bool?
     var isExpired: Bool?
     var isAnonymous: Bool?
+    var username: String? 
+    var password: String?
 }
 
 

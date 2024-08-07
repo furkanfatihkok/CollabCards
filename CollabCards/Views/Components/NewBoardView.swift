@@ -11,8 +11,13 @@ struct NewBoardView: View {
     @Environment(\.dismiss) var dismiss
     @State private var ideateDuration = 15
     @State private var boardName: String = ""
+    @State private var username: String = ""
+    @State private var password: String = ""
     @State private var boardID = UUID()
     @State private var isBoardNameValid = true
+    @State private var isUsernameValid = true
+    @State private var isPasswordValid = true
+    @State private var showPassword = false 
     var onSave: (Board) -> Void
     
     var totalTime: Int {
@@ -43,24 +48,50 @@ struct NewBoardView: View {
                 )
                 
                 Section {
-                    HStack {
-                        Text("Workspace")
-                        Spacer()
-                        TextField("Furkan Kök's workspace", text: .constant(""))
+                    VStack(alignment: .leading) {
+                        Text("Username")
+                        TextField("Username", text: $username)
+                            .padding(10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .stroke(isUsernameValid ? Color.clear : Color.red, lineWidth: 2)
+                            )
+                            .onChange(of: username) { newValue in
+                                isUsernameValid = !newValue.isEmpty
+                            }
                     }
-                    
-                    HStack {
-                        Text("Visibility")
-                        Spacer()
-                        Text("Public")
-                    }
-                    
-                    HStack {
-                        Text("Background")
-                        Spacer()
-                        Color.blue
-                            .frame(width: 24, height: 24)
-                            .cornerRadius(4)
+                    VStack(alignment: .leading) {
+                        Text("Password")
+                        ZStack(alignment: .trailing) {
+                            if showPassword {
+                                TextField("Password", text: $password)
+                                    .padding(10)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .stroke(isPasswordValid ? Color.clear : Color.red, lineWidth: 2)
+                                    )
+                                    .onChange(of: password) { newValue in
+                                        isPasswordValid = !newValue.isEmpty
+                                    }
+                            } else {
+                                SecureField("Password", text: $password)
+                                    .padding(10)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .stroke(isPasswordValid ? Color.clear : Color.red, lineWidth: 2)
+                                    )
+                                    .onChange(of: password) { newValue in
+                                        isPasswordValid = !newValue.isEmpty
+                                    }
+                            }
+                            Button(action: {
+                                showPassword.toggle()
+                            }) {
+                                Image(systemName: showPassword ? "eye.slash" : "eye")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 10)
+                            }
+                        }
                     }
                 }
                 
@@ -101,12 +132,15 @@ struct NewBoardView: View {
                 },
                 trailing: Button("Create") {
                     isBoardNameValid = !boardName.isEmpty
-                    if isBoardNameValid {
+                    isUsernameValid = !username.isEmpty
+                    isPasswordValid = !password.isEmpty
+                    
+                    if isBoardNameValid && isUsernameValid && isPasswordValid {
                         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
                             print("Device ID is not available")
                             return
                         }
-                        let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60)
+                        let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60, username: username, password: password)
                         onSave(newBoard)
                         dismiss()
                     }
