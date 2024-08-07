@@ -131,7 +131,8 @@ struct BoardView: View {
                                         Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
                                     boardID: boardID.uuidString,
-                                    isAnonymous: board.isAnonymous ?? false
+                                    isAnonymous: board.isAnonymous ?? false,
+                                    boardUsername: board.username ?? ""
                                 )
                             }
                         }
@@ -158,7 +159,8 @@ struct BoardView: View {
                                         Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
                                     boardID: boardID.uuidString,
-                                    isAnonymous: board.isAnonymous ?? false
+                                    isAnonymous: board.isAnonymous ?? false,
+                                    boardUsername: board.username ?? ""
                                 )
                             }
                         }
@@ -185,7 +187,8 @@ struct BoardView: View {
                                         Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
                                     },
                                     boardID: boardID.uuidString,
-                                    isAnonymous: board.isAnonymous ?? false
+                                    isAnonymous: board.isAnonymous ?? false,
+                                    boardUsername: board.username ?? "" 
                                 )
                             }
                         }
@@ -223,10 +226,12 @@ struct BoardView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddSheet) {
-            AddCardView(viewModel: viewModel, boardID: boardID.uuidString)
+            if let board = board {
+                AddCardView(viewModel: viewModel, boardID: boardID.uuidString, boardUsername: board.username ?? "")
+            }
         }
         .sheet(isPresented: $showEditSheet) {
-            if let task = taskToEdit {
+            if let task = taskToEdit, let board = board {
                 EditCardView(
                     task: .constant(task),
                     viewModel: viewModel,
@@ -239,9 +244,9 @@ struct BoardView: View {
                         taskToEdit = nil
                         showEditSheet = false
                     }, boardID: boardID.uuidString,
+                    boardUsername: board.username ?? "", 
                     title: .constant(task.title),
-                    status: .constant(task.status),
-                    author: .constant(task.author)
+                    status: .constant(task.status) 
                 )
             }
         }

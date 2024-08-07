@@ -17,6 +17,7 @@ struct TaskCardView: View {
     var viewModel: CardViewModel
     var boardID: String
     var isAnonymous: Bool
+    var boardUsername: String 
     
     @State private var showEditSheet = false
     
@@ -28,7 +29,7 @@ struct TaskCardView: View {
                     .padding(.bottom, 2)
                 
                 if !isAnonymous {
-                    Text(task.author)
+                    Text(boardUsername)
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.7))
                 }
@@ -58,9 +59,9 @@ struct TaskCardView: View {
                             viewModel.editTask(updatedTask, in: boardID)
                             showEditSheet = false
                         }, boardID: boardID,
+                        boardUsername: boardUsername,
                         title: $task.title,
-                        status: $task.status,
-                        author: $task.author
+                        status: $task.status
                     )
                 }
                 
@@ -86,4 +87,3 @@ struct TaskCardView: View {
         }
     }
 }
-
