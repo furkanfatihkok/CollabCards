@@ -17,7 +17,6 @@
 		022051DA2C5A3C2700DFAC41 /* EFQRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 022051D92C5A3C2700DFAC41 /* EFQRCode */; };
 		022051DC2C5A3DDD00DFAC41 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022051DB2C5A3DDD00DFAC41 /* QRScannerView.swift */; };
 		024795422C5C855900C27F61 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795412C5C855900C27F61 /* BoardViewModel.swift */; };
-		024795452C5CC29200C27F61 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 024795442C5CC29200C27F61 /* FirebaseAuth */; };
 		024795472C5CD00100C27F61 /* QRScannerAndManualEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */; };
 		024795552C5D108900C27F61 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795542C5D108900C27F61 /* ShareSheet.swift */; };
 		0288CC832C58D5790083B540 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC822C58D5790083B540 /* HomeView.swift */; };
@@ -32,8 +31,8 @@
 		02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */; };
 		02B5F53F2C538D40006C0BFB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F53E2C538D40006C0BFB /* Card.swift */; };
 		02B5F5412C538F6E006C0BFB /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5402C538F6E006C0BFB /* AddCardView.swift */; };
-		02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */; };
-		02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */; };
+		02B5F5432C538FC7006C0BFB /* CardColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5422C538FC7006C0BFB /* CardColumnView.swift */; };
+		02B5F5452C53A5F3006C0BFB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5442C53A5F3006C0BFB /* CardView.swift */; };
 		02B5F5472C53AB17006C0BFB /* CardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */; };
 		02B5F5492C53B25A006C0BFB /* EditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B5F5482C53B25A006C0BFB /* EditCardView.swift */; };
 		02F832212C5A5BEC00827482 /* BoardInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F832202C5A5BEC00827482 /* BoardInfoView.swift */; };
@@ -62,8 +61,8 @@
 		02B5F53C2C538C7F006C0BFB /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		02B5F53E2C538D40006C0BFB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		02B5F5402C538F6E006C0BFB /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
-		02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskColumnView.swift; sourceTree = "<group>"; };
-		02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
+		02B5F5422C538FC7006C0BFB /* CardColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardColumnView.swift; sourceTree = "<group>"; };
+		02B5F5442C53A5F3006C0BFB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDropDelegate.swift; sourceTree = "<group>"; };
 		02B5F5482C53B25A006C0BFB /* EditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardView.swift; sourceTree = "<group>"; };
 		02F832202C5A5BEC00827482 /* BoardInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardInfoView.swift; sourceTree = "<group>"; };
@@ -75,7 +74,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				022051D72C5A3BB500DFAC41 /* FirebaseFirestoreCombine-Community in Frameworks */,
-				024795452C5CC29200C27F61 /* FirebaseAuth in Frameworks */,
 				022051DA2C5A3C2700DFAC41 /* EFQRCode in Frameworks */,
 				022051D32C5A3BB500DFAC41 /* FirebaseCrashlytics in Frameworks */,
 				022051D52C5A3BB500DFAC41 /* FirebaseFirestore in Frameworks */,
@@ -97,8 +95,8 @@
 		021509CF2C513235002BFFED /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				02F832202C5A5BEC00827482 /* BoardInfoView.swift */,
 				0288CC862C58F1080083B540 /* NewBoardView.swift */,
+				02F832202C5A5BEC00827482 /* BoardInfoView.swift */,
 				0288CC842C58D7530083B540 /* WorkspaceItemView.swift */,
 				024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */,
 				022051DB2C5A3DDD00DFAC41 /* QRScannerView.swift */,
@@ -183,8 +181,8 @@
 			isa = PBXGroup;
 			children = (
 				02B5F5392C538BCA006C0BFB /* BoardView.swift */,
-				02B5F5442C53A5F3006C0BFB /* TaskCardView.swift */,
-				02B5F5422C538FC7006C0BFB /* TaskColumnView.swift */,
+				02B5F5442C53A5F3006C0BFB /* CardView.swift */,
+				02B5F5422C538FC7006C0BFB /* CardColumnView.swift */,
 			);
 			path = Board;
 			sourceTree = "<group>";
@@ -227,7 +225,6 @@
 				022051D42C5A3BB500DFAC41 /* FirebaseFirestore */,
 				022051D62C5A3BB500DFAC41 /* FirebaseFirestoreCombine-Community */,
 				022051D92C5A3C2700DFAC41 /* EFQRCode */,
-				024795442C5CC29200C27F61 /* FirebaseAuth */,
 			);
 			productName = CollabCards;
 			productReference = 02A6ABF62C51254700234AF3 /* CollabCards.app */;
@@ -293,11 +290,11 @@
 				022051DC2C5A3DDD00DFAC41 /* QRScannerView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddCardView.swift in Sources */,
 				02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */,
-				02B5F5452C53A5F3006C0BFB /* TaskCardView.swift in Sources */,
+				02B5F5452C53A5F3006C0BFB /* CardView.swift in Sources */,
 				0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */,
 				02B5F53F2C538D40006C0BFB /* Card.swift in Sources */,
 				02B5F5492C53B25A006C0BFB /* EditCardView.swift in Sources */,
-				02B5F5432C538FC7006C0BFB /* TaskColumnView.swift in Sources */,
+				02B5F5432C538FC7006C0BFB /* CardColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
@@ -561,11 +558,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 022051D82C5A3C2700DFAC41 /* XCRemoteSwiftPackageReference "EFQRCode" */;
 			productName = EFQRCode;
-		};
-		024795442C5CC29200C27F61 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 022051D12C5A3BB500DFAC41 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

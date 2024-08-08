@@ -17,7 +17,7 @@ struct BoardView: View {
     @State private var showEditSheet = false
     @State private var isPaused = true
     @State private var isLoading = true
-    @State private var taskToEdit: Card? = nil
+    @State private var cardToEdit: Card? = nil
     @State private var board: Board?
     @State private var timerValue: Int = 15 * 60
     @State private var showAlert = false
@@ -117,19 +117,19 @@ struct BoardView: View {
                                 .bold()
                                 .padding(.bottom, 8)
                             ScrollView(.vertical, showsIndicators: false) {
-                                TaskColumnView(
-                                    tasks: $viewModel.tasks,
+                                CardColumnView(
+                                    cards: $viewModel.cards,
                                     statusFilter: "went well",
-                                    allTasks: $viewModel.tasks,
+                                    allTasks: $viewModel.cards,
                                     viewModel: viewModel,
-                                    onEdit: { task in
-                                        taskToEdit = task
+                                    onEdit: { card in
+                                        cardToEdit = card
                                         showEditSheet = true
-                                        Crashlytics.log("Editing task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
-                                    onDelete: { task in
-                                        viewModel.deleteTask(task, from: boardID.uuidString)
-                                        Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
+                                    onDelete: { card in
+                                        viewModel.deleteTask(card, from: boardID.uuidString)
+                                        Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
                                     isAnonymous: board.isAnonymous ?? false,
@@ -145,19 +145,19 @@ struct BoardView: View {
                                 .bold()
                                 .padding(.bottom, 8)
                             ScrollView(.vertical, showsIndicators: false) {
-                                TaskColumnView(
-                                    tasks: $viewModel.tasks,
+                                CardColumnView(
+                                    cards: $viewModel.cards,
                                     statusFilter: "to improve",
-                                    allTasks: $viewModel.tasks,
+                                    allTasks: $viewModel.cards,
                                     viewModel: viewModel,
-                                    onEdit: { task in
-                                        taskToEdit = task
+                                    onEdit: { card in
+                                        cardToEdit = card
                                         showEditSheet = true
-                                        Crashlytics.log("Editing task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
-                                    onDelete: { task in
-                                        viewModel.deleteTask(task, from: boardID.uuidString)
-                                        Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
+                                    onDelete: { card in
+                                        viewModel.deleteTask(card, from: boardID.uuidString)
+                                        Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
                                     isAnonymous: board.isAnonymous ?? false,
@@ -173,19 +173,19 @@ struct BoardView: View {
                                 .bold()
                                 .padding(.bottom, 8)
                             ScrollView(.vertical, showsIndicators: false) {
-                                TaskColumnView(
-                                    tasks: $viewModel.tasks,
+                                CardColumnView(
+                                    cards: $viewModel.cards,
                                     statusFilter: "action items",
-                                    allTasks: $viewModel.tasks,
+                                    allTasks: $viewModel.cards,
                                     viewModel: viewModel,
-                                    onEdit: { task in
-                                        taskToEdit = task
+                                    onEdit: { card in
+                                        cardToEdit = card
                                         showEditSheet = true
-                                        Crashlytics.log("Editing task with id: \(String(describing: task.id))")
+                                        Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
-                                    onDelete: { task in
-                                        viewModel.deleteTask(task, from: boardID.uuidString)
-                                        Crashlytics.log("Deleted task with id: \(String(describing: task.id))")
+                                    onDelete: { card in
+                                        viewModel.deleteTask(card, from: boardID.uuidString)
+                                        Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
                                     isAnonymous: board.isAnonymous ?? false,
@@ -233,22 +233,22 @@ struct BoardView: View {
             }
         }
         .sheet(isPresented: $showEditSheet) {
-            if let task = taskToEdit, let board = board {
+            if let card = cardToEdit, let board = board {
                 EditCardView(
-                    task: .constant(task),
+                    card: .constant(card),
                     viewModel: viewModel,
                     onSave: { updatedTask in
-                        if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
-                            viewModel.tasks[index] = updatedTask
+                        if let index = viewModel.cards.firstIndex(where: { $0.id == card.id }) {
+                            viewModel.cards[index] = updatedTask
                             viewModel.editTask(updatedTask, in: boardID.uuidString)
-                            Crashlytics.log("Task edited with id: \(String(describing: task.id))")
+                            Crashlytics.log("Task edited with id: \(String(describing: card.id))")
                         }
-                        taskToEdit = nil
+                        cardToEdit = nil
                         showEditSheet = false
                     }, boardID: boardID.uuidString,
                     boardUsername: username,
-                    title: .constant(task.title),
-                    status: .constant(task.status)
+                    title: .constant(card.title),
+                    status: .constant(card.status)
                 )
             }
         }

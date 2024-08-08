@@ -19,7 +19,3 @@ struct ShareSheet: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
-
-#Preview {
-    ShareSheet(activityItems: [URL(string: "https://trello.com")!, "Let's collaborate! Tap to share your Trello profile."] )
-}
