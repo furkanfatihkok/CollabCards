@@ -1,4 +1,3 @@
-//
 //  EditCardView.swift
 //  CollabCards
 //
@@ -10,6 +9,7 @@ import SwiftUI
 struct EditCardView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var card: Card
+    @State private var showAlert = false
     var viewModel: CardViewModel
     var onSave: (Card) -> Void
     var boardID: String
@@ -21,7 +21,7 @@ struct EditCardView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Card Details")) {
+                Section {
                     TextField("Title", text: $title)
                     Picker("Status", selection: $status) {
                         Text("Went Well").tag("went well")
@@ -37,12 +37,23 @@ struct EditCardView: View {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    let updatedCard = Card(id: card.id, title: title, status: status)
-                    viewModel.editCard(updatedCard, in: boardID)
-                    onSave(updatedCard)
-                    dismiss()
+                    if title.isEmpty {
+                        showAlert = true
+                    } else {
+                        let updatedCard = Card(id: card.id, title: title, status: status)
+                        viewModel.editCard(updatedCard, in: boardID)
+                        onSave(updatedCard)
+                        dismiss()
+                    }
                 }
             )
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Invalid Input"),
+                    message: Text("Title cannot be empty."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
 }
@@ -53,9 +64,8 @@ struct EditCardView: View {
         viewModel: CardViewModel(),
         onSave: { _ in },
         boardID: UUID().uuidString,
-        boardUsername: "Furkan", 
+        boardUsername: "Furkan",
         title: .constant("Sample Card"),
         status: .constant("went well")
     )
 }
-

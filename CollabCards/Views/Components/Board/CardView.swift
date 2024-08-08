@@ -38,37 +38,32 @@ struct CardView: View {
             .background(backgroundColor(for: card.status))
             .cornerRadius(8)
             .shadow(radius: 3)
+            .onTapGesture {
+                showEditSheet.toggle()
+            }
             .onDrag {
                 let data = card.id.data(using: .utf8) ?? Data()
                 let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                 return provider
             }
-            
-            HStack {
-                Button(action: { showEditSheet.toggle() }) {
-                    Image(systemName: "pencil")
-                        .foregroundColor(.blue)
-                }
-                .sheet(isPresented: $showEditSheet) {
-                    EditCardView(
-                        card: $card,
-                        viewModel: viewModel,
-                        onSave: { updatedCard in
-                            viewModel.editCard(updatedCard, in: boardID)
-                            showEditSheet = false
-                        }, boardID: boardID,
-                        boardUsername: card.author ?? boardUsername,
-                        title: $card.title,
-                        status: $card.status
-                    )
-                }
-                
-                Button(action: { onDelete(card) }) {
-                    Image(systemName: "trash")
-                        .foregroundColor(.red)
-                }
+            Button(action: { onDelete(card) }) {
+                Image(systemName: "trash")
+                    .foregroundColor(.red)
             }
             .padding(.trailing, 5)
+        }
+        .sheet(isPresented: $showEditSheet) {
+            EditCardView(
+                card: $card,
+                viewModel: viewModel,
+                onSave: { updatedCard in
+                    viewModel.editCard(updatedCard, in: boardID)
+                    showEditSheet = false
+                }, boardID: boardID,
+                boardUsername: card.author ?? boardUsername,
+                title: $card.title,
+                status: $card.status
+            )
         }
     }
     
