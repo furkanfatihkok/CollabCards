@@ -1,4 +1,3 @@
-//
 //  BoardInfoView.swift
 //  CollabCards
 //
@@ -43,5 +42,5 @@ struct BoardInfoView: View {
 }
 
 #Preview {
-    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board", deviceID: "12343", participants: ["12231","sadfdsfds"]))
+    BoardInfoView(board: Board(id: UUID(), name: "Örnek Board", deviceID: "12343", participants: ["12231", "12345"], usernames: ["12231": "User1", "12345": "User2"]))
 }

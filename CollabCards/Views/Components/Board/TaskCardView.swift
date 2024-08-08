@@ -17,7 +17,7 @@ struct TaskCardView: View {
     var viewModel: CardViewModel
     var boardID: String
     var isAnonymous: Bool
-    var boardUsername: String 
+    var boardUsername: String
     
     @State private var showEditSheet = false
     
@@ -29,7 +29,7 @@ struct TaskCardView: View {
                     .padding(.bottom, 2)
                 
                 if !isAnonymous {
-                    Text(boardUsername)
+                    Text(task.author ?? boardUsername)
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.7))
                 }
@@ -40,7 +40,7 @@ struct TaskCardView: View {
             .cornerRadius(8)
             .shadow(radius: 3)
             .onDrag {
-                let data = task.id?.data(using: .utf8) ?? Data()
+                let data = task.id.data(using: .utf8) ?? Data()
                 let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                 return provider
             }
@@ -59,7 +59,7 @@ struct TaskCardView: View {
                             viewModel.editTask(updatedTask, in: boardID)
                             showEditSheet = false
                         }, boardID: boardID,
-                        boardUsername: boardUsername,
+                        boardUsername: task.author ?? boardUsername,
                         title: $task.title,
                         status: $task.status
                     )

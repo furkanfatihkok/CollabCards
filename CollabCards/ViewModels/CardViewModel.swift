@@ -34,7 +34,7 @@ class CardViewModel: ObservableObject {
                 self.tasks = documents.compactMap { queryDocumentSnapshot in
                     do {
                         let task = try queryDocumentSnapshot.data(as: Card.self)
-                        Crashlytics.log("Task fetched with ID: \(task.id ?? "")")
+                        Crashlytics.log("Task fetched with ID: \(task.id)")
                         return task
                     } catch {
                         Crashlytics.log("Error decoding document into Task: \(error.localizedDescription). Document data: \(queryDocumentSnapshot.data())")
@@ -47,12 +47,12 @@ class CardViewModel: ObservableObject {
 
     func addTask(_ task: Card, to boardID: String, completion: @escaping () -> Void) {
         do {
-            let _ = try db.collection("boards").document(boardID).collection("tasks").document(task.id ?? "").setData(from: task) { error in
+            let _ = try db.collection("boards").document(boardID).collection("tasks").document(task.id).setData(from: task) { error in
                 DispatchQueue.main.async {
                     if let error = error {
                         Crashlytics.log("Error adding task: \(error.localizedDescription)")
                     } else {
-                        Crashlytics.log("Task added successfully with ID: \(task.id ?? "")")
+                        Crashlytics.log("Task added successfully with ID: \(task.id)")
                         completion()
                     }
                 }
@@ -65,58 +65,37 @@ class CardViewModel: ObservableObject {
     }
 
     func deleteTask(_ task: Card, from boardID: String) {
-        guard let taskId = task.id else {
-            DispatchQueue.main.async {
-                Crashlytics.log("Failed to delete task: task ID is nil")
-            }
-            return
-        }
-
-        db.collection("boards").document(boardID).collection("tasks").document(taskId).delete { error in
+        db.collection("boards").document(boardID).collection("tasks").document(task.id).delete { error in
             DispatchQueue.main.async {
                 if let error = error {
-                    Crashlytics.log("Error deleting task with ID: \(taskId). Error: \(error.localizedDescription)")
+                    Crashlytics.log("Error deleting task with ID: \(task.id). Error: \(error.localizedDescription)")
                 } else {
-                    Crashlytics.log("Task deleted successfully with ID: \(taskId)")
+                    Crashlytics.log("Task deleted successfully with ID: \(task.id)")
                 }
             }
         }
     }
 
     func moveTask(_ task: Card, toStatus newStatus: String, in boardID: String) {
-        guard let taskId = task.id else {
-            DispatchQueue.main.async {
-                Crashlytics.log("Failed to move task: task ID is nil")
-            }
-            return
-        }
-
-        db.collection("boards").document(boardID).collection("tasks").document(taskId).updateData(["status": newStatus]) { error in
+        db.collection("boards").document(boardID).collection("tasks").document(task.id).updateData(["status": newStatus]) { error in
             DispatchQueue.main.async {
                 if let error = error {
-                    Crashlytics.log("Error updating task status with ID: \(taskId). Error: \(error.localizedDescription)")
+                    Crashlytics.log("Error updating task status with ID: \(task.id). Error: \(error.localizedDescription)")
                 } else {
-                    Crashlytics.log("Task status updated successfully with ID: \(taskId) to status: \(newStatus)")
+                    Crashlytics.log("Task status updated successfully with ID: \(task.id) to status: \(newStatus)")
                 }
             }
         }
     }
 
     func editTask(_ task: Card, in boardID: String) {
-        guard let taskId = task.id else {
-            DispatchQueue.main.async {
-                Crashlytics.log("Failed to edit task: task ID is nil")
-            }
-            return
-        }
-
         do {
-            let _ = try db.collection("boards").document(boardID).collection("tasks").document(taskId).setData(from: task) { error in
+            let _ = try db.collection("boards").document(boardID).collection("tasks").document(task.id).setData(from: task) { error in
                 DispatchQueue.main.async {
                     if let error = error {
-                        Crashlytics.log("Error updating task document with ID: \(taskId). Error: \(error.localizedDescription)")
+                        Crashlytics.log("Error updating task document with ID: \(task.id). Error: \(error.localizedDescription)")
                     } else {
-                        Crashlytics.log("Task document updated successfully with ID: \(taskId)")
+                        Crashlytics.log("Task document updated successfully with ID: \(task.id)")
                     }
                 }
             }
@@ -127,3 +106,4 @@ class CardViewModel: ObservableObject {
         }
     }
 }
+

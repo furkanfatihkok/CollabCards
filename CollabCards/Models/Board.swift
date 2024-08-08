@@ -11,12 +11,12 @@ struct Board: Identifiable, Codable {
     var id: UUID
     var name: String
     var deviceID: String
-    var participants: [String] 
+    var participants: [String]
     var timerValue: Int?
     var isPaused: Bool?
     var isExpired: Bool?
     var isAnonymous: Bool?
-    var username: String? 
+    var usernames: [String: String]? 
     var password: String?
 }
 

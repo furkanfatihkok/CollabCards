@@ -1,3 +1,4 @@
+//
 //  BoardViewModel.swift
 //  CollabCards
 //
@@ -127,6 +128,10 @@ class BoardViewModel: ObservableObject {
                             board.participants = []
                         }
                         board.participants.append(deviceID)
+                        if board.usernames == nil {
+                            board.usernames = [:]
+                        }
+                        board.usernames?[deviceID] = self.usernameForDevice()
                         self.updateBoard(board) { updatedBoard in
                             completion(updatedBoard)
                         }
@@ -186,7 +191,43 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
+
+    func updateUsernameInFirestore(boardID: UUID, username: String) {
+        guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else { return }
+        db.collection("boards").document(boardID.uuidString).updateData(["usernames.\(deviceID)": username]) { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    Crashlytics.log("Error updating username: \(error.localizedDescription)")
+                } else {
+                    Crashlytics.log("Username updated successfully for board ID: \(boardID.uuidString)")
+                }
+            }
+        }
+    }
+
+    func verifyPassword(boardID: UUID, enteredPassword: String, completion: @escaping (Bool) -> Void) {
+        let docRef = db.collection("boards").document(boardID.uuidString)
+        docRef.getDocument { (document, error) in
+            DispatchQueue.main.async {
+                if let document = document, document.exists {
+                    do {
+                        let board = try document.data(as: Board.self)
+                        if board.password == enteredPassword {
+                            completion(true)
+                        } else {
+                            completion(false)
+                        }
+                    } catch {
+                        Crashlytics.log("Error decoding board document: \(error.localizedDescription)")
+                        completion(false)
+                    }
+                } else {
+                    completion(false)
+                }
+            }
+        }
+    }
+
     func setBoardExpired(boardID: UUID) {
         db.collection("boards").document(boardID.uuidString).updateData(["isExpired": true]) { error in
             DispatchQueue.main.async {
@@ -198,7 +239,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
+
     func updateAnonymousStatus(boardID: UUID, isAnonymous: Bool) {
         db.collection("boards").document(boardID.uuidString).updateData(["isAnonymous": isAnonymous]) { error in
             DispatchQueue.main.async {
@@ -209,5 +250,9 @@ class BoardViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    private func usernameForDevice() -> String {
+        return UserDefaults.standard.string(forKey: "username") ?? "Unknown User"
     }
 }
