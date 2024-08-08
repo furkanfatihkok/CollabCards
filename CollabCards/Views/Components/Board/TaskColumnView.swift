@@ -16,7 +16,7 @@ struct TaskColumnView: View {
     var onDelete: (Card) -> Void
     var boardID: String
     var isAnonymous: Bool
-    var boardUsername: String
+    var board: Board
 
     var filteredTasks: [Card] {
         allTasks.filter { $0.status == statusFilter }
@@ -44,7 +44,7 @@ struct TaskColumnView: View {
                     viewModel: viewModel,
                     boardID: boardID,
                     isAnonymous: isAnonymous,
-                    boardUsername: boardUsername 
+                    boardUsername: board.usernames?[task.author ?? ""] ?? "Unknown User" 
                 )
             }
         }
@@ -61,8 +61,9 @@ struct TaskColumnView: View {
         onDelete: { _ in },
         boardID: UUID().uuidString,
         isAnonymous: false,
-        boardUsername: "Furkan"
+        board: Board(id: UUID(), name: "Sample Board", deviceID: "device1", participants: ["device1"], timerValue: 900, usernames: ["device1": "Furkan"])
     )
 }
+
 
 

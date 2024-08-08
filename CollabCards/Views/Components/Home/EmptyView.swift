@@ -13,6 +13,7 @@ struct EmptyView: View {
     @State private var showBoardView = false
     @State private var selectedBoardUUID: UUID?
     @State private var isShareSheetPresented = false
+    @State private var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
     @ObservedObject var viewModel: BoardViewModel
     
     var body: some View {
@@ -82,9 +83,10 @@ struct EmptyView: View {
                     .presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $showQRScanner) {
-                QRScannerAndManualEntryView { board in
+                QRScannerAndManualEntryView { board, username in
                     viewModel.boards.append(board)
                     selectedBoardUUID = board.id
+                    self.username = username
                     showBoardView = true
                 }
             }
@@ -127,6 +129,9 @@ struct EmptyView: View {
         .onAppear {
             viewModel.fetchBoards()
             Crashlytics.log("EmptyView appeared")
+            if let savedUsername = UserDefaults.standard.string(forKey: "username") {
+                self.username = savedUsername
+            }
         }
         .onChange(of: viewModel.boards.isEmpty) { isEmpty in
             if !isEmpty {
@@ -143,3 +148,4 @@ struct EmptyView: View {
 #Preview {
     EmptyView(viewModel: BoardViewModel())
 }
+

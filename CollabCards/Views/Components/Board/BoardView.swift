@@ -23,7 +23,8 @@ struct BoardView: View {
     @State private var showAlert = false
     @State private var isAnonymous = false
     var boardID: UUID
-    
+    var username: String
+
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
@@ -43,7 +44,7 @@ struct BoardView: View {
                             Text(board.name)
                                 .foregroundColor(.white)
                                 .font(.headline)
-                            Text("Furkan Kök's workspace")
+                            Text("\(username)'s workspace")
                                 .foregroundColor(.white)
                         }
                         Spacer()
@@ -92,7 +93,7 @@ struct BoardView: View {
                     }
                     .padding()
                     .background(Color.blue)
-                    
+
                     HStack {
                         Spacer()
                         Toggle(isOn: $isAnonymous) {
@@ -132,7 +133,7 @@ struct BoardView: View {
                                     },
                                     boardID: boardID.uuidString,
                                     isAnonymous: board.isAnonymous ?? false,
-                                    boardUsername: board.username ?? ""
+                                    board: board
                                 )
                             }
                         }
@@ -160,7 +161,7 @@ struct BoardView: View {
                                     },
                                     boardID: boardID.uuidString,
                                     isAnonymous: board.isAnonymous ?? false,
-                                    boardUsername: board.username ?? ""
+                                    board: board
                                 )
                             }
                         }
@@ -188,7 +189,7 @@ struct BoardView: View {
                                     },
                                     boardID: boardID.uuidString,
                                     isAnonymous: board.isAnonymous ?? false,
-                                    boardUsername: board.username ?? "" 
+                                    board: board
                                 )
                             }
                         }
@@ -196,6 +197,7 @@ struct BoardView: View {
                     }
                     .padding(.horizontal)
                 }
+
 
                 Button(action: {
                     showAddSheet.toggle()
@@ -227,7 +229,7 @@ struct BoardView: View {
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddSheet) {
             if let board = board {
-                AddCardView(viewModel: viewModel, boardID: boardID.uuidString, boardUsername: board.username ?? "")
+                AddCardView(viewModel: viewModel, boardID: boardID.uuidString, boardUsername: username)
             }
         }
         .sheet(isPresented: $showEditSheet) {
@@ -244,15 +246,15 @@ struct BoardView: View {
                         taskToEdit = nil
                         showEditSheet = false
                     }, boardID: boardID.uuidString,
-                    boardUsername: board.username ?? "", 
+                    boardUsername: username,
                     title: .constant(task.title),
-                    status: .constant(task.status) 
+                    status: .constant(task.status)
                 )
             }
         }
         .onAppear {
             viewModel.fetchTasks(for: boardID.uuidString)
-            Crashlytics.log("BoardView appeared for board ID: \(boardID.uuidString)")
+            loadBoard()
         }
         .onDisappear {
             timer.upstream.connect().cancel()
@@ -270,21 +272,21 @@ struct BoardView: View {
         boardViewModel.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
             if let fetchedBoard = fetchedBoard {
                 self.board = fetchedBoard
-                if let timerValue = self.board?.timerValue {
+                if let timerValue = fetchedBoard.timerValue {
                     self.timerValue = timerValue
                 }
-                if let isPaused = self.board?.isPaused {
+                if let isPaused = fetchedBoard.isPaused {
                     self.isPaused = isPaused
                 }
-                if let isExpired = self.board?.isExpired {
+                if let isExpired = fetchedBoard.isExpired {
                     self.board?.isExpired = isExpired
                 }
-                if let isAnonymous = self.board?.isAnonymous {
+                if let isAnonymous = fetchedBoard.isAnonymous {
                     self.isAnonymous = isAnonymous
                 }
-                Crashlytics.log("Board loaded with ID: \(self.board?.id.uuidString ?? "")")
+                Crashlytics.log("Board loaded with ID: \(fetchedBoard.id.uuidString)")
             } else {
-                Crashlytics.log("Failed to load board with ID: \(self.board?.id.uuidString ?? "")")
+                Crashlytics.log("Failed to load board with ID: \(boardID.uuidString)")
             }
             self.isLoading = false
         }
@@ -298,5 +300,5 @@ func timerString(from timeInterval: TimeInterval) -> String {
 }
 
 #Preview {
-    BoardView(boardID: UUID())
+    BoardView(boardID: UUID(), username: "SampleUser")
 }

@@ -19,6 +19,7 @@ struct HomeView: View {
     @State private var selectedBoardUUID: UUID?
     @State private var showBoardInfo = false
     @State private var searchText: String = ""
+    @State private var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
     @ObservedObject var viewModel = BoardViewModel()
     
     var body: some View {
@@ -75,7 +76,7 @@ struct HomeView: View {
                         searchText.isEmpty ? true : $0.name.lowercased().contains(searchText.lowercased())
                     }, id: \.id) { board in
                         HStack {
-                            NavigationLink(destination: BoardView(boardID: board.id)) {
+                            NavigationLink(destination: BoardView(boardID: board.id, username: username)) {
                                 WorkspaceItemView(color: .blue, title: board.name)
                             }
                             Spacer()
@@ -112,9 +113,10 @@ struct HomeView: View {
                 }
             }
             .sheet(isPresented: $showQRScanner) {
-                QRScannerAndManualEntryView { board in
+                QRScannerAndManualEntryView { board, username in
                     viewModel.boards.append(board)
                     selectedBoardUUID = board.id
+                    self.username = username
                     showBoardView = true
                 }
             }
@@ -134,6 +136,9 @@ struct HomeView: View {
             .onAppear {
                 viewModel.fetchBoards()
                 Crashlytics.log("HomeView appeared")
+                if let savedUsername = UserDefaults.standard.string(forKey: "username") {
+                    self.username = savedUsername
+                }
             }
         }
     }
@@ -150,3 +155,4 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
+

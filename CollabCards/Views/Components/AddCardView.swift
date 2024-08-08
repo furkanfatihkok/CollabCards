@@ -50,8 +50,8 @@ struct AddCardView: View {
             showAlert = true
             return
         }
-
-        let task = Card(id: UUID().uuidString, title: title, status: status)
+        
+        let task = Card(id: UUID().uuidString, title: title, status: status, author: boardUsername)
         viewModel.addTask(task, to: boardID) {
             viewModel.fetchTasks(for: boardID)
             dismiss()
