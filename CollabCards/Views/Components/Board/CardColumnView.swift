@@ -1,4 +1,3 @@
-//
 //  CardColumnView.swift
 //  CollabCards
 //
@@ -6,11 +5,12 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CardColumnView: View {
     @Binding var cards: [Card]
     let statusFilter: String
-    @Binding var allTasks: [Card]
+    @Binding var allCards: [Card]
     var viewModel: CardViewModel
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
@@ -18,23 +18,23 @@ struct CardColumnView: View {
     var isAnonymous: Bool
     var board: Board
 
-    var filteredTasks: [Card] {
-        allTasks.filter { $0.status == statusFilter }
+    var filteredCards: [Card] {
+        allCards.filter { $0.status == statusFilter }
     }
 
     var body: some View {
         VStack {
-            ForEach(filteredTasks) { card in
+            ForEach(filteredCards) { card in
                 CardView(
                     card: Binding(
                         get: { card },
-                        set: { updatedTask in
-                            if let index = allTasks.firstIndex(where: { $0.id == card.id }) {
-                                allTasks[index] = updatedTask
+                        set: { updatedCard in
+                            if let index = allCards.firstIndex(where: { $0.id == card.id }) {
+                                allCards[index] = updatedCard
                             }
                         }
                     ),
-                    allTasks: $allTasks,
+                    allCards: $allCards,
                     onDelete: { card in
                         onDelete(card)
                     },
@@ -44,10 +44,28 @@ struct CardColumnView: View {
                     viewModel: viewModel,
                     boardID: boardID,
                     isAnonymous: isAnonymous,
-                    boardUsername: board.usernames?[card.author ?? ""] ?? "Unknown User" 
+                    boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown"
                 )
+                .onDrag {
+                    let data = card.id.data(using: .utf8) ?? Data()
+                    return NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
+                }
+            }
+
+            if filteredCards.isEmpty {
+                Spacer()
+                Text("Drag cards here")
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(UIColor.systemGray5))
+                    .cornerRadius(8)
+                    .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, viewModel: viewModel, boardID: boardID, status: statusFilter))
             }
         }
+        .padding()
+        .background(Color.clear)
+        .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, viewModel: viewModel, boardID: boardID, status: statusFilter))
     }
 }
 
@@ -55,15 +73,12 @@ struct CardColumnView: View {
     CardColumnView(
         cards: .constant([]),
         statusFilter: "todo",
-        allTasks: .constant([]),
+        allCards: .constant([]),
         viewModel: CardViewModel(),
         onEdit: { _ in },
         onDelete: { _ in },
         boardID: UUID().uuidString,
         isAnonymous: false,
-        board: Board(id: UUID(), name: "Sample Board", deviceID: "device1", participants: ["device1"], timerValue: 900, usernames: ["device1": "Furkan"])
+        board: Board(id: UUID(), name: "Sample Board", deviceID: "deviceID", participants: ["deviceID"])
     )
 }
-
-
-

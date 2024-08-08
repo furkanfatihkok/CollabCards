@@ -29,13 +29,13 @@ struct AddCardView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }
-            .navigationTitle("New Task")
+            .navigationTitle("New Card")
             .navigationBarItems(
                 leading: Button("Cancel") {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    saveTask()
+                    saveCard()
                 }
             )
             .alert(isPresented: $showAlert) {
@@ -44,7 +44,7 @@ struct AddCardView: View {
         }
     }
 
-    private func saveTask() {
+    private func saveCard() {
         guard !title.isEmpty else {
             alertMessage = "Title cannot be empty."
             showAlert = true
@@ -52,8 +52,8 @@ struct AddCardView: View {
         }
         
         let card = Card(id: UUID().uuidString, title: title, status: status, author: boardUsername)
-        viewModel.addTask(card, to: boardID) {
-            viewModel.fetchTasks(for: boardID)
+        viewModel.addCard(card, to: boardID) {
+            viewModel.fetchCards(for: boardID)
             dismiss()
         }
     }

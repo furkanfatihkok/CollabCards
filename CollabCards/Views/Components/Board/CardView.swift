@@ -1,4 +1,3 @@
-//
 //  CardView.swift
 //  CollabCards
 //
@@ -10,7 +9,7 @@ import UniformTypeIdentifiers
 
 struct CardView: View {
     @Binding var card: Card
-    @Binding var allTasks: [Card]
+    @Binding var allCards: [Card]
     
     var onDelete: (Card) -> Void
     var onEdit: (Card) -> Void
@@ -44,7 +43,6 @@ struct CardView: View {
                 let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                 return provider
             }
-            .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: card, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
             
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
@@ -55,8 +53,8 @@ struct CardView: View {
                     EditCardView(
                         card: $card,
                         viewModel: viewModel,
-                        onSave: { updatedTask in
-                            viewModel.editTask(updatedTask, in: boardID)
+                        onSave: { updatedCard in
+                            viewModel.editCard(updatedCard, in: boardID)
                             showEditSheet = false
                         }, boardID: boardID,
                         boardUsername: card.author ?? boardUsername,
