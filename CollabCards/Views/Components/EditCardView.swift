@@ -1,5 +1,5 @@
 //
-//  EditTaskView.swift
+//  EditCardView.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -21,7 +21,7 @@ struct EditCardView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Task Details")) {
+                Section(header: Text("Card Details")) {
                     TextField("Title", text: $title)
                     Picker("Status", selection: $status) {
                         Text("Went Well").tag("went well")
@@ -31,15 +31,15 @@ struct EditCardView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
             }
-            .navigationTitle("Edit Task")
+            .navigationTitle("Edit Card")
             .navigationBarItems(
                 leading: Button("Cancel") {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    let updatedTask = Card(id: card.id, title: title, status: status)
-                    viewModel.editTask(updatedTask, in: boardID)
-                    onSave(updatedTask)
+                    let updatedCard = Card(id: card.id, title: title, status: status)
+                    viewModel.editCard(updatedCard, in: boardID)
+                    onSave(updatedCard)
                     dismiss()
                 }
             )
@@ -49,12 +49,12 @@ struct EditCardView: View {
 
 #Preview {
     EditCardView(
-        card: .constant(Card(id: "1", title: "Sample Task", status: "went well")),
+        card: .constant(Card(id: "1", title: "Sample Card", status: "went well")),
         viewModel: CardViewModel(),
         onSave: { _ in },
         boardID: UUID().uuidString,
         boardUsername: "Furkan", 
-        title: .constant("Sample Task"),
+        title: .constant("Sample Card"),
         status: .constant("went well")
     )
 }

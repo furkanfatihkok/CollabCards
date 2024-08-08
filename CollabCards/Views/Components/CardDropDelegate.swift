@@ -1,4 +1,3 @@
-//
 //  CardDropDelegate.swift
 //  CollabCards
 //
@@ -9,10 +8,11 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct CardDropDelegate: DropDelegate {
-    let card: Card
-    @Binding var allTasks: [Card]
+    let card: Card?
+    @Binding var allCards: [Card]
     @ObservedObject var viewModel: CardViewModel
     let boardID: String
+    let status: String
 
     func performDrop(info: DropInfo) -> Bool {
         guard let item = info.itemProviders(for: [UTType.text]).first else { return false }
@@ -21,11 +21,9 @@ struct CardDropDelegate: DropDelegate {
             guard let data = data as? Data, let id = String(data: data, encoding: .utf8) else { return }
 
             DispatchQueue.main.async {
-                if let draggedTask = allTasks.first(where: { $0.id == id }) {
-                    if let index = allTasks.firstIndex(where: { $0.id == draggedTask.id }) {
-                        allTasks[index].status = card.status
-                        viewModel.moveTask(draggedTask, toStatus: card.status, in: boardID)
-                    }
+                if let draggedCardIndex = allCards.firstIndex(where: { $0.id == id }) {
+                    allCards[draggedCardIndex].status = status
+                    viewModel.moveCard(allCards[draggedCardIndex], toStatus: status, in: boardID)
                 }
             }
         }

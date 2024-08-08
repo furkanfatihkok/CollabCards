@@ -56,7 +56,7 @@ struct BoardView: View {
                                         if timerValue > 0 {
                                             timerValue -= 1
                                             boardViewModel.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
-                                            viewModel.fetchTasks(for: boardID.uuidString)
+                                            viewModel.fetchCards(for: boardID.uuidString)
                                             if timerValue == 60 {
                                                 showAlert = true
                                             }
@@ -120,7 +120,7 @@ struct BoardView: View {
                                 CardColumnView(
                                     cards: $viewModel.cards,
                                     statusFilter: "went well",
-                                    allTasks: $viewModel.cards,
+                                    allCards: $viewModel.cards,
                                     viewModel: viewModel,
                                     onEdit: { card in
                                         cardToEdit = card
@@ -128,7 +128,7 @@ struct BoardView: View {
                                         Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
                                     onDelete: { card in
-                                        viewModel.deleteTask(card, from: boardID.uuidString)
+                                        viewModel.deleteCard(card, from: boardID.uuidString)
                                         Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
@@ -148,7 +148,7 @@ struct BoardView: View {
                                 CardColumnView(
                                     cards: $viewModel.cards,
                                     statusFilter: "to improve",
-                                    allTasks: $viewModel.cards,
+                                    allCards: $viewModel.cards,
                                     viewModel: viewModel,
                                     onEdit: { card in
                                         cardToEdit = card
@@ -156,7 +156,7 @@ struct BoardView: View {
                                         Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
                                     onDelete: { card in
-                                        viewModel.deleteTask(card, from: boardID.uuidString)
+                                        viewModel.deleteCard(card, from: boardID.uuidString)
                                         Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
@@ -176,7 +176,7 @@ struct BoardView: View {
                                 CardColumnView(
                                     cards: $viewModel.cards,
                                     statusFilter: "action items",
-                                    allTasks: $viewModel.cards,
+                                    allCards: $viewModel.cards,
                                     viewModel: viewModel,
                                     onEdit: { card in
                                         cardToEdit = card
@@ -184,7 +184,7 @@ struct BoardView: View {
                                         Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
                                     onDelete: { card in
-                                        viewModel.deleteTask(card, from: boardID.uuidString)
+                                        viewModel.deleteCard(card, from: boardID.uuidString)
                                         Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
@@ -197,8 +197,6 @@ struct BoardView: View {
                     }
                     .padding(.horizontal)
                 }
-
-
                 Button(action: {
                     showAddSheet.toggle()
                     Crashlytics.log("Add card button pressed.")
@@ -237,11 +235,11 @@ struct BoardView: View {
                 EditCardView(
                     card: .constant(card),
                     viewModel: viewModel,
-                    onSave: { updatedTask in
+                    onSave: { updatedCard in
                         if let index = viewModel.cards.firstIndex(where: { $0.id == card.id }) {
-                            viewModel.cards[index] = updatedTask
-                            viewModel.editTask(updatedTask, in: boardID.uuidString)
-                            Crashlytics.log("Task edited with id: \(String(describing: card.id))")
+                            viewModel.cards[index] = updatedCard
+                            viewModel.editCard(updatedCard, in: boardID.uuidString)
+                            Crashlytics.log("Card edited with id: \(String(describing: card.id))")
                         }
                         cardToEdit = nil
                         showEditSheet = false
@@ -253,7 +251,7 @@ struct BoardView: View {
             }
         }
         .onAppear {
-            viewModel.fetchTasks(for: boardID.uuidString)
+            viewModel.fetchCards(for: boardID.uuidString)
             loadBoard()
         }
         .onDisappear {
