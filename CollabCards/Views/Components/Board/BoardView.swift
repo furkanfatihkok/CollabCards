@@ -1,4 +1,3 @@
-//
 //  BoardView.swift
 //  CollabCards
 //
@@ -39,74 +38,68 @@ struct BoardView: View {
                             Image(systemName: "xmark")
                                 .foregroundColor(.white)
                         }
-                        Spacer()
+                        .padding(.trailing, 8)
                         VStack(alignment: .leading) {
                             Text(board.name)
                                 .foregroundColor(.white)
                                 .font(.headline)
-                            Text("\(username)'s workspace")
-                                .foregroundColor(.white)
-                        }
-                        Spacer()
-                        HStack(spacing: 20) {
-                            Text(timerString(from: TimeInterval(timerValue)))
-                                .foregroundColor(.white)
-                                .onReceive(timer) { _ in
-                                    if !isPaused {
-                                        if timerValue > 0 {
-                                            timerValue -= 1
-                                            boardViewModel.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
-                                            viewModel.fetchCards(for: boardID.uuidString)
-                                            if timerValue == 60 {
-                                                showAlert = true
+                            HStack {
+                                Text(timerString(from: TimeInterval(timerValue)))
+                                    .foregroundColor(.white)
+                                    .onReceive(timer) { _ in
+                                        if !isPaused {
+                                            if timerValue > 0 {
+                                                timerValue -= 1
+                                                boardViewModel.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
+                                                viewModel.fetchCards(for: boardID.uuidString)
+                                                if timerValue == 60 {
+                                                    showAlert = true
+                                                }
+                                            } else {
+                                                Crashlytics.log("Timer reached zero.")
+                                                isPaused = true
+                                                boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                                boardViewModel.setBoardExpired(boardID: boardID)
+                                                dismiss()
                                             }
-                                        } else {
-                                            Crashlytics.log("Timer reached zero.")
-                                            isPaused = true
-                                            boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                            boardViewModel.setBoardExpired(boardID: boardID)
-                                            dismiss()
                                         }
                                     }
-                                }
-                            Button(action: {
-                                isPaused.toggle()
-                                boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
-                            }) {
-                                Image(systemName: isPaused ? "play.fill" : "pause.fill")
-                                    .foregroundColor(.white)
-                            }
-                            .disabled(board.isExpired ?? false)
+                                    .padding(.trailing, 8)
+                                HStack(spacing: 20) {
+                                    Button(action: {
+                                        isPaused.toggle()
+                                        boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                        Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
+                                    }) {
+                                        Image(systemName: isPaused ? "play.fill" : "pause.fill")
+                                            .foregroundColor(.white)
+                                    }
+                                    .disabled(board.isExpired ?? false)
 
-                            Button(action: {
-                                timerValue = board.timerValue ?? 15 * 60
-                                isPaused = true
-                                boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                Crashlytics.log("Timer reset to initial duration.")
-                            }) {
-                                Image(systemName: "stop.fill")
-                                    .foregroundColor(.white)
+                                    Button(action: {
+                                        timerValue = board.timerValue ?? 15 * 60
+                                        isPaused = true
+                                        boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                        Crashlytics.log("Timer reset to initial duration.")
+                                    }) {
+                                        Image(systemName: "stop.fill")
+                                            .foregroundColor(.white)
+                                    }
+                                    .disabled(board.isExpired ?? false)
+                                }
                             }
-                            .disabled(board.isExpired ?? false)
                         }
+                        Spacer()
+                        Toggle("", isOn: $isAnonymous)
+                            .labelsHidden()
+                            .toggleStyle(SwitchToggleStyle(tint: .green))
+                            .onChange(of: isAnonymous) { value in
+                                boardViewModel.updateAnonymousStatus(boardID: boardID, isAnonymous: value)
+                                self.board?.isAnonymous = value
+                            }
                     }
                     .padding()
                     .background(Color.blue)
-
-                    HStack {
-                        Spacer()
-                        Toggle(isOn: $isAnonymous) {
-                            Text("Yazılan isimleri gizle")
-                                .foregroundColor(.white)
-                        }
-                        .toggleStyle(SwitchToggleStyle(tint: .blue))
-                        .padding(.trailing, 10)
-                        .onChange(of: isAnonymous) { value in
-                            boardViewModel.updateAnonymousStatus(boardID: boardID, isAnonymous: value)
-                            self.board?.isAnonymous = value
-                        }
-                    }
                 }
 
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -261,7 +254,7 @@ struct BoardView: View {
             Alert(
                 title: Text("Warning"),
                 message: Text("It will switch off automatically after the last 1 minute."),
-                dismissButton: .default(Text("Tamam"))
+                dismissButton: .default(Text("OK"))
             )
         }
     }
