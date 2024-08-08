@@ -1,5 +1,5 @@
 //
-//  TaskCardView.swift
+//  CardView.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -8,8 +8,8 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct TaskCardView: View {
-    @Binding var task: Card
+struct CardView: View {
+    @Binding var card: Card
     @Binding var allTasks: [Card]
     
     var onDelete: (Card) -> Void
@@ -24,27 +24,27 @@ struct TaskCardView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(task.title)
+                Text(card.title)
                     .foregroundStyle(.white)
                     .padding(.bottom, 2)
                 
                 if !isAnonymous {
-                    Text(task.author ?? boardUsername)
+                    Text(card.author ?? boardUsername)
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.7))
                 }
             }
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(backgroundColor(for: task.status))
+            .background(backgroundColor(for: card.status))
             .cornerRadius(8)
             .shadow(radius: 3)
             .onDrag {
-                let data = task.id.data(using: .utf8) ?? Data()
+                let data = card.id.data(using: .utf8) ?? Data()
                 let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                 return provider
             }
-            .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: task, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
+            .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: card, allTasks: $allTasks, viewModel: viewModel, boardID: boardID))
             
             HStack {
                 Button(action: { showEditSheet.toggle() }) {
@@ -53,19 +53,19 @@ struct TaskCardView: View {
                 }
                 .sheet(isPresented: $showEditSheet) {
                     EditCardView(
-                        task: $task,
+                        card: $card,
                         viewModel: viewModel,
                         onSave: { updatedTask in
                             viewModel.editTask(updatedTask, in: boardID)
                             showEditSheet = false
                         }, boardID: boardID,
-                        boardUsername: task.author ?? boardUsername,
-                        title: $task.title,
-                        status: $task.status
+                        boardUsername: card.author ?? boardUsername,
+                        title: $card.title,
+                        status: $card.status
                     )
                 }
                 
-                Button(action: { onDelete(task) }) {
+                Button(action: { onDelete(card) }) {
                     Image(systemName: "trash")
                         .foregroundColor(.red)
                 }

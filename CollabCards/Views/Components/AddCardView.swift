@@ -51,8 +51,8 @@ struct AddCardView: View {
             return
         }
         
-        let task = Card(id: UUID().uuidString, title: title, status: status, author: boardUsername)
-        viewModel.addTask(task, to: boardID) {
+        let card = Card(id: UUID().uuidString, title: title, status: status, author: boardUsername)
+        viewModel.addTask(card, to: boardID) {
             viewModel.fetchTasks(for: boardID)
             dismiss()
         }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditCardView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var task: Card
+    @Binding var card: Card
     var viewModel: CardViewModel
     var onSave: (Card) -> Void
     var boardID: String
@@ -37,7 +37,7 @@ struct EditCardView: View {
                     dismiss()
                 },
                 trailing: Button("Save") {
-                    let updatedTask = Card(id: task.id, title: title, status: status)
+                    let updatedTask = Card(id: card.id, title: title, status: status)
                     viewModel.editTask(updatedTask, in: boardID)
                     onSave(updatedTask)
                     dismiss()
@@ -49,7 +49,7 @@ struct EditCardView: View {
 
 #Preview {
     EditCardView(
-        task: .constant(Card(id: "1", title: "Sample Task", status: "went well")),
+        card: .constant(Card(id: "1", title: "Sample Task", status: "went well")),
         viewModel: CardViewModel(),
         onSave: { _ in },
         boardID: UUID().uuidString,

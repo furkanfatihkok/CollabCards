@@ -1,5 +1,5 @@
 //
-//  TaskColumnView.swift
+//  CardColumnView.swift
 //  CollabCards
 //
 //  Created by FFK on 26.07.2024.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct TaskColumnView: View {
-    @Binding var tasks: [Card]
+struct CardColumnView: View {
+    @Binding var cards: [Card]
     let statusFilter: String
     @Binding var allTasks: [Card]
     var viewModel: CardViewModel
@@ -24,27 +24,27 @@ struct TaskColumnView: View {
 
     var body: some View {
         VStack {
-            ForEach(filteredTasks) { task in
-                TaskCardView(
-                    task: Binding(
-                        get: { task },
+            ForEach(filteredTasks) { card in
+                CardView(
+                    card: Binding(
+                        get: { card },
                         set: { updatedTask in
-                            if let index = allTasks.firstIndex(where: { $0.id == task.id }) {
+                            if let index = allTasks.firstIndex(where: { $0.id == card.id }) {
                                 allTasks[index] = updatedTask
                             }
                         }
                     ),
                     allTasks: $allTasks,
-                    onDelete: { task in
-                        onDelete(task)
+                    onDelete: { card in
+                        onDelete(card)
                     },
-                    onEdit: { task in
-                        onEdit(task)
+                    onEdit: { card in
+                        onEdit(card)
                     },
                     viewModel: viewModel,
                     boardID: boardID,
                     isAnonymous: isAnonymous,
-                    boardUsername: board.usernames?[task.author ?? ""] ?? "Unknown User" 
+                    boardUsername: board.usernames?[card.author ?? ""] ?? "Unknown User" 
                 )
             }
         }
@@ -52,8 +52,8 @@ struct TaskColumnView: View {
 }
 
 #Preview {
-    TaskColumnView(
-        tasks: .constant([]),
+    CardColumnView(
+        cards: .constant([]),
         statusFilter: "todo",
         allTasks: .constant([]),
         viewModel: CardViewModel(),
