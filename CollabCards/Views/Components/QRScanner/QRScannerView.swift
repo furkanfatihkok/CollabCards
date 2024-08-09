@@ -9,9 +9,13 @@ import SwiftUI
 import AVFoundation
 
 struct QRScannerView: UIViewControllerRepresentable {
+    // MARK: - Properties
+    
     @Binding var scannedCode: String
     @Environment(\.presentationMode) var presentationMode
-
+    
+    // MARK: - Coordinator
+    
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: QRScannerView
 
@@ -32,10 +36,14 @@ struct QRScannerView: UIViewControllerRepresentable {
         }
     }
 
+    // MARK: - Coordinator Creation
+    
     func makeCoordinator() -> Coordinator {
         return Coordinator(parent: self)
     }
 
+    // MARK: - UIViewControllerRepresentable
+    
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = UIViewController()
 

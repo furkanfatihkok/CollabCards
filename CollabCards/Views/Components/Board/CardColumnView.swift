@@ -11,7 +11,7 @@ struct CardColumnView: View {
     @Binding var cards: [Card]
     let statusFilter: String
     @Binding var allCards: [Card]
-    var viewModel: CardViewModel
+    var cardVM: CardViewModel
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
     var boardID: String
@@ -41,7 +41,7 @@ struct CardColumnView: View {
                     onEdit: { card in
                         onEdit(card)
                     },
-                    viewModel: viewModel,
+                    cardVM: cardVM,
                     boardID: boardID,
                     isAnonymous: isAnonymous,
                     boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown"
@@ -60,12 +60,12 @@ struct CardColumnView: View {
                     .padding()
                     .background(Color(UIColor.systemGray5))
                     .cornerRadius(8)
-                    .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, viewModel: viewModel, boardID: boardID, status: statusFilter))
+                    .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
             }
         }
         .padding()
         .background(Color.clear)
-        .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, viewModel: viewModel, boardID: boardID, status: statusFilter))
+        .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
     }
 }
 
@@ -74,7 +74,7 @@ struct CardColumnView: View {
         cards: .constant([]),
         statusFilter: "todo",
         allCards: .constant([]),
-        viewModel: CardViewModel(),
+        cardVM: CardViewModel(),
         onEdit: { _ in },
         onDelete: { _ in },
         boardID: UUID().uuidString,
