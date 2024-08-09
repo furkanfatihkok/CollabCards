@@ -13,7 +13,7 @@ struct CardView: View {
     
     var onDelete: (Card) -> Void
     var onEdit: (Card) -> Void
-    var viewModel: CardViewModel
+    var cardVM: CardViewModel
     var boardID: String
     var isAnonymous: Bool
     var boardUsername: String
@@ -55,9 +55,9 @@ struct CardView: View {
         .sheet(isPresented: $showEditSheet) {
             EditCardView(
                 card: $card,
-                viewModel: viewModel,
+                cardVM: cardVM,
                 onSave: { updatedCard in
-                    viewModel.editCard(updatedCard, in: boardID)
+                    cardVM.editCard(updatedCard, in: boardID)
                     showEditSheet = false
                 }, boardID: boardID,
                 boardUsername: card.author ?? boardUsername,

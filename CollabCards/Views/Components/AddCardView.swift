@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddCardView: View {
     @Environment(\.dismiss) var dismiss
-    var viewModel: CardViewModel
+    var cardVM: CardViewModel
     var boardID: String
     var boardUsername: String
 
@@ -52,13 +52,13 @@ struct AddCardView: View {
         }
         
         let card = Card(id: UUID().uuidString, title: title, status: status, author: boardUsername)
-        viewModel.addCard(card, to: boardID) {
-            viewModel.fetchCards(for: boardID)
+        cardVM.addCard(card, to: boardID) {
+            cardVM.fetchCards(for: boardID)
             dismiss()
         }
     }
 }
 
 #Preview {
-    AddCardView(viewModel: CardViewModel(), boardID: UUID().uuidString, boardUsername: "Furkan")
+    AddCardView(cardVM: CardViewModel(), boardID: UUID().uuidString, boardUsername: "Furkan")
 }

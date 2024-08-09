@@ -7,8 +7,11 @@
 import SwiftUI
 import FirebaseFirestore
 import FirebaseCrashlytics
+import EFQRCode
 
 struct HomeView: View {
+    // MARK: - Properties
+    
     @State private var showNewBoardSheet = false
     @State private var showAlert = false
     @State private var alertMessage = ""
@@ -20,59 +23,23 @@ struct HomeView: View {
     @State private var showBoardInfo = false
     @State private var searchText: String = ""
     @State private var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
-    @ObservedObject var viewModel = BoardViewModel()
+    @ObservedObject var boardVM = BoardViewModel()
+    
+    // MARK: - Body
     
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
-                HStack {
-                    Spacer()
-                    Image("trello")
-                        .resizable()
-                        .frame(width: 130, height: 65)
-                    Spacer()
-                    Menu {
-                        Button(action: {
-                            showNewBoardSheet = true
-                            Crashlytics.log("Create a board button tapped")
-                        }) {
-                            Text("Create a board")
-                            Image(systemName: "doc.on.doc")
-                        }
-                        Button(action: {
-                            showQRScanner = true
-                            Crashlytics.log("Scan or Enter Board ID button tapped")
-                        }) {
-                            Text("Scan or Enter Board ID")
-                            Image(systemName: "qrcode.viewfinder")
-                        }
-                    } label: {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.white)
-                            .padding()
-                    }
-                }
-                .background(.blue)
-                .foregroundColor(.white)
+                HeaderView(showNewBoardSheet: $showNewBoardSheet, showQRScanner: $showQRScanner)
                 
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("Boards", text: $searchText)
-                        .padding(.vertical, 10)
-                }
-                .padding(.horizontal)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding()
+                SearchBarView(searchText: $searchText)
+                
                 Text("YOUR WORKSPACES")
                     .font(.headline)
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(viewModel.boards.filter {
+                    ForEach(boardVM.boards.filter {
                         searchText.isEmpty ? true : $0.name.lowercased().contains(searchText.lowercased())
                     }, id: \.id) { board in
                         HStack {
@@ -98,7 +65,7 @@ struct HomeView: View {
             .sheet(isPresented: $showNewBoardSheet) {
                 NewBoardView { newBoard in
                     selectedBoardUUID = newBoard.id
-                    viewModel.addBoard(newBoard)
+                    boardVM.addBoard(newBoard)
                     Crashlytics.log("New board created with ID: \(newBoard.id)")
                     DispatchQueue.main.async {
                         showBoardView = true
@@ -107,14 +74,14 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showBoardInfo) {
                 if let boardUUID = selectedBoardUUID {
-                    if let board = viewModel.boards.first(where: { $0.id == boardUUID }) {
+                    if let board = boardVM.boards.first(where: { $0.id == boardUUID }) {
                         BoardInfoView(board: board)
                     }
                 }
             }
             .sheet(isPresented: $showQRScanner) {
                 QRScannerAndManualEntryView { board, username in
-                    viewModel.boards.append(board)
+                    boardVM.boards.append(board)
                     selectedBoardUUID = board.id
                     self.username = username
                     showBoardView = true
@@ -126,7 +93,7 @@ struct HomeView: View {
                     message: Text("Once deleted, you can't recover the board or its cards"),
                     primaryButton: .destructive(Text("Delete")) {
                         if let board = boardToDelete {
-                            viewModel.deleteBoard(board)
+                            boardVM.deleteBoard(board)
                             Crashlytics.log("Board deleted with ID: \(board.id)")
                         }
                     },
@@ -134,7 +101,7 @@ struct HomeView: View {
                 )
             }
             .onAppear {
-                viewModel.fetchBoards()
+                boardVM.fetchBoards()
                 Crashlytics.log("HomeView appeared")
                 if let savedUsername = UserDefaults.standard.string(forKey: "username") {
                     self.username = savedUsername
@@ -142,10 +109,11 @@ struct HomeView: View {
             }
         }
     }
+    // MARK: - Functions
     
     private func confirmDeleteBoards(at offsets: IndexSet) {
         if let index = offsets.first {
-            boardToDelete = viewModel.boards[index]
+            boardToDelete = boardVM.boards[index]
             showAlert = true
             Crashlytics.log("Delete board action initiated for board ID: \(boardToDelete?.id ?? UUID())")
         }
@@ -155,4 +123,78 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
+
+// MARK: - SearchBarView
+
+struct SearchBarView: View {
+    @Binding var searchText: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.gray)
+            TextField("Boards", text: $searchText)
+                .padding(.vertical, 10)
+        }
+        .padding(.horizontal)
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+        .padding()
+    }
+}
+
+// MARK: - WorkspaceItemView
+
+struct WorkspaceItemView: View {
+    var color: Color
+    var title: String
+    
+    var body: some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(color)
+                .frame(width: 30, height: 30)
+            Text(title)
+            Spacer()
+        }
+        .padding(.vertical, 10)
+    }
+}
+
+// MARK: - BoardInfoView
+
+struct BoardInfoView: View {
+    var board: Board
+    
+    var qrCode: UIImage? {
+        let generator = EFQRCodeGenerator(content: board.id.uuidString)
+        if let cgImage = generator.generate() {
+            return UIImage(cgImage: cgImage)
+        }
+        return nil
+    }
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Board Information")
+                .font(.title)
+                .padding()
+            
+            if let qrCodeImage = qrCode {
+                Image(uiImage: qrCodeImage)
+                    .resizable()
+                    .frame(width: 200, height: 200)
+                    .padding()
+            }
+            Text("Board ID: \(board.id.uuidString)")
+                .font(.body)
+                .foregroundColor(.gray)
+                .padding()
+            
+            Spacer()
+        }
+        .padding()
+    }
+}
+
 

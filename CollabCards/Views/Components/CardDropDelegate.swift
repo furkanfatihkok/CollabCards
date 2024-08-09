@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 struct CardDropDelegate: DropDelegate {
     let card: Card?
     @Binding var allCards: [Card]
-    @ObservedObject var viewModel: CardViewModel
+    @ObservedObject var cardVM: CardViewModel
     let boardID: String
     let status: String
 
@@ -23,7 +23,7 @@ struct CardDropDelegate: DropDelegate {
             DispatchQueue.main.async {
                 if let draggedCardIndex = allCards.firstIndex(where: { $0.id == id }) {
                     allCards[draggedCardIndex].status = status
-                    viewModel.moveCard(allCards[draggedCardIndex], toStatus: status, in: boardID)
+                    cardVM.moveCard(allCards[draggedCardIndex], toStatus: status, in: boardID)
                 }
             }
         }

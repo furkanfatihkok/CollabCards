@@ -8,42 +8,76 @@ import SwiftUI
 import FirebaseCrashlytics
 
 struct EmptyView: View {
+    // MARK: - Properties
+    
     @State private var showNewBoardSheet = false
     @State private var showQRScanner = false
     @State private var showBoardView = false
     @State private var selectedBoardUUID: UUID?
     @State private var isShareSheetPresented = false
     @State private var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
-    @ObservedObject var viewModel: BoardViewModel
+    @ObservedObject var boardVM: BoardViewModel
+    
+    // MARK: - Body
     
     var body: some View {
         VStack(spacing: 20) {
-            HStack {
-                Spacer()
-                Image("trello")
-                    .resizable()
-                    .frame(width: 130, height: 65)
-                Spacer()
-                Menu {
-                    Button(action: {
-                        showQRScanner = true
-                        Crashlytics.log("Scan or Enter Board ID button tapped")
-                    }, label: {
-                        Text("Scan or Enter Board ID")
-                        Image(systemName: "qrcode.viewfinder")
-                    })
-                } label: {
-                    Image(systemName: "plus")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                        .padding()
+            HeaderView(showNewBoardSheet: .constant(false), showQRScanner: $showQRScanner)
+            
+            ProfileSharingView(isShareSheetPresented: $isShareSheetPresented)
+            
+            CreateBoardView(showNewBoardSheet: $showNewBoardSheet)
+            
+            Spacer()
+        }
+        .sheet(isPresented: $isShareSheetPresented) {
+            ShareSheet(activityItems: [URL(string: "https://trello.com")!, "Let's collaborate! Tap to share your Trello profile."])
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showQRScanner) {
+            QRScannerAndManualEntryView { board, username in
+                boardVM.boards.append(board)
+                selectedBoardUUID = board.id
+                self.username = username
+                showBoardView = true
+            }
+        }
+        .sheet(isPresented: $showNewBoardSheet) {
+            NewBoardView { newBoard in
+                boardVM.addBoard(newBoard)
+                Crashlytics.log("New board created in EmptyView with ID: \(newBoard.id)")
+            }
+        }
+        .onAppear {
+            boardVM.fetchBoards()
+            Crashlytics.log("EmptyView appeared")
+            if let savedUsername = UserDefaults.standard.string(forKey: "username") {
+                self.username = savedUsername
+            }
+        }
+        .onChange(of: boardVM.boards.isEmpty) { isEmpty in
+            if !isEmpty {
+                DispatchQueue.main.async {
+                    UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView(boardVM: boardVM))
+                    Crashlytics.log("Navigated from EmptyView to HomeView as boards are not empty")
                 }
             }
-            .background(.blue)
-            .foregroundColor(.white)
-            
-            HStack() {
+        }
+    }
+}
+
+#Preview {
+    EmptyView(boardVM: BoardViewModel())
+}
+
+// MARK: - ProfileSharingView
+
+struct ProfileSharingView: View {
+    @Binding var isShareSheetPresented: Bool
+    
+    var body: some View {
+        VStack(spacing: 10) {
+            HStack {
                 Image("person1")
                     .resizable()
                     .frame(width: 80, height: 80)
@@ -78,18 +112,17 @@ struct EmptyView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal, 40)
-            .sheet(isPresented: $isShareSheetPresented) {
-                ShareSheet(activityItems: [URL(string: "https://trello.com")!, "Let's collaborate! Tap to share your Trello profile."])
-                    .presentationDetents([.medium, .large])
-            }
-            .sheet(isPresented: $showQRScanner) {
-                QRScannerAndManualEntryView { board, username in
-                    viewModel.boards.append(board)
-                    selectedBoardUUID = board.id
-                    self.username = username
-                    showBoardView = true
-                }
-            }
+        }
+    }
+}
+
+// MARK: - CreateBoardView
+
+struct CreateBoardView: View {
+    @Binding var showNewBoardSheet: Bool
+    
+    var body: some View {
+        VStack(spacing: 10) {
             Image("person1")
                 .resizable()
                 .frame(width: 100, height: 100)
@@ -117,35 +150,8 @@ struct EmptyView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal, 40)
-            
-            Spacer()
         }
-        .sheet(isPresented: $showNewBoardSheet) {
-            NewBoardView { newBoard in
-                viewModel.addBoard(newBoard)
-                Crashlytics.log("New board created in EmptyView with ID: \(newBoard.id)")
-            }
-        }
-        .onAppear {
-            viewModel.fetchBoards()
-            Crashlytics.log("EmptyView appeared")
-            if let savedUsername = UserDefaults.standard.string(forKey: "username") {
-                self.username = savedUsername
-            }
-        }
-        .onChange(of: viewModel.boards.isEmpty) { isEmpty in
-            if !isEmpty {
-                DispatchQueue.main.async {
-                    UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: HomeView(viewModel: viewModel))
-                    Crashlytics.log("Navigated from EmptyView to HomeView as boards are not empty")
-                }
-            }
-        }
-        .navigationBarHidden(true)
     }
 }
 
-#Preview {
-    EmptyView(viewModel: BoardViewModel())
-}
 

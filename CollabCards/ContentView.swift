@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var viewModel = BoardViewModel()
+    @ObservedObject var boardVM = BoardViewModel()
     
     var body: some View {
         VStack {
-            if viewModel.boards.isEmpty {
-                EmptyView(viewModel: viewModel)
+            if boardVM.boards.isEmpty {
+                EmptyView(boardVM: boardVM)
             } else {
-                HomeView(viewModel: viewModel)
+                HomeView(boardVM: boardVM)
             }
         }
         .onAppear {
-            viewModel.fetchBoards()
+            boardVM.fetchBoards()
         }
     }
 }

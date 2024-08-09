@@ -6,16 +6,23 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct ShareSheet: UIViewControllerRepresentable {
+    // MARK: - Properties
+    
     var activityItems: [Any]
     var applicationActivities: [UIActivity]? = nil
 
+    // MARK: - UIViewControllerRepresentable
+    
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
         return controller
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+#Preview {
+    ShareSheet(activityItems: ["Check out CollabCards!"])
 }

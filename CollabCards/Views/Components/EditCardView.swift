@@ -10,7 +10,7 @@ struct EditCardView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var card: Card
     @State private var showAlert = false
-    var viewModel: CardViewModel
+    var cardVM: CardViewModel
     var onSave: (Card) -> Void
     var boardID: String
     var boardUsername: String
@@ -41,7 +41,7 @@ struct EditCardView: View {
                         showAlert = true
                     } else {
                         let updatedCard = Card(id: card.id, title: title, status: status)
-                        viewModel.editCard(updatedCard, in: boardID)
+                        cardVM.editCard(updatedCard, in: boardID)
                         onSave(updatedCard)
                         dismiss()
                     }
@@ -61,7 +61,7 @@ struct EditCardView: View {
 #Preview {
     EditCardView(
         card: .constant(Card(id: "1", title: "Sample Card", status: "went well")),
-        viewModel: CardViewModel(),
+        cardVM: CardViewModel(),
         onSave: { _ in },
         boardID: UUID().uuidString,
         boardUsername: "Furkan",

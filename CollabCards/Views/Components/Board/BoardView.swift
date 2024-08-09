@@ -10,8 +10,8 @@ import FirebaseCrashlytics
 
 struct BoardView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = CardViewModel()
-    @StateObject var boardViewModel = BoardViewModel()
+    @StateObject var cardVM = CardViewModel()
+    @StateObject var boardVM = BoardViewModel()
     @State private var showAddSheet = false
     @State private var showEditSheet = false
     @State private var isPaused = true
@@ -50,16 +50,16 @@ struct BoardView: View {
                                         if !isPaused {
                                             if timerValue > 0 {
                                                 timerValue -= 1
-                                                boardViewModel.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
-                                                viewModel.fetchCards(for: boardID.uuidString)
+                                                boardVM.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
+                                                cardVM.fetchCards(for: boardID.uuidString)
                                                 if timerValue == 60 {
                                                     showAlert = true
                                                 }
                                             } else {
                                                 Crashlytics.log("Timer reached zero.")
                                                 isPaused = true
-                                                boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                                boardViewModel.setBoardExpired(boardID: boardID)
+                                                boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                                boardVM.setBoardExpired(boardID: boardID)
                                                 dismiss()
                                             }
                                         }
@@ -68,7 +68,7 @@ struct BoardView: View {
                                 HStack(spacing: 20) {
                                     Button(action: {
                                         isPaused.toggle()
-                                        boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                        boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
                                         Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
                                     }) {
                                         Image(systemName: isPaused ? "play.fill" : "pause.fill")
@@ -79,7 +79,7 @@ struct BoardView: View {
                                     Button(action: {
                                         timerValue = board.timerValue ?? 15 * 60
                                         isPaused = true
-                                        boardViewModel.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                                        boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
                                         Crashlytics.log("Timer reset to initial duration.")
                                     }) {
                                         Image(systemName: "stop.fill")
@@ -94,7 +94,7 @@ struct BoardView: View {
                             .labelsHidden()
                             .toggleStyle(SwitchToggleStyle(tint: .green))
                             .onChange(of: isAnonymous) { value in
-                                boardViewModel.updateAnonymousStatus(boardID: boardID, isAnonymous: value)
+                                boardVM.updateAnonymousStatus(boardID: boardID, isAnonymous: value)
                                 self.board?.isAnonymous = value
                             }
                     }
@@ -111,17 +111,17 @@ struct BoardView: View {
                                 .padding(.bottom, 8)
                             ScrollView(.vertical, showsIndicators: false) {
                                 CardColumnView(
-                                    cards: $viewModel.cards,
+                                    cards: $cardVM.cards,
                                     statusFilter: "went well",
-                                    allCards: $viewModel.cards,
-                                    viewModel: viewModel,
+                                    allCards: $cardVM.cards,
+                                    cardVM: cardVM,
                                     onEdit: { card in
                                         cardToEdit = card
                                         showEditSheet = true
                                         Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
                                     onDelete: { card in
-                                        viewModel.deleteCard(card, from: boardID.uuidString)
+                                        cardVM.deleteCard(card, from: boardID.uuidString)
                                         Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
@@ -139,17 +139,17 @@ struct BoardView: View {
                                 .padding(.bottom, 8)
                             ScrollView(.vertical, showsIndicators: false) {
                                 CardColumnView(
-                                    cards: $viewModel.cards,
+                                    cards: $cardVM.cards,
                                     statusFilter: "to improve",
-                                    allCards: $viewModel.cards,
-                                    viewModel: viewModel,
+                                    allCards: $cardVM.cards,
+                                    cardVM: cardVM,
                                     onEdit: { card in
                                         cardToEdit = card
                                         showEditSheet = true
                                         Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
                                     onDelete: { card in
-                                        viewModel.deleteCard(card, from: boardID.uuidString)
+                                        cardVM.deleteCard(card, from: boardID.uuidString)
                                         Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
@@ -167,17 +167,17 @@ struct BoardView: View {
                                 .padding(.bottom, 8)
                             ScrollView(.vertical, showsIndicators: false) {
                                 CardColumnView(
-                                    cards: $viewModel.cards,
+                                    cards: $cardVM.cards,
                                     statusFilter: "action items",
-                                    allCards: $viewModel.cards,
-                                    viewModel: viewModel,
+                                    allCards: $cardVM.cards,
+                                    cardVM: cardVM,
                                     onEdit: { card in
                                         cardToEdit = card
                                         showEditSheet = true
                                         Crashlytics.log("Editing card with id: \(String(describing: card.id))")
                                     },
                                     onDelete: { card in
-                                        viewModel.deleteCard(card, from: boardID.uuidString)
+                                        cardVM.deleteCard(card, from: boardID.uuidString)
                                         Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                     },
                                     boardID: boardID.uuidString,
@@ -220,18 +220,18 @@ struct BoardView: View {
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddSheet) {
             if let board = board {
-                AddCardView(viewModel: viewModel, boardID: boardID.uuidString, boardUsername: username)
+                AddCardView(cardVM: cardVM, boardID: boardID.uuidString, boardUsername: username)
             }
         }
         .sheet(isPresented: $showEditSheet) {
             if let card = cardToEdit, let board = board {
                 EditCardView(
                     card: .constant(card),
-                    viewModel: viewModel,
+                    cardVM: cardVM,
                     onSave: { updatedCard in
-                        if let index = viewModel.cards.firstIndex(where: { $0.id == card.id }) {
-                            viewModel.cards[index] = updatedCard
-                            viewModel.editCard(updatedCard, in: boardID.uuidString)
+                        if let index = cardVM.cards.firstIndex(where: { $0.id == card.id }) {
+                            cardVM.cards[index] = updatedCard
+                            cardVM.editCard(updatedCard, in: boardID.uuidString)
                             Crashlytics.log("Card edited with id: \(String(describing: card.id))")
                         }
                         cardToEdit = nil
@@ -244,7 +244,7 @@ struct BoardView: View {
             }
         }
         .onAppear {
-            viewModel.fetchCards(for: boardID.uuidString)
+            cardVM.fetchCards(for: boardID.uuidString)
             loadBoard()
         }
         .onDisappear {
@@ -260,7 +260,7 @@ struct BoardView: View {
     }
 
     private func loadBoard() {
-        boardViewModel.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
+        boardVM.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
             if let fetchedBoard = fetchedBoard {
                 self.board = fetchedBoard
                 if let timerValue = fetchedBoard.timerValue {
