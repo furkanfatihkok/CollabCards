@@ -108,6 +108,7 @@ struct HomeView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     // MARK: - Functions
     

@@ -48,5 +48,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(showNewBoardSheet: .constant(true), showQRScanner: .constant(false))
+    HeaderView(showNewBoardSheet: .constant(true), showQRScanner: .constant(true))
 }
