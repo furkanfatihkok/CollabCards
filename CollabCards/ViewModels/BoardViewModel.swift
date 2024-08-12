@@ -11,9 +11,10 @@ import FirebaseCrashlytics
 
 class BoardViewModel: ObservableObject {
     @Published var boards = [Board]()
+    @Published var isDateVisible: Bool = false
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
-
+    
     func fetchBoards() {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to fetch boards: deviceID not found")
@@ -25,12 +26,12 @@ class BoardViewModel: ObservableObject {
                 Crashlytics.log("Error fetching boards: \(error.localizedDescription)")
                 return
             }
-
+            
             guard let documents = querySnapshot?.documents else {
                 Crashlytics.log("No documents found for boards")
                 return
             }
-
+            
             DispatchQueue.main.async {
                 self.boards = documents.compactMap { queryDocumentSnapshot in
                     do {
@@ -45,25 +46,26 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func fetchBoardWithRealtimeUpdates(boardID: UUID, completion: @escaping (Board?) -> Void) {
         let docRef = db.collection("boards").document(boardID.uuidString)
-        docRef.addSnapshotListener { documentSnapshot, error in
+        listener = docRef.addSnapshotListener { documentSnapshot, error in
             if let error = error {
                 Crashlytics.log("Error fetching board: \(error.localizedDescription)")
                 completion(nil)
                 return
             }
-
+            
             guard let document = documentSnapshot else {
                 Crashlytics.log("No document found for board with ID: \(boardID.uuidString)")
                 completion(nil)
                 return
             }
-
+            
             DispatchQueue.main.async {
                 do {
                     let board = try document.data(as: Board.self)
+                    self.isDateVisible = board.isDateVisible ?? false
                     Crashlytics.log("Board fetched with realtime updates for ID: \(boardID.uuidString)")
                     completion(board)
                 } catch {
@@ -73,7 +75,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func addBoard(_ board: Board) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board: deviceID not found")
@@ -98,7 +100,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func deleteBoard(_ board: Board) {
         db.collection("boards").document(board.id.uuidString).delete { error in
             DispatchQueue.main.async {
@@ -110,14 +112,14 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func addBoardToCurrentDevice(boardID: UUID, completion: @escaping (Board?) -> Void) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board to current device: deviceID not found")
             completion(nil)
             return
         }
-
+        
         let docRef = db.collection("boards").document(boardID.uuidString)
         docRef.getDocument { (document, error) in
             DispatchQueue.main.async {
@@ -146,7 +148,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     private func updateBoard(_ board: Board, completion: @escaping (Board?) -> Void) {
         do {
             let _ = try db.collection("boards").document(board.id.uuidString).setData(from: board) { error in
@@ -167,7 +169,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func updateTimerInFirestore(boardID: UUID, timerValue: Int) {
         db.collection("boards").document(boardID.uuidString).updateData(["timerValue": timerValue]) { error in
             DispatchQueue.main.async {
@@ -179,7 +181,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func updateTimerStatusInFirestore(boardID: UUID, isPaused: Bool) {
         db.collection("boards").document(boardID.uuidString).updateData(["isPaused": isPaused]) { error in
             DispatchQueue.main.async {
@@ -191,7 +193,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func updateUsernameInFirestore(boardID: UUID, username: String) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else { return }
         db.collection("boards").document(boardID.uuidString).updateData(["usernames.\(deviceID)": username]) { error in
@@ -204,7 +206,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func verifyPassword(boardID: UUID, enteredPassword: String, completion: @escaping (Bool) -> Void) {
         let docRef = db.collection("boards").document(boardID.uuidString)
         docRef.getDocument { (document, error) in
@@ -227,7 +229,7 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func setBoardExpired(boardID: UUID) {
         db.collection("boards").document(boardID.uuidString).updateData(["isExpired": true]) { error in
             DispatchQueue.main.async {
@@ -239,8 +241,19 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+    
+    func updateDateVisibilityInFirestore(boardID: UUID, isDateVisible: Bool) {
+        db.collection("boards").document(boardID.uuidString).updateData(["isDateVisible": isDateVisible]) { error in
+            if let error = error {
+                Crashlytics.log("Error updating isDateVisible: \(error.localizedDescription)")
+            } else {
+                Crashlytics.log("isDateVisible updated successfully for board ID: \(boardID.uuidString)")
+            }
+        }
+    }
+    
     private func usernameForDevice() -> String {
         return UserDefaults.standard.string(forKey: "username") ?? "Unknown User"
     }
 }
+

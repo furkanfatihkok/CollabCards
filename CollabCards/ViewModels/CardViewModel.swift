@@ -46,20 +46,24 @@ class CardViewModel: ObservableObject {
     }
 
     func addCard(_ card: Card, to boardID: String, completion: @escaping () -> Void) {
+        var newCard = card
+        newCard.author = UserDefaults.standard.string(forKey: "username")
+        newCard.date = Date()
+        
         do {
-            let _ = try db.collection("boards").document(boardID).collection("cards").document(card.id).setData(from: card) { error in
+            let _ = try db.collection("boards").document(boardID).collection("cards").document(card.id).setData(from: newCard) { error in
                 DispatchQueue.main.async {
                     if let error = error {
-                        Crashlytics.log("Error adding card: \(error.localizedDescription)")
+                        Crashlytics.log("Kart ekleme hatası: \(error.localizedDescription)")
                     } else {
-                        Crashlytics.log("Card added successfully with ID: \(card.id)")
+                        Crashlytics.log("Kart başarıyla eklendi: ID: \(newCard.id)")
                         completion()
                     }
                 }
             }
         } catch {
             DispatchQueue.main.async {
-                Crashlytics.log("Error creating card document: \(error.localizedDescription)")
+                Crashlytics.log("Kart belgesi oluşturma hatası: \(error.localizedDescription)")
             }
         }
     }
