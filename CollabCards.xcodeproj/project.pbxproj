@@ -19,6 +19,9 @@
 		024795422C5C855900C27F61 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795412C5C855900C27F61 /* BoardViewModel.swift */; };
 		024795472C5CD00100C27F61 /* QRScannerAndManualEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */; };
 		024795552C5D108900C27F61 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024795542C5D108900C27F61 /* ShareSheet.swift */; };
+		02587EBB2C69EC7B00FE3A6F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02587EBA2C69EC7B00FE3A6F /* SettingsView.swift */; };
+		02587EBD2C69F39500FE3A6F /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02587EBC2C69F39500FE3A6F /* ActionButtonView.swift */; };
+		02587EBF2C69F3AE00FE3A6F /* CheckButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02587EBE2C69F3AE00FE3A6F /* CheckButtonView.swift */; };
 		0288CC832C58D5790083B540 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC822C58D5790083B540 /* HomeView.swift */; };
 		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
 		028B9DC42C5913450068C0B9 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B9DC32C5913450068C0B9 /* Board.swift */; };
@@ -47,6 +50,9 @@
 		024795412C5C855900C27F61 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
 		024795462C5CD00100C27F61 /* QRScannerAndManualEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerAndManualEntryView.swift; sourceTree = "<group>"; };
 		024795542C5D108900C27F61 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		02587EBA2C69EC7B00FE3A6F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		02587EBC2C69F39500FE3A6F /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
+		02587EBE2C69F3AE00FE3A6F /* CheckButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckButtonView.swift; sourceTree = "<group>"; };
 		0288CC822C58D5790083B540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
 		028B9DC32C5913450068C0B9 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -100,9 +106,12 @@
 				02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */,
 				02B5F5402C538F6E006C0BFB /* AddCardView.swift */,
 				02B5F5482C53B25A006C0BFB /* EditCardView.swift */,
+				02587EBC2C69F39500FE3A6F /* ActionButtonView.swift */,
+				02587EBE2C69F3AE00FE3A6F /* CheckButtonView.swift */,
 				021509CE2C513231002BFFED /* Home */,
 				02EBDCD02C663B96009BC723 /* QRScanner */,
 				02B5F5372C538BAC006C0BFB /* Board */,
+				02587EB92C69EC6000FE3A6F /* SettingsView */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -130,6 +139,14 @@
 				02150A242C525512002BFFED /* Crashlytics.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		02587EB92C69EC6000FE3A6F /* SettingsView */ = {
+			isa = PBXGroup;
+			children = (
+				02587EBA2C69EC7B00FE3A6F /* SettingsView.swift */,
+			);
+			path = SettingsView;
 			sourceTree = "<group>";
 		};
 		02A6ABED2C51254700234AF3 = {
@@ -291,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
+				02587EBD2C69F39500FE3A6F /* ActionButtonView.swift in Sources */,
 				028B9DC42C5913450068C0B9 /* Board.swift in Sources */,
 				022051DC2C5A3DDD00DFAC41 /* QRScannerView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddCardView.swift in Sources */,
@@ -302,6 +320,7 @@
 				02B5F5492C53B25A006C0BFB /* EditCardView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* CardColumnView.swift in Sources */,
 				021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */,
+				02587EBF2C69F3AE00FE3A6F /* CheckButtonView.swift in Sources */,
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
 				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
@@ -311,6 +330,7 @@
 				024795552C5D108900C27F61 /* ShareSheet.swift in Sources */,
 				024795422C5C855900C27F61 /* BoardViewModel.swift in Sources */,
 				024795472C5CD00100C27F61 /* QRScannerAndManualEntryView.swift in Sources */,
+				02587EBB2C69EC7B00FE3A6F /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
