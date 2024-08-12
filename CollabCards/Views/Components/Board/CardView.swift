@@ -17,6 +17,7 @@ struct CardView: View {
     var boardID: String
     var boardUsername: String
     var isAuthorVisible: Bool
+    var isDateVisible: Bool
     
     @State private var showEditSheet = false
     
@@ -32,6 +33,12 @@ struct CardView: View {
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.7))
                 }
+                
+                if isDateVisible {
+                    Text(dateFormatted(date: card.date))
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.5))
+                }
             }
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,6 +53,7 @@ struct CardView: View {
                 let provider = NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
                 return provider
             }
+            
             Button(action: { onDelete(card) }) {
                 Image(systemName: "trash")
                     .foregroundColor(.red)
@@ -79,5 +87,12 @@ struct CardView: View {
             return Color.gray
         }
     }
+    
+    func dateFormatted(date: Date?) -> String {
+        guard let date = date else { return "" }
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "tr_TR")
+        formatter.dateFormat = "d MMMM"
+        return formatter.string(from: date)
+    }
 }
-

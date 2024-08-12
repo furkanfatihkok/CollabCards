@@ -15,6 +15,7 @@ struct Board: Identifiable, Codable {
     var timerValue: Int?
     var isPaused: Bool?
     var isExpired: Bool?
+    var isDateVisible: Bool? = false
     var usernames: [String: String]?
     var password: String?
 }

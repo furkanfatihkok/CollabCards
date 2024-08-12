@@ -10,9 +10,13 @@ import SwiftUI
 // MARK: - SettingsView
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
-    
+    @StateObject var boardVM = BoardViewModel()
     @State private var tempIsAuthorVisible: Bool = false
+    @State private var tempIsDateVisible: Bool = false
     @Binding var isAuthorVisible: Bool
+    @Binding var isDateVisible: Bool
+    
+    var board: Board
     
     let columns = [
         GridItem(.flexible()),
@@ -26,7 +30,7 @@ struct SettingsView: View {
                 FacilitatorControlsSection()
                 VotingSettingsView()
                 BackgroundSettingsView()
-                EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible)
+                EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible, tempIsDateVisible: $tempIsDateVisible)
                 DisableFeaturesSection()
                 ActionsSection()
                 DangerZoneView()
@@ -37,12 +41,17 @@ struct SettingsView: View {
                 },
                 trailing: Button("Done") {
                     isAuthorVisible = tempIsAuthorVisible
+                    isDateVisible = tempIsDateVisible
+                    boardVM.updateDateVisibilityInFirestore(
+                        boardID: board.id,
+                        isDateVisible: tempIsDateVisible)
                     dismiss()
                 }
             )
         }
         .onAppear {
             tempIsAuthorVisible = isAuthorVisible
+            tempIsDateVisible = isDateVisible
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -93,6 +102,7 @@ struct BackgroundSettingsView: View {
 struct EnableFeaturesSection: View {
     let columns: [GridItem]
     @Binding var tempIsAuthorVisible: Bool
+    @Binding var tempIsDateVisible: Bool
     
     var body: some View {
         Section(header: Text("Enable Features")) {
@@ -105,7 +115,10 @@ struct EnableFeaturesSection: View {
                     .onTapGesture {
                         tempIsAuthorVisible.toggle()
                     }
-                FeatureCardView(featureName: "Card's date", iconName: "calendar")
+                FeatureCardView(featureName: "Card's date", iconName: tempIsDateVisible ? "calendar.circle.fill" : "calendar.circle")
+                    .onTapGesture {
+                        tempIsDateVisible.toggle()
+                    }
                 FeatureCardView(featureName: "Anon names", iconName: "eye.slash")
                 FeatureCardView(featureName: "Anyone can edit", iconName: "pencil")
                 FeatureCardView(featureName: "Password", iconName: "lock")
@@ -114,7 +127,6 @@ struct EnableFeaturesSection: View {
         }
     }
 }
-
 // MARK: - Disable Features Section
 struct DisableFeaturesSection: View {
     var body: some View {
@@ -178,5 +190,15 @@ struct FeatureCardView: View {
 }
 
 #Preview {
-    SettingsView(isAuthorVisible: .constant(false))
+    SettingsView(
+        isAuthorVisible: .constant(false),
+        isDateVisible: .constant(true),
+        board: Board(
+            id: UUID(),
+            name: "Sample Board",
+            deviceID: "SampleDeviceID",
+            participants: ["SampleDeviceID"]
+        )
+    )
 }
+

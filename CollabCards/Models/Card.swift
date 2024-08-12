@@ -11,6 +11,8 @@ struct Card: Identifiable, Codable {
     var id: String
     var title: String
     var status: String
-    var author: String? 
+    var author: String?
+    var date: Date = Date()
 }
+
 

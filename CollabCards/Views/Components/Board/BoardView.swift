@@ -21,7 +21,9 @@ struct BoardView: View {
     @State private var board: Board?
     @State private var timerValue: Int = 15 * 60
     @State private var showAlert = false
-    @State private var isAuthorVisible = true // `isAuthorVisible` durumu eklendi
+    @State private var isAuthorVisible = true
+    @State private var isDateVisible = false
+    
     var boardID: UUID
     var username: String
     
@@ -92,7 +94,7 @@ struct BoardView: View {
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: SettingsView(isAuthorVisible: $isAuthorVisible)) {
+                            NavigationLink(destination: SettingsView(isAuthorVisible: $isAuthorVisible, isDateVisible: $isDateVisible, board: board)) {
                                 Image(systemName: "ellipsis")
                                     .foregroundColor(.white)
                             }
@@ -125,7 +127,8 @@ struct BoardView: View {
                                         },
                                         boardID: boardID.uuidString,
                                         board: board,
-                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
+                                        isAuthorVisible: isAuthorVisible,
+                                        isDateVisible: isDateVisible
                                     )
                                 }
                             }
@@ -153,7 +156,8 @@ struct BoardView: View {
                                         },
                                         boardID: boardID.uuidString,
                                         board: board,
-                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
+                                        isAuthorVisible: isAuthorVisible,
+                                        isDateVisible: isDateVisible
                                     )
                                 }
                             }
@@ -181,7 +185,8 @@ struct BoardView: View {
                                         },
                                         boardID: boardID.uuidString,
                                         board: board,
-                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
+                                        isAuthorVisible: isAuthorVisible,
+                                        isDateVisible: isDateVisible
                                     )
                                 }
                             }
@@ -242,6 +247,11 @@ struct BoardView: View {
             .onAppear {
                 cardVM.fetchCards(for: boardID.uuidString)
                 loadBoard()
+                boardVM.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
+                    if let fetchedBoard = fetchedBoard {
+                        self.isDateVisible = fetchedBoard.isDateVisible ?? false
+                    }
+                }
             }
             .onDisappear {
                 timer.upstream.connect().cancel()
@@ -278,6 +288,7 @@ struct BoardView: View {
         }
     }
 }
+
 
 func timerString(from timeInterval: TimeInterval) -> String {
     let minutes = Int(timeInterval) / 60

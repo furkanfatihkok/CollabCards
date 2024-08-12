@@ -17,6 +17,7 @@ struct CardColumnView: View {
     var boardID: String
     var board: Board
     var isAuthorVisible: Bool
+    var isDateVisible: Bool
 
     var filteredCards: [Card] {
         allCards.filter { $0.status == statusFilter }
@@ -44,7 +45,8 @@ struct CardColumnView: View {
                     cardVM: cardVM,
                     boardID: boardID,
                     boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown",
-                    isAuthorVisible: isAuthorVisible
+                    isAuthorVisible: isAuthorVisible,
+                    isDateVisible: isDateVisible
                 )
                 .onDrag {
                     let data = card.id.data(using: .utf8) ?? Data()
@@ -79,7 +81,9 @@ struct CardColumnView: View {
         onDelete: { _ in },
         boardID: UUID().uuidString,
         board: Board(id: UUID(), name: "Sample Board", deviceID: "deviceID", participants: ["deviceID"]),
-        isAuthorVisible: true
+        isAuthorVisible: true,
+        isDateVisible: true
     )
 }
+
 
