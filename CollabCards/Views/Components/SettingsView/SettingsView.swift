@@ -28,10 +28,16 @@ struct SettingsView: View {
                 ActionsSection()
                 DangerZoneView()
             }
-            .navigationBarItems(trailing: Button("Done") {
+            .navigationBarItems(
+                leading: Button("Cancel") {
+                    dismiss()
+                },
+                trailing: Button("Done") {
                 dismiss()
-            })
+            }
+            )
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
