@@ -31,9 +31,12 @@ struct SettingsView: View {
                 VotingSettingsView()
                 BackgroundSettingsView()
                 EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible, tempIsDateVisible: $tempIsDateVisible)
-                DisableFeaturesSection()
+                DisableFeaturesSection(
+                    isMoveCardsDisabled: $boardVM.isMoveCardsDisabled,
+                    isAddEditCardsDisabled: $boardVM.isAddEditCardsDisabled
+                )
                 ActionsSection()
-                DangerZoneView()
+                DangerZoneView(boardVM: boardVM, board: board)
             }
             .navigationBarItems(
                 leading: Button("Cancel") {
@@ -42,9 +45,11 @@ struct SettingsView: View {
                 trailing: Button("Done") {
                     isAuthorVisible = tempIsAuthorVisible
                     isDateVisible = tempIsDateVisible
-                    boardVM.updateDateVisibilityInFirestore(
+                    boardVM.updateBoardSettings(
                         boardID: board.id,
-                        isDateVisible: tempIsDateVisible)
+                        isDateVisible: isDateVisible, isMoveCardsDisabled: boardVM.isMoveCardsDisabled,
+                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
+                    )
                     dismiss()
                 }
             )
@@ -52,10 +57,12 @@ struct SettingsView: View {
         .onAppear {
             tempIsAuthorVisible = isAuthorVisible
             tempIsDateVisible = isDateVisible
+            boardVM.fetchBoardSettings(boardID: board.id)
         }
         .navigationBarBackButtonHidden(true)
     }
 }
+
 
 // MARK: - Facilitator Controls Section
 struct FacilitatorControlsSection: View {
@@ -129,10 +136,13 @@ struct EnableFeaturesSection: View {
 }
 // MARK: - Disable Features Section
 struct DisableFeaturesSection: View {
+    @Binding var isMoveCardsDisabled: Bool
+    @Binding var isAddEditCardsDisabled: Bool
+
     var body: some View {
         Section(header: Text("Disable Features")) {
-            CheckButtonView(isChecked: .constant(false), title: "Disable Move cards")
-            CheckButtonView(isChecked: .constant(false), title: "Disable Add/edit cards")
+            CheckButtonView(isChecked: $isMoveCardsDisabled, title: "Disable Move cards")
+            CheckButtonView(isChecked: $isAddEditCardsDisabled, title: "Disable Add/edit cards")
             CheckButtonView(isChecked: .constant(false), title: "Hide Prime Directive")
         }
     }
@@ -153,15 +163,49 @@ struct ActionsSection: View {
 
 // MARK: - Danger Zone Section
 struct DangerZoneView: View {
+    @ObservedObject var boardVM: BoardViewModel
+    var board: Board
+    @State private var showDeleteAllCardsAlert = false
+    @State private var showDeleteBoardAlert = false
+    
     var body: some View {
         Section(header: Text("Danger zone").foregroundColor(.red)) {
             ActionButtonView(action: { /* Reset votes logic */ }, label: "Reset all votes", systemImage: "arrow.counterclockwise")
             ActionButtonView(action: { /* Archive board logic */ }, label: "Archive board", systemImage: "archivebox")
-            ActionButtonView(action: { /* Delete all cards logic */ }, label: "Delete all cards", systemImage: "trash")
-            ActionButtonView(action: { /* Delete board logic */ }, label: "Delete board", systemImage: "trash")
+
+            ActionButtonView(action: {
+                showDeleteAllCardsAlert = true
+            }, label: "Delete all cards", systemImage: "trash")
+            .foregroundColor(.gray)
+            .alert(isPresented: $showDeleteAllCardsAlert) {
+                Alert(
+                    title: Text("Delete all cards"),
+                    message: Text("This action cannot be undone. Are you sure you want to delete all cards?"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        boardVM.deleteAllCards(for: board.id)
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            
+            ActionButtonView(action: {
+                showDeleteBoardAlert = true
+            }, label: "Delete board", systemImage: "trash")
+            .foregroundColor(.gray)
+            .alert(isPresented: $showDeleteBoardAlert) {
+                Alert(
+                    title: Text("Delete board"),
+                    message: Text("This action cannot be undone. Are you sure you want to delete this board?"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        boardVM.deleteBoard(board)
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
         }
     }
 }
+
 
 // MARK: - FeatureCardView
 struct FeatureCardView: View {

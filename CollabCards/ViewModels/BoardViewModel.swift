@@ -12,6 +12,8 @@ import FirebaseCrashlytics
 class BoardViewModel: ObservableObject {
     @Published var boards = [Board]()
     @Published var isDateVisible: Bool = false
+    @Published var isMoveCardsDisabled: Bool = false
+    @Published var isAddEditCardsDisabled: Bool = false
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     
@@ -47,6 +49,40 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    func updateBoardSettings(boardID: UUID, isDateVisible:Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool) {
+        db.collection("boards").document(boardID.uuidString).updateData([
+            "isDateVisible": isDateVisible,
+            "isMoveCardsDisabled": isMoveCardsDisabled,
+            "isAddEditCardsDisabled": isAddEditCardsDisabled
+        ]) { error in
+            if let error = error {
+                Crashlytics.log("Error updating board settings: \(error.localizedDescription)")
+            } else {
+                Crashlytics.log("Board settings updated successfully for ID: \(boardID.uuidString)")
+            }
+        }
+    }
+    
+    func fetchBoardSettings(boardID: UUID) {
+        let docRef = db.collection("boards").document(boardID.uuidString)
+        docRef.addSnapshotListener { documentSnapshot, error in
+            if let error = error {
+                Crashlytics.log("Error fetching board settings: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let document = documentSnapshot else {
+                Crashlytics.log("No document found for board with ID: \(boardID.uuidString)")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.isMoveCardsDisabled = document.get("isMoveCardsDisabled") as? Bool ?? false
+                self.isAddEditCardsDisabled = document.get("isAddEditCardsDisabled") as? Bool ?? false
+            }
+        }
+    }
+    
     func fetchBoardWithRealtimeUpdates(boardID: UUID, completion: @escaping (Board?) -> Void) {
         let docRef = db.collection("boards").document(boardID.uuidString)
         listener = docRef.addSnapshotListener { documentSnapshot, error in
@@ -66,6 +102,8 @@ class BoardViewModel: ObservableObject {
                 do {
                     let board = try document.data(as: Board.self)
                     self.isDateVisible = board.isDateVisible ?? false
+                    self.isMoveCardsDisabled = board.isMoveCardsDisabled ?? false
+                    self.isAddEditCardsDisabled = board.isAddEditCardsDisabled ?? false
                     Crashlytics.log("Board fetched with realtime updates for ID: \(boardID.uuidString)")
                     completion(board)
                 } catch {
@@ -108,6 +146,29 @@ class BoardViewModel: ObservableObject {
                     Crashlytics.log("Error deleting board with ID: \(board.id). Error: \(error.localizedDescription)")
                 } else {
                     Crashlytics.log("Board deleted successfully with ID: \(board.id)")
+                }
+            }
+        }
+    }
+    
+    func deleteAllCards(for boardID: UUID) {
+        let cardsRef = db.collection("boards").document(boardID.uuidString).collection("cards")
+        cardsRef.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                Crashlytics.log("Error deleting all cards: \(error.localizedDescription)")
+                return
+            }
+            guard let documents = querySnapshot?.documents else {
+                Crashlytics.log("No cards found to delete.")
+                return
+            }
+            for document in documents {
+                document.reference.delete { error in
+                    if let error = error {
+                        Crashlytics.log("Error deleting card with ID \(document.documentID): \(error.localizedDescription)")
+                    } else {
+                        Crashlytics.log("Card deleted with ID \(document.documentID)")
+                    }
                 }
             }
         }

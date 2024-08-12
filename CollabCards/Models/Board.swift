@@ -16,6 +16,8 @@ struct Board: Identifiable, Codable {
     var isPaused: Bool?
     var isExpired: Bool?
     var isDateVisible: Bool? = false
+    var isMoveCardsDisabled: Bool? = false
+    var isAddEditCardsDisabled: Bool? = false
     var usernames: [String: String]?
     var password: String?
 }

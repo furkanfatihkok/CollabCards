@@ -130,6 +130,7 @@ struct BoardView: View {
                                         isAuthorVisible: isAuthorVisible,
                                         isDateVisible: isDateVisible
                                     )
+                                    .disabled(boardVM.isMoveCardsDisabled)
                                 }
                             }
                             .frame(width: UIScreen.main.bounds.width * 0.8)
@@ -159,6 +160,7 @@ struct BoardView: View {
                                         isAuthorVisible: isAuthorVisible,
                                         isDateVisible: isDateVisible
                                     )
+                                    .disabled(boardVM.isMoveCardsDisabled)
                                 }
                             }
                             .frame(width: UIScreen.main.bounds.width * 0.8)
@@ -188,6 +190,7 @@ struct BoardView: View {
                                         isAuthorVisible: isAuthorVisible,
                                         isDateVisible: isDateVisible
                                     )
+                                    .disabled(boardVM.isMoveCardsDisabled)
                                 }
                             }
                             .frame(width: UIScreen.main.bounds.width * 0.8)
@@ -205,7 +208,7 @@ struct BoardView: View {
                             .cornerRadius(8)
                     }
                     .padding()
-                    .disabled(board.isExpired ?? false)
+                    .disabled(board.isExpired ?? false || boardVM.isAddEditCardsDisabled)
                 } else if isLoading {
                     VStack {
                         ProgressView()
@@ -271,6 +274,7 @@ struct BoardView: View {
         boardVM.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
             if let fetchedBoard = fetchedBoard {
                 self.board = fetchedBoard
+                self.isDateVisible = fetchedBoard.isDateVisible ?? false
                 if let timerValue = fetchedBoard.timerValue {
                     self.timerValue = timerValue
                 }
@@ -288,7 +292,6 @@ struct BoardView: View {
         }
     }
 }
-
 
 func timerString(from timeInterval: TimeInterval) -> String {
     let minutes = Int(timeInterval) / 60
