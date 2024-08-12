@@ -15,8 +15,8 @@ struct CardView: View {
     var onEdit: (Card) -> Void
     var cardVM: CardViewModel
     var boardID: String
-    var isAnonymous: Bool
     var boardUsername: String
+    var isAuthorVisible: Bool
     
     @State private var showEditSheet = false
     
@@ -27,7 +27,7 @@ struct CardView: View {
                     .foregroundStyle(.white)
                     .padding(.bottom, 2)
                 
-                if !isAnonymous {
+                if isAuthorVisible {
                     Text(card.author ?? boardUsername)
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.7))
@@ -80,3 +80,4 @@ struct CardView: View {
         }
     }
 }
+

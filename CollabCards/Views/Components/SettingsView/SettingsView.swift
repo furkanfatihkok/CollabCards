@@ -11,6 +11,9 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     
+    @State private var tempIsAuthorVisible: Bool = false
+    @Binding var isAuthorVisible: Bool
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -23,15 +26,25 @@ struct SettingsView: View {
                 FacilitatorControlsSection()
                 VotingSettingsView()
                 BackgroundSettingsView()
-                EnableFeaturesSection(columns: columns)
+                EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible)
                 DisableFeaturesSection()
                 ActionsSection()
                 DangerZoneView()
             }
-            .navigationBarItems(trailing: Button("Done") {
-                dismiss()
-            })
+            .navigationBarItems(
+                leading: Button("Cancel") {
+                    dismiss()
+                },
+                trailing: Button("Done") {
+                    isAuthorVisible = tempIsAuthorVisible
+                    dismiss()
+                }
+            )
         }
+        .onAppear {
+            tempIsAuthorVisible = isAuthorVisible
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -79,6 +92,7 @@ struct BackgroundSettingsView: View {
 // MARK: - Enable Features Section
 struct EnableFeaturesSection: View {
     let columns: [GridItem]
+    @Binding var tempIsAuthorVisible: Bool
     
     var body: some View {
         Section(header: Text("Enable Features")) {
@@ -87,7 +101,10 @@ struct EnableFeaturesSection: View {
                 FeatureCardView(featureName: "Reactions", iconName: "heart")
                 FeatureCardView(featureName: "Enable image", iconName: "photo.fill")
                 FeatureCardView(featureName: "One vote per card", iconName: "hand.thumbsup")
-                FeatureCardView(featureName: "Card's author", iconName: "person")
+                FeatureCardView(featureName: "Card's author", iconName: tempIsAuthorVisible ? "person.fill" : "person")
+                    .onTapGesture {
+                        tempIsAuthorVisible.toggle()
+                    }
                 FeatureCardView(featureName: "Card's date", iconName: "calendar")
                 FeatureCardView(featureName: "Anon names", iconName: "eye.slash")
                 FeatureCardView(featureName: "Anyone can edit", iconName: "pencil")
@@ -161,6 +178,6 @@ struct FeatureCardView: View {
 }
 
 #Preview {
-    SettingsView()
+    SettingsView(isAuthorVisible: .constant(false))
 }
 
