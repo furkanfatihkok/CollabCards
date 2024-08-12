@@ -1,3 +1,4 @@
+//
 //  BoardView.swift
 //  CollabCards
 //
@@ -20,7 +21,7 @@ struct BoardView: View {
     @State private var board: Board?
     @State private var timerValue: Int = 15 * 60
     @State private var showAlert = false
-    @State private var isAnonymous = false
+    @State private var isAuthorVisible = true // `isAuthorVisible` durumu eklendi
     var boardID: UUID
     var username: String
     
@@ -91,7 +92,7 @@ struct BoardView: View {
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: SettingsView()) {
+                            NavigationLink(destination: SettingsView(isAuthorVisible: $isAuthorVisible)) {
                                 Image(systemName: "ellipsis")
                                     .foregroundColor(.white)
                             }
@@ -123,8 +124,8 @@ struct BoardView: View {
                                             Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                         },
                                         boardID: boardID.uuidString,
-                                        isAnonymous: board.isAnonymous ?? false,
-                                        board: board
+                                        board: board,
+                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
                                     )
                                 }
                             }
@@ -151,8 +152,8 @@ struct BoardView: View {
                                             Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                         },
                                         boardID: boardID.uuidString,
-                                        isAnonymous: board.isAnonymous ?? false,
-                                        board: board
+                                        board: board,
+                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
                                     )
                                 }
                             }
@@ -179,8 +180,8 @@ struct BoardView: View {
                                             Crashlytics.log("Deleted card with id: \(String(describing: card.id))")
                                         },
                                         boardID: boardID.uuidString,
-                                        isAnonymous: board.isAnonymous ?? false,
-                                        board: board
+                                        board: board,
+                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
                                     )
                                 }
                             }
@@ -269,9 +270,6 @@ struct BoardView: View {
                 if let isExpired = fetchedBoard.isExpired {
                     self.board?.isExpired = isExpired
                 }
-                if let isAnonymous = fetchedBoard.isAnonymous {
-                    self.isAnonymous = isAnonymous
-                }
                 Crashlytics.log("Board loaded with ID: \(fetchedBoard.id.uuidString)")
             } else {
                 Crashlytics.log("Failed to load board with ID: \(boardID.uuidString)")
@@ -290,4 +288,3 @@ func timerString(from timeInterval: TimeInterval) -> String {
 #Preview {
     BoardView(boardID: UUID(), username: "SampleUser")
 }
-

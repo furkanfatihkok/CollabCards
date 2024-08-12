@@ -15,8 +15,8 @@ struct CardColumnView: View {
     var onEdit: (Card) -> Void
     var onDelete: (Card) -> Void
     var boardID: String
-    var isAnonymous: Bool
     var board: Board
+    var isAuthorVisible: Bool
 
     var filteredCards: [Card] {
         allCards.filter { $0.status == statusFilter }
@@ -43,8 +43,8 @@ struct CardColumnView: View {
                     },
                     cardVM: cardVM,
                     boardID: boardID,
-                    isAnonymous: isAnonymous,
-                    boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown"
+                    boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown",
+                    isAuthorVisible: isAuthorVisible
                 )
                 .onDrag {
                     let data = card.id.data(using: .utf8) ?? Data()
@@ -78,7 +78,8 @@ struct CardColumnView: View {
         onEdit: { _ in },
         onDelete: { _ in },
         boardID: UUID().uuidString,
-        isAnonymous: false,
-        board: Board(id: UUID(), name: "Sample Board", deviceID: "deviceID", participants: ["deviceID"])
+        board: Board(id: UUID(), name: "Sample Board", deviceID: "deviceID", participants: ["deviceID"]),
+        isAuthorVisible: true
     )
 }
+
