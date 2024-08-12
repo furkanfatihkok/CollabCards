@@ -27,3 +27,13 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+ 
+/*
+ Toggle("", isOn: $isAnonymous)
+     .labelsHidden()
+     .toggleStyle(SwitchToggleStyle(tint: .green))
+     .onChange(of: isAnonymous) { value in
+         boardVM.updateAnonymousStatus(boardID: boardID, isAnonymous: value)
+         self.board?.isAnonymous = value
+
+ */

@@ -180,4 +180,3 @@ struct FeatureCardView: View {
 #Preview {
     SettingsView(isAuthorVisible: .constant(false))
 }
-

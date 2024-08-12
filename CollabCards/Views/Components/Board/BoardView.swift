@@ -1,3 +1,4 @@
+//
 //  BoardView.swift
 //  CollabCards
 //
@@ -20,7 +21,7 @@ struct BoardView: View {
     @State private var board: Board?
     @State private var timerValue: Int = 15 * 60
     @State private var showAlert = false
-    @State private var isAuthorVisible = true
+    @State private var isAuthorVisible = true // `isAuthorVisible` durumu eklendi
     var boardID: UUID
     var username: String
     
@@ -124,7 +125,7 @@ struct BoardView: View {
                                         },
                                         boardID: boardID.uuidString,
                                         board: board,
-                                        isAuthorVisible: isAuthorVisible
+                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
                                     )
                                 }
                             }
@@ -152,7 +153,7 @@ struct BoardView: View {
                                         },
                                         boardID: boardID.uuidString,
                                         board: board,
-                                        isAuthorVisible: isAuthorVisible
+                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
                                     )
                                 }
                             }
@@ -180,7 +181,7 @@ struct BoardView: View {
                                         },
                                         boardID: boardID.uuidString,
                                         board: board,
-                                        isAuthorVisible: isAuthorVisible
+                                        isAuthorVisible: isAuthorVisible // `isAuthorVisible` durumu geçirildi
                                     )
                                 }
                             }
