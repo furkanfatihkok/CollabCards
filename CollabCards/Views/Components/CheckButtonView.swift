@@ -27,5 +27,5 @@ struct CheckButtonView: View {
 }
 
 #Preview {
-    CheckButtonView(isChecked: .constant(false), title: "Disable")
+    CheckButtonView(isChecked: .constant(true), title: "Disable")
 }
