@@ -22,6 +22,10 @@
 		02587EBB2C69EC7B00FE3A6F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02587EBA2C69EC7B00FE3A6F /* SettingsView.swift */; };
 		02587EBD2C69F39500FE3A6F /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02587EBC2C69F39500FE3A6F /* ActionButtonView.swift */; };
 		02587EBF2C69F3AE00FE3A6F /* CheckButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02587EBE2C69F3AE00FE3A6F /* CheckButtonView.swift */; };
+		02699A6B2C6B55DA003E8610 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02699A6A2C6B55D9003E8610 /* CancelButton.swift */; };
+		02699A6D2C6B55F1003E8610 /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02699A6C2C6B55F1003E8610 /* SaveButton.swift */; };
+		02699A6F2C6B65C9003E8610 /* CardTitleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02699A6E2C6B65C9003E8610 /* CardTitleInput.swift */; };
+		02699A712C6B660B003E8610 /* CardStatusPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02699A702C6B660B003E8610 /* CardStatusPicker.swift */; };
 		0288CC832C58D5790083B540 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC822C58D5790083B540 /* HomeView.swift */; };
 		0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288CC862C58F1080083B540 /* NewBoardView.swift */; };
 		028B9DC42C5913450068C0B9 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B9DC32C5913450068C0B9 /* Board.swift */; };
@@ -53,6 +57,10 @@
 		02587EBA2C69EC7B00FE3A6F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		02587EBC2C69F39500FE3A6F /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
 		02587EBE2C69F3AE00FE3A6F /* CheckButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckButtonView.swift; sourceTree = "<group>"; };
+		02699A6A2C6B55D9003E8610 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
+		02699A6C2C6B55F1003E8610 /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
+		02699A6E2C6B65C9003E8610 /* CardTitleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTitleInput.swift; sourceTree = "<group>"; };
+		02699A702C6B660B003E8610 /* CardStatusPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStatusPicker.swift; sourceTree = "<group>"; };
 		0288CC822C58D5790083B540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0288CC862C58F1080083B540 /* NewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardView.swift; sourceTree = "<group>"; };
 		028B9DC32C5913450068C0B9 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -106,6 +114,10 @@
 				02B5F5462C53AB17006C0BFB /* CardDropDelegate.swift */,
 				02B5F5402C538F6E006C0BFB /* AddCardView.swift */,
 				02B5F5482C53B25A006C0BFB /* EditCardView.swift */,
+				02699A702C6B660B003E8610 /* CardStatusPicker.swift */,
+				02699A6E2C6B65C9003E8610 /* CardTitleInput.swift */,
+				02699A6C2C6B55F1003E8610 /* SaveButton.swift */,
+				02699A6A2C6B55D9003E8610 /* CancelButton.swift */,
 				02587EBC2C69F39500FE3A6F /* ActionButtonView.swift */,
 				02587EBE2C69F3AE00FE3A6F /* CheckButtonView.swift */,
 				021509CE2C513231002BFFED /* Home */,
@@ -310,12 +322,15 @@
 				021509C92C512824002BFFED /* EmptyView.swift in Sources */,
 				02587EBD2C69F39500FE3A6F /* ActionButtonView.swift in Sources */,
 				028B9DC42C5913450068C0B9 /* Board.swift in Sources */,
+				02699A6F2C6B65C9003E8610 /* CardTitleInput.swift in Sources */,
 				022051DC2C5A3DDD00DFAC41 /* QRScannerView.swift in Sources */,
 				02B5F5412C538F6E006C0BFB /* AddCardView.swift in Sources */,
 				02B5F53D2C538C7F006C0BFB /* CardViewModel.swift in Sources */,
 				02B5F5452C53A5F3006C0BFB /* CardView.swift in Sources */,
 				0288CC872C58F1080083B540 /* NewBoardView.swift in Sources */,
+				02699A712C6B660B003E8610 /* CardStatusPicker.swift in Sources */,
 				02EBDCCF2C66395A009BC723 /* HeaderView.swift in Sources */,
+				02699A6B2C6B55DA003E8610 /* CancelButton.swift in Sources */,
 				02B5F53F2C538D40006C0BFB /* Card.swift in Sources */,
 				02B5F5492C53B25A006C0BFB /* EditCardView.swift in Sources */,
 				02B5F5432C538FC7006C0BFB /* CardColumnView.swift in Sources */,
@@ -324,6 +339,7 @@
 				02A6ABFC2C51254700234AF3 /* ContentView.swift in Sources */,
 				02150A252C525512002BFFED /* Crashlytics.swift in Sources */,
 				02B5F53A2C538BCA006C0BFB /* BoardView.swift in Sources */,
+				02699A6D2C6B55F1003E8610 /* SaveButton.swift in Sources */,
 				02B5F5472C53AB17006C0BFB /* CardDropDelegate.swift in Sources */,
 				02A6ABFA2C51254700234AF3 /* CollabCardsApp.swift in Sources */,
 				0288CC832C58D5790083B540 /* HomeView.swift in Sources */,

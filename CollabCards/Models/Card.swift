@@ -8,7 +8,7 @@
 import Foundation
 
 struct Card: Identifiable, Codable {
-    var id: String
+    var id: UUID
     var title: String
     var status: String
     var author: String?

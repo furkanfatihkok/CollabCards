@@ -113,8 +113,7 @@ struct BoardView: View {
                                 ScrollView(.vertical, showsIndicators: false) {
                                     CardColumnView(
                                         cards: $cardVM.cards,
-                                        statusFilter: "went well",
-                                        allCards: $cardVM.cards,
+                                        allCards: $cardVM.cards, statusFilter: "went well",
                                         cardVM: cardVM,
                                         onEdit: { card in
                                             cardToEdit = card
@@ -143,8 +142,7 @@ struct BoardView: View {
                                 ScrollView(.vertical, showsIndicators: false) {
                                     CardColumnView(
                                         cards: $cardVM.cards,
-                                        statusFilter: "to improve",
-                                        allCards: $cardVM.cards,
+                                        allCards: $cardVM.cards, statusFilter: "to improve",
                                         cardVM: cardVM,
                                         onEdit: { card in
                                             cardToEdit = card
@@ -173,8 +171,7 @@ struct BoardView: View {
                                 ScrollView(.vertical, showsIndicators: false) {
                                     CardColumnView(
                                         cards: $cardVM.cards,
-                                        statusFilter: "action items",
-                                        allCards: $cardVM.cards,
+                                        allCards: $cardVM.cards, statusFilter: "action items",
                                         cardVM: cardVM,
                                         onEdit: { card in
                                             cardToEdit = card
@@ -230,8 +227,10 @@ struct BoardView: View {
             .sheet(isPresented: $showEditSheet) {
                 if let card = cardToEdit, let board = board {
                     EditCardView(
-                        card: .constant(card),
-                        cardVM: cardVM,
+                        card: .constant(card), // Binding<Card> sağlanıyor
+                        title: .constant(card.title), // Binding<String> sağlanıyor
+                        status: .constant(card.status), // Binding<String> sağlanıyor
+                        cardVM: cardVM, // Bu doğru, çünkü `cardVM` zaten bir ViewModel
                         onSave: { updatedCard in
                             if let index = cardVM.cards.firstIndex(where: { $0.id == card.id }) {
                                 cardVM.cards[index] = updatedCard
@@ -240,10 +239,9 @@ struct BoardView: View {
                             }
                             cardToEdit = nil
                             showEditSheet = false
-                        }, boardID: boardID.uuidString,
-                        boardUsername: username,
-                        title: .constant(card.title),
-                        status: .constant(card.status)
+                        },
+                        boardID: boardID.uuidString,
+                        boardUsername: username
                     )
                 }
             }

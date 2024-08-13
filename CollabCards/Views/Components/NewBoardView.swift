@@ -66,7 +66,7 @@ struct NewBoardView: View {
                             return
                         }
                         let usernames = [deviceID: username]
-                        let newBoard = Board(id: boardID, name: boardName, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60, usernames: usernames, password: password)
+                        let newBoard = Board(id: boardID, name: boardName, password: password, deviceID: deviceID, participants: [deviceID], timerValue: ideateDuration * 60, usernames: usernames)
                         UserDefaults.standard.set(username, forKey: "username")
                         onSave(newBoard)
                         dismiss()

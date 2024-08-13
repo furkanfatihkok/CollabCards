@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-//  todo: settings de kaydettiğin işlemlerden sonra boardview'Dan home view'a geçiş sağlaığında settings sıfırlanıyor. Bunu sıfırlattırma.
-
 struct ContentView: View {
     @ObservedObject var boardVM = BoardViewModel()
     

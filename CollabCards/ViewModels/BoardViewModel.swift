@@ -49,20 +49,6 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func updateBoardSettings(boardID: UUID, isDateVisible:Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool) {
-        db.collection("boards").document(boardID.uuidString).updateData([
-            "isDateVisible": isDateVisible,
-            "isMoveCardsDisabled": isMoveCardsDisabled,
-            "isAddEditCardsDisabled": isAddEditCardsDisabled
-        ]) { error in
-            if let error = error {
-                Crashlytics.log("Error updating board settings: \(error.localizedDescription)")
-            } else {
-                Crashlytics.log("Board settings updated successfully for ID: \(boardID.uuidString)")
-            }
-        }
-    }
-    
     func fetchBoardSettings(boardID: UUID) {
         let docRef = db.collection("boards").document(boardID.uuidString)
         docRef.addSnapshotListener { documentSnapshot, error in
@@ -139,41 +125,6 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func deleteBoard(_ board: Board) {
-        db.collection("boards").document(board.id.uuidString).delete { error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    Crashlytics.log("Error deleting board with ID: \(board.id). Error: \(error.localizedDescription)")
-                } else {
-                    Crashlytics.log("Board deleted successfully with ID: \(board.id)")
-                }
-            }
-        }
-    }
-    
-    func deleteAllCards(for boardID: UUID) {
-        let cardsRef = db.collection("boards").document(boardID.uuidString).collection("cards")
-        cardsRef.getDocuments { (querySnapshot, error) in
-            if let error = error {
-                Crashlytics.log("Error deleting all cards: \(error.localizedDescription)")
-                return
-            }
-            guard let documents = querySnapshot?.documents else {
-                Crashlytics.log("No cards found to delete.")
-                return
-            }
-            for document in documents {
-                document.reference.delete { error in
-                    if let error = error {
-                        Crashlytics.log("Error deleting card with ID \(document.documentID): \(error.localizedDescription)")
-                    } else {
-                        Crashlytics.log("Card deleted with ID \(document.documentID)")
-                    }
-                }
-            }
-        }
-    }
-    
     func addBoardToCurrentDevice(boardID: UUID, completion: @escaping (Board?) -> Void) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board to current device: deviceID not found")
@@ -210,23 +161,51 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    private func updateBoard(_ board: Board, completion: @escaping (Board?) -> Void) {
-        do {
-            let _ = try db.collection("boards").document(board.id.uuidString).setData(from: board) { error in
-                DispatchQueue.main.async {
+    func deleteBoard(_ board: Board) {
+        db.collection("boards").document(board.id.uuidString).delete { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    Crashlytics.log("Error deleting board with ID: \(board.id). Error: \(error.localizedDescription)")
+                } else {
+                    Crashlytics.log("Board deleted successfully with ID: \(board.id)")
+                }
+            }
+        }
+    }
+    
+    func deleteAllCards(for boardID: UUID) {
+        let cardsRef = db.collection("boards").document(boardID.uuidString).collection("cards")
+        cardsRef.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                Crashlytics.log("Error deleting all cards: \(error.localizedDescription)")
+                return
+            }
+            guard let documents = querySnapshot?.documents else {
+                Crashlytics.log("No cards found to delete.")
+                return
+            }
+            for document in documents {
+                document.reference.delete { error in
                     if let error = error {
-                        Crashlytics.log("Error updating board: \(error.localizedDescription)")
-                        completion(nil)
+                        Crashlytics.log("Error deleting card with ID \(document.documentID): \(error.localizedDescription)")
                     } else {
-                        Crashlytics.log("Board updated successfully with ID: \(board.id)")
-                        completion(board)
+                        Crashlytics.log("Card deleted with ID \(document.documentID)")
                     }
                 }
             }
-        } catch {
-            DispatchQueue.main.async {
-                Crashlytics.log("Error updating board document: \(error.localizedDescription)")
-                completion(nil)
+        }
+    }
+    
+    func updateBoardSettings(boardID: UUID, isDateVisible:Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool) {
+        db.collection("boards").document(boardID.uuidString).updateData([
+            "isDateVisible": isDateVisible,
+            "isMoveCardsDisabled": isMoveCardsDisabled,
+            "isAddEditCardsDisabled": isAddEditCardsDisabled
+        ]) { error in
+            if let error = error {
+                Crashlytics.log("Error updating board settings: \(error.localizedDescription)")
+            } else {
+                Crashlytics.log("Board settings updated successfully for ID: \(boardID.uuidString)")
             }
         }
     }
@@ -268,6 +247,16 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    func updateDateVisibilityInFirestore(boardID: UUID, isDateVisible: Bool) {
+        db.collection("boards").document(boardID.uuidString).updateData(["isDateVisible": isDateVisible]) { error in
+            if let error = error {
+                Crashlytics.log("Error updating isDateVisible: \(error.localizedDescription)")
+            } else {
+                Crashlytics.log("isDateVisible updated successfully for board ID: \(boardID.uuidString)")
+            }
+        }
+    }
+    
     func verifyPassword(boardID: UUID, enteredPassword: String, completion: @escaping (Bool) -> Void) {
         let docRef = db.collection("boards").document(boardID.uuidString)
         docRef.getDocument { (document, error) in
@@ -303,18 +292,30 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func updateDateVisibilityInFirestore(boardID: UUID, isDateVisible: Bool) {
-        db.collection("boards").document(boardID.uuidString).updateData(["isDateVisible": isDateVisible]) { error in
-            if let error = error {
-                Crashlytics.log("Error updating isDateVisible: \(error.localizedDescription)")
-            } else {
-                Crashlytics.log("isDateVisible updated successfully for board ID: \(boardID.uuidString)")
+    private func usernameForDevice() -> String {
+        return UserDefaults.standard.string(forKey: "username") ?? "Unknown User"
+    }
+    
+    private func updateBoard(_ board: Board, completion: @escaping (Board?) -> Void) {
+        do {
+            let _ = try db.collection("boards").document(board.id.uuidString).setData(from: board) { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        Crashlytics.log("Error updating board: \(error.localizedDescription)")
+                        completion(nil)
+                    } else {
+                        Crashlytics.log("Board updated successfully with ID: \(board.id)")
+                        completion(board)
+                    }
+                }
+            }
+        } catch {
+            DispatchQueue.main.async {
+                Crashlytics.log("Error updating board document: \(error.localizedDescription)")
+                completion(nil)
             }
         }
     }
     
-    private func usernameForDevice() -> String {
-        return UserDefaults.standard.string(forKey: "username") ?? "Unknown User"
-    }
 }
 
