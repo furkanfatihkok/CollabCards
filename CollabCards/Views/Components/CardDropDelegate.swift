@@ -18,10 +18,10 @@ struct CardDropDelegate: DropDelegate {
         guard let item = info.itemProviders(for: [UTType.text]).first else { return false }
 
         item.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { (data, error) in
-            guard let data = data as? Data, let id = String(data: data, encoding: .utf8) else { return }
+            guard let data = data as? Data, let idString = String(data: data, encoding: .utf8) else { return }
 
             DispatchQueue.main.async {
-                if let draggedCardIndex = allCards.firstIndex(where: { $0.id == id }) {
+                if let draggedCardIndex = allCards.firstIndex(where: { $0.id.uuidString == idString }) {
                     allCards[draggedCardIndex].status = status
                     cardVM.moveCard(allCards[draggedCardIndex], toStatus: status, in: boardID)
                 }

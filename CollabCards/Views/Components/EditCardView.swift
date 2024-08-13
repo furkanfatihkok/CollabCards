@@ -1,3 +1,4 @@
+//
 //  EditCardView.swift
 //  CollabCards
 //
@@ -7,45 +8,33 @@
 import SwiftUI
 
 struct EditCardView: View {
+    // MARK: - Properties
+    
     @Environment(\.dismiss) var dismiss
+    
     @Binding var card: Card
+    @Binding var title: String
+    @Binding var status: String
+    
     @State private var showAlert = false
+    
     var cardVM: CardViewModel
     var onSave: (Card) -> Void
     var boardID: String
     var boardUsername: String
-
-    @Binding var title: String
-    @Binding var status: String
-
+    
+    // MARK: - Body
+    
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    TextField("Title", text: $title)
-                    Picker("Status", selection: $status) {
-                        Text("Went Well").tag("went well")
-                        Text("To Improve").tag("to improve")
-                        Text("Action Items").tag("action items")
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                }
-            }
+            EditCardForm(
+                title: $title,
+                status: $status
+            )
             .navigationTitle("Edit Card")
             .navigationBarItems(
-                leading: Button("Cancel") {
-                    dismiss()
-                },
-                trailing: Button("Save") {
-                    if title.isEmpty {
-                        showAlert = true
-                    } else {
-                        let updatedCard = Card(id: card.id, title: title, status: status)
-                        cardVM.editCard(updatedCard, in: boardID)
-                        onSave(updatedCard)
-                        dismiss()
-                    }
-                }
+                leading: CancelButton(dismiss: dismiss),
+                trailing: SaveButton(action: saveCard)
             )
             .alert(isPresented: $showAlert) {
                 Alert(
@@ -56,16 +45,49 @@ struct EditCardView: View {
             }
         }
     }
+    // MARK: - Functions
+    
+    private func saveCard() {
+        if title.isEmpty {
+            showAlert = true
+        } else {
+            let updatedCard = Card(id: card.id, title: title, status: status)
+            cardVM.editCard(updatedCard, in: boardID)
+            onSave(updatedCard)
+            dismiss()
+        }
+    }
 }
 
 #Preview {
-    EditCardView(
-        card: .constant(Card(id: "1", title: "Sample Card", status: "went well")),
-        cardVM: CardViewModel(),
+    let sampleCard = Card(id: UUID(), title: "Sample Card", status: "went well")
+    let cardViewModel = CardViewModel()
+    
+    return EditCardView(
+        card: .constant(sampleCard),
+        title: .constant(sampleCard.title),
+        status: .constant(sampleCard.status),
+        cardVM: cardViewModel,
         onSave: { _ in },
         boardID: UUID().uuidString,
-        boardUsername: "Furkan",
-        title: .constant("Sample Card"),
-        status: .constant("went well")
+        boardUsername: "FFK"
     )
 }
+
+// MARK: - EditCardForm
+
+struct EditCardForm: View {
+    @Binding var title: String
+    @Binding var status: String
+    
+    var body: some View {
+        Form {
+            Section {
+                CardTitleInput(title: $title)
+                CardStatusPicker(status: $status)
+            }
+        }
+    }
+}
+
+

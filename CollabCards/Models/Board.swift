@@ -10,6 +10,7 @@ import Foundation
 struct Board: Identifiable, Codable {
     var id: UUID
     var name: String
+    var password: String?
     var deviceID: String
     var participants: [String]
     var timerValue: Int?
@@ -19,7 +20,6 @@ struct Board: Identifiable, Codable {
     var isMoveCardsDisabled: Bool? = false
     var isAddEditCardsDisabled: Bool? = false
     var usernames: [String: String]?
-    var password: String?
 }
 
 

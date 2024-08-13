@@ -5,6 +5,13 @@
 //  Created by FFK on 12.08.2024.
 //
 
+//TODO: hide cards ile cardda yazan title gizlenecek.
+//TODO: highlight mode aktifkten cardın üzerine geldiğinde cardda borderlık olsun ve kenarları mavi olsun.
+//TODO: highlight mode ve hide cards'a tipkit ekle.
+//TODO: yapılan features'da seçildiğinde mavi renk olsun.
+//TODO: disable edit/add card buttonu etkinleştirlince sadece addcard bloklanıyor editi de blokla.
+//TODO: settings de kaydettiğin işlemlerden sonra boardview'Dan home view'a geçiş sağlaığında settings sıfırlanıyor. Bunu sıfırlattırma.
+
 import SwiftUI
 
 // MARK: - SettingsView
@@ -35,7 +42,6 @@ struct SettingsView: View {
                     isMoveCardsDisabled: $boardVM.isMoveCardsDisabled,
                     isAddEditCardsDisabled: $boardVM.isAddEditCardsDisabled
                 )
-                ActionsSection()
                 DangerZoneView(boardVM: boardVM, board: board)
             }
             .navigationBarItems(
@@ -148,25 +154,12 @@ struct DisableFeaturesSection: View {
     }
 }
 
-// MARK: - Actions Section
-struct ActionsSection: View {
-    var body: some View {
-        Section(header: Text("Actions")) {
-            ActionButtonView(action: { /* Copy to clipboard logic */ }, label: "Copy board to clipboard", systemImage: "doc.on.doc")
-            ActionButtonView(action: { /* Import CSV logic */ }, label: "Import CSV", systemImage: "arrow.up.doc")
-            ActionButtonView(action: { /* Export board logic */ }, label: "Export board", systemImage: "arrow.down.doc")
-            ActionButtonView(action: { /* Embed board logic */ }, label: "Embed this board", systemImage: "chevron.left.slash.chevron.right")
-            ActionButtonView(action: { /* Show/hide comments logic */ }, label: "Show/hide comments", systemImage: "text.bubble")
-        }
-    }
-}
-
 // MARK: - Danger Zone Section
 struct DangerZoneView: View {
     @ObservedObject var boardVM: BoardViewModel
-    var board: Board
     @State private var showDeleteAllCardsAlert = false
     @State private var showDeleteBoardAlert = false
+    var board: Board
     
     var body: some View {
         Section(header: Text("Danger zone").foregroundColor(.red)) {

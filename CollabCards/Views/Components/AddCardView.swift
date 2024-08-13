@@ -8,35 +8,30 @@
 import SwiftUI
 
 struct AddCardView: View {
+    // MARK: - Properties
     @Environment(\.dismiss) var dismiss
-    var cardVM: CardViewModel
-    var boardID: String
-    var boardUsername: String
-
+    
     @State private var title = ""
     @State private var status = "went well"
     @State private var showAlert = false
     @State private var alertMessage = ""
-
+    
+    var cardVM: CardViewModel
+    var boardID: String
+    var boardUsername: String
+    
+    //MARK: - Body
+    
     var body: some View {
         NavigationView {
             Form {
-                TextField("Title", text: $title)
-                Picker("Status", selection: $status) {
-                    Text("Went Well").tag("went well")
-                    Text("To Improve").tag("to improve")
-                    Text("Action Items").tag("action items")
-                }
-                .pickerStyle(SegmentedPickerStyle())
+                CardTitleInput(title: $title)
+                CardStatusPicker(status: $status)
             }
             .navigationTitle("New Card")
             .navigationBarItems(
-                leading: Button("Cancel") {
-                    dismiss()
-                },
-                trailing: Button("Save") {
-                    saveCard()
-                }
+                leading: CancelButton(dismiss: dismiss),
+                trailing: SaveButton(action: saveCard)
             )
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -46,12 +41,12 @@ struct AddCardView: View {
 
     private func saveCard() {
         guard !title.isEmpty else {
-            alertMessage = "Title cannot be empty."
+            alertMessage = "Cannot be empty."
             showAlert = true
             return
         }
         
-        let card = Card(id: UUID().uuidString, title: title, status: status, author: boardUsername)
+        let card = Card(id: UUID(), title: title, status: status, author: boardUsername)
         cardVM.addCard(card, to: boardID) {
             cardVM.fetchCards(for: boardID)
             dismiss()

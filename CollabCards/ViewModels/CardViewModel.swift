@@ -12,7 +12,7 @@ class CardViewModel: ObservableObject {
     @Published var cards = [Card]()
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
-
+    
     func fetchCards(for boardID: String) {
         listener?.remove()
         listener = db.collection("boards").document(boardID).collection("cards").addSnapshotListener { (querySnapshot, error) in
@@ -22,14 +22,14 @@ class CardViewModel: ObservableObject {
                 }
                 return
             }
-
+            
             guard let documents = querySnapshot?.documents else {
                 DispatchQueue.main.async {
                     Crashlytics.log("No documents found for cards")
                 }
                 return
             }
-
+            
             DispatchQueue.main.async {
                 self.cards = documents.compactMap { queryDocumentSnapshot in
                     do {
@@ -44,14 +44,14 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func addCard(_ card: Card, to boardID: String, completion: @escaping () -> Void) {
         var newCard = card
         newCard.author = UserDefaults.standard.string(forKey: "username")
         newCard.date = Date()
         
         do {
-            let _ = try db.collection("boards").document(boardID).collection("cards").document(card.id).setData(from: newCard) { error in
+            let _ = try db.collection("boards").document(boardID).collection("cards").document(card.id.uuidString).setData(from: newCard) { error in
                 DispatchQueue.main.async {
                     if let error = error {
                         Crashlytics.log("Kart ekleme hatası: \(error.localizedDescription)")
@@ -67,9 +67,9 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func deleteCard(_ card: Card, from boardID: String) {
-        db.collection("boards").document(boardID).collection("cards").document(card.id).delete { error in
+        db.collection("boards").document(boardID).collection("cards").document(card.id.uuidString).delete { error in
             DispatchQueue.main.async {
                 if let error = error {
                     Crashlytics.log("Error deleting card with ID: \(card.id). Error: \(error.localizedDescription)")
@@ -79,9 +79,9 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func moveCard(_ card: Card, toStatus newStatus: String, in boardID: String) {
-        db.collection("boards").document(boardID).collection("cards").document(card.id).updateData(["status": newStatus]) { error in
+        db.collection("boards").document(boardID).collection("cards").document(card.id.uuidString).updateData(["status": newStatus]) { error in
             DispatchQueue.main.async {
                 if let error = error {
                     Crashlytics.log("Error updating card status with ID: \(card.id). Error: \(error.localizedDescription)")
@@ -91,10 +91,10 @@ class CardViewModel: ObservableObject {
             }
         }
     }
-
+    
     func editCard(_ card: Card, in boardID: String) {
         do {
-            let _ = try db.collection("boards").document(boardID).collection("cards").document(card.id).setData(from: card) { error in
+            let _ = try db.collection("boards").document(boardID).collection("cards").document(card.id.uuidString).setData(from: card) { error in
                 DispatchQueue.main.async {
                     if let error = error {
                         Crashlytics.log("Error updating card document with ID: \(card.id). Error: \(error.localizedDescription)")
