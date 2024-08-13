@@ -64,6 +64,7 @@ struct SettingsView: View {
             boardVM.fetchBoardSettings(boardID: board.id)
         }
         .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
