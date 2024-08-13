@@ -23,7 +23,8 @@ struct BoardView: View {
     @State private var showAlert = false
     @State private var isAuthorVisible = true
     @State private var isDateVisible = false
-    
+    @State private var isHideCards = false
+
     var boardID: UUID
     var username: String
     
@@ -94,7 +95,12 @@ struct BoardView: View {
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: SettingsView(isAuthorVisible: $isAuthorVisible, isDateVisible: $isDateVisible, board: board)) {
+                            NavigationLink(destination: SettingsView(
+                                hideCards: $isHideCards,
+                                isAuthorVisible: $isAuthorVisible,
+                                isDateVisible: $isDateVisible,
+                                board: board)
+                            ) {
                                 Image(systemName: "ellipsis")
                                     .foregroundColor(.white)
                             }
@@ -127,8 +133,10 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible
+                                        isDateVisible: isDateVisible, 
+                                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
                                     )
+                                    .blur(radius: board.hideCards ? 5 : 0)
                                     .disabled(boardVM.isMoveCardsDisabled)
                                 }
                             }
@@ -156,8 +164,10 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible
+                                        isDateVisible: isDateVisible,
+                                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
                                     )
+                                    .blur(radius: board.hideCards ? 5 : 0)
                                     .disabled(boardVM.isMoveCardsDisabled)
                                 }
                             }
@@ -185,8 +195,10 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible
+                                        isDateVisible: isDateVisible,
+                                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
                                     )
+                                    .blur(radius: board.hideCards ? 5 : 0)
                                     .disabled(boardVM.isMoveCardsDisabled)
                                 }
                             }
@@ -227,10 +239,10 @@ struct BoardView: View {
             .sheet(isPresented: $showEditSheet) {
                 if let card = cardToEdit, let board = board {
                     EditCardView(
-                        card: .constant(card), // Binding<Card> sağlanıyor
-                        title: .constant(card.title), // Binding<String> sağlanıyor
-                        status: .constant(card.status), // Binding<String> sağlanıyor
-                        cardVM: cardVM, // Bu doğru, çünkü `cardVM` zaten bir ViewModel
+                        card: .constant(card),
+                        title: .constant(card.title),
+                        status: .constant(card.status),
+                        cardVM: cardVM,
                         onSave: { updatedCard in
                             if let index = cardVM.cards.firstIndex(where: { $0.id == card.id }) {
                                 cardVM.cards[index] = updatedCard
@@ -251,6 +263,7 @@ struct BoardView: View {
                 boardVM.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
                     if let fetchedBoard = fetchedBoard {
                         self.isDateVisible = fetchedBoard.isDateVisible ?? false
+                        self.isHideCards = fetchedBoard.hideCards
                     }
                 }
             }
@@ -273,6 +286,7 @@ struct BoardView: View {
             if let fetchedBoard = fetchedBoard {
                 self.board = fetchedBoard
                 self.isDateVisible = fetchedBoard.isDateVisible ?? false
+                self.isHideCards = fetchedBoard.hideCards
                 if let timerValue = fetchedBoard.timerValue {
                     self.timerValue = timerValue
                 }

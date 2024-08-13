@@ -21,6 +21,7 @@ struct CardColumnView: View {
     var board: Board
     var isAuthorVisible: Bool
     var isDateVisible: Bool
+    var isAddEditCardsDisabled: Bool
 
     var filteredCards: [Card] {
         allCards.filter { $0.status == statusFilter }
@@ -37,7 +38,8 @@ struct CardColumnView: View {
                 boardID: boardID,
                 board: board,
                 isAuthorVisible: isAuthorVisible,
-                isDateVisible: isDateVisible
+                isDateVisible: isDateVisible, 
+                isAddEditCardsDisabled: isAddEditCardsDisabled
             )
 
             if filteredCards.isEmpty {
@@ -60,7 +62,8 @@ struct CardColumnView: View {
         boardID: UUID().uuidString,
         board: Board(id: UUID(), name: "Sample Board", deviceID: "deviceID", participants: ["deviceID"]),
         isAuthorVisible: true,
-        isDateVisible: true
+        isDateVisible: true, 
+        isAddEditCardsDisabled: true
     )
 }
 
@@ -76,7 +79,8 @@ struct FilteredCardListView: View {
     var board: Board
     var isAuthorVisible: Bool
     var isDateVisible: Bool
-
+    var isAddEditCardsDisabled: Bool
+    
     var body: some View {
         ForEach(filteredCards) { card in
             CardView(
@@ -95,7 +99,8 @@ struct FilteredCardListView: View {
                 boardID: boardID,
                 boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown",
                 isAuthorVisible: isAuthorVisible,
-                isDateVisible: isDateVisible
+                isDateVisible: isDateVisible, 
+                isAddEditCardsDisabled: isAddEditCardsDisabled
             )
             .onDrag {
                 let data = card.id.uuidString.data(using: .utf8) ?? Data()

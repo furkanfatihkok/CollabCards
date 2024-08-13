@@ -5,13 +5,6 @@
 //  Created by FFK on 12.08.2024.
 //
 
-//TODO: hide cards ile cardda yazan title gizlenecek.
-//TODO: highlight mode aktifkten cardın üzerine geldiğinde cardda borderlık olsun ve kenarları mavi olsun.
-//TODO: highlight mode ve hide cards'a tipkit ekle.
-//TODO: yapılan features'da seçildiğinde mavi renk olsun.
-//TODO: disable edit/add card buttonu etkinleştirlince sadece addcard bloklanıyor editi de blokla.
-//TODO: settings de kaydettiğin işlemlerden sonra boardview'Dan home view'a geçiş sağlaığında settings sıfırlanıyor. Bunu sıfırlattırma.
-
 import SwiftUI
 
 // MARK: - SettingsView
@@ -20,6 +13,8 @@ struct SettingsView: View {
     @StateObject var boardVM = BoardViewModel()
     @State private var tempIsAuthorVisible: Bool = false
     @State private var tempIsDateVisible: Bool = false
+    @State private var tempHideCards: Bool = false
+    @Binding var hideCards: Bool
     @Binding var isAuthorVisible: Bool
     @Binding var isDateVisible: Bool
     
@@ -34,9 +29,8 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                FacilitatorControlsSection()
+                FacilitatorControlsSection(hideCards: $tempHideCards)
                 VotingSettingsView()
-                BackgroundSettingsView()
                 EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible, tempIsDateVisible: $tempIsDateVisible)
                 DisableFeaturesSection(
                     isMoveCardsDisabled: $boardVM.isMoveCardsDisabled,
@@ -51,10 +45,13 @@ struct SettingsView: View {
                 trailing: Button("Done") {
                     isAuthorVisible = tempIsAuthorVisible
                     isDateVisible = tempIsDateVisible
+                    hideCards = tempHideCards
                     boardVM.updateBoardSettings(
                         boardID: board.id,
-                        isDateVisible: isDateVisible, isMoveCardsDisabled: boardVM.isMoveCardsDisabled,
-                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
+                        isDateVisible: isDateVisible, 
+                        isMoveCardsDisabled: boardVM.isMoveCardsDisabled,
+                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled,
+                        hideCards: hideCards
                     )
                     dismiss()
                 }
@@ -63,6 +60,7 @@ struct SettingsView: View {
         .onAppear {
             tempIsAuthorVisible = isAuthorVisible
             tempIsDateVisible = isDateVisible
+            tempHideCards = hideCards
             boardVM.fetchBoardSettings(boardID: board.id)
         }
         .navigationBarBackButtonHidden(true)
@@ -72,13 +70,13 @@ struct SettingsView: View {
 
 // MARK: - Facilitator Controls Section
 struct FacilitatorControlsSection: View {
+    @Binding var hideCards: Bool
+    
     var body: some View {
         Section(header: Text("Facilitator Controls")) {
-            CheckButtonView(isChecked: .constant(false), title: "Hide cards")
+            CheckButtonView(isChecked: $hideCards, title: "Hide cards")
             CheckButtonView(isChecked: .constant(false), title: "Disable voting")
             CheckButtonView(isChecked: .constant(false), title: "Hide vote count")
-            CheckButtonView(isChecked: .constant(false), title: "Presentation mode")
-            CheckButtonView(isChecked: .constant(false), title: "Highlight mode")
         }
     }
 }
@@ -95,17 +93,6 @@ struct VotingSettingsView: View {
             
             Stepper(value: .constant(6), in: 1...10) {
                 Text("6 votes per user")
-            }
-        }
-    }
-}
-
-// MARK: - Background Settings Section
-struct BackgroundSettingsView: View {
-    var body: some View {
-        Section(header: Text("Background")) {
-            Button("Add background image") {
-                // Background image addition logic
             }
         }
     }
@@ -144,7 +131,7 @@ struct EnableFeaturesSection: View {
 struct DisableFeaturesSection: View {
     @Binding var isMoveCardsDisabled: Bool
     @Binding var isAddEditCardsDisabled: Bool
-
+    
     var body: some View {
         Section(header: Text("Disable Features")) {
             CheckButtonView(isChecked: $isMoveCardsDisabled, title: "Disable Move cards")
@@ -228,8 +215,9 @@ struct FeatureCardView: View {
 
 #Preview {
     SettingsView(
+        hideCards: .constant(true), 
         isAuthorVisible: .constant(false),
-        isDateVisible: .constant(true),
+        isDateVisible: .constant(true), 
         board: Board(
             id: UUID(),
             name: "Sample Board",
