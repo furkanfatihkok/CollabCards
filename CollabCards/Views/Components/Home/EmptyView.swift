@@ -22,7 +22,7 @@ struct EmptyView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            HeaderView(showNewBoardSheet: .constant(false), showQRScanner: $showQRScanner)
+            HeaderView(showNewBoardSheet: $showNewBoardSheet, showQRScanner: $showQRScanner)
             
             ProfileSharingView(isShareSheetPresented: $isShareSheetPresented)
             

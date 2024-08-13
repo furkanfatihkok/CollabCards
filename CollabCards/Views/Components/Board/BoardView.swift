@@ -279,6 +279,7 @@ struct BoardView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private func loadBoard() {
