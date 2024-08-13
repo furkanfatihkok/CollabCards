@@ -14,6 +14,7 @@ struct CardView: View {
     @Binding var card: Card
     @Binding var allCards: [Card]
     @State private var showEditSheet = false
+    @State private var isHovered: Bool = false
     
     var onDelete: (Card) -> Void
     var onEdit: (Card) -> Void
@@ -22,6 +23,7 @@ struct CardView: View {
     var boardUsername: String
     var isAuthorVisible: Bool
     var isDateVisible: Bool
+    var isAddEditCardsDisabled: Bool
     
     // MARK: - Body
     
@@ -32,7 +34,9 @@ struct CardView: View {
                 .cornerRadius(8)
                 .shadow(radius: 3)
                 .onTapGesture {
-                    showEditSheet.toggle()
+                    if !isAddEditCardsDisabled {
+                        showEditSheet.toggle()
+                    }
                 }
                 .onDrag {
                     dragProvider(for: card.id)
@@ -42,18 +46,20 @@ struct CardView: View {
                 .padding(.trailing, 5)
         }
         .sheet(isPresented: $showEditSheet) {
-            EditCardView(
-                card: $card,
-                title: $card.title,
-                status: $card.status, 
-                cardVM: cardVM,
-                onSave: { updatedCard in
-                    cardVM.editCard(updatedCard, in: boardID)
-                    showEditSheet = false
-                },
-                boardID: boardID,
-                boardUsername: boardUsername
-            )
+            if !isAddEditCardsDisabled {
+                EditCardView(
+                    card: $card,
+                    title: $card.title,
+                    status: $card.status,
+                    cardVM: cardVM,
+                    onSave: { updatedCard in
+                        cardVM.editCard(updatedCard, in: boardID)
+                        showEditSheet = false
+                    },
+                    boardID: boardID,
+                    boardUsername: boardUsername
+                )
+            }
         }
     }
     
@@ -76,7 +82,6 @@ struct CardView: View {
         let data = id.uuidString.data(using: .utf8) ?? Data()
         return NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
     }
-    
 }
 
 #Preview {
@@ -89,7 +94,8 @@ struct CardView: View {
         boardID: UUID().uuidString,
         boardUsername: "FFK",
         isAuthorVisible: true,
-        isDateVisible: true
+        isDateVisible: true, 
+        isAddEditCardsDisabled: true
     )
 }
 

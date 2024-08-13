@@ -14,6 +14,7 @@ class BoardViewModel: ObservableObject {
     @Published var isDateVisible: Bool = false
     @Published var isMoveCardsDisabled: Bool = false
     @Published var isAddEditCardsDisabled: Bool = false
+    @Published var hideCards: Bool = false
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     
@@ -63,8 +64,10 @@ class BoardViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
+                self.isDateVisible = document.get("isDateVisible") as? Bool ?? false
                 self.isMoveCardsDisabled = document.get("isMoveCardsDisabled") as? Bool ?? false
                 self.isAddEditCardsDisabled = document.get("isAddEditCardsDisabled") as? Bool ?? false
+                self.hideCards = document.get("hideCards") as? Bool ?? false
             }
         }
     }
@@ -196,11 +199,12 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func updateBoardSettings(boardID: UUID, isDateVisible:Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool) {
+    func updateBoardSettings(boardID: UUID, isDateVisible: Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool, hideCards: Bool) {
         db.collection("boards").document(boardID.uuidString).updateData([
             "isDateVisible": isDateVisible,
             "isMoveCardsDisabled": isMoveCardsDisabled,
-            "isAddEditCardsDisabled": isAddEditCardsDisabled
+            "isAddEditCardsDisabled": isAddEditCardsDisabled,
+            "hideCards": hideCards
         ]) { error in
             if let error = error {
                 Crashlytics.log("Error updating board settings: \(error.localizedDescription)")
