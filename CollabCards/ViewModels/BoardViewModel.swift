@@ -23,6 +23,9 @@ class BoardViewModel: ObservableObject {
             Crashlytics.log("Failed to fetch boards: deviceID not found")
             return
         }
+        
+        let deletedBoardIDs = UserDefaults.standard.array(forKey: "deletedBoardIDs") as? [String] ?? []
+        
         listener?.remove()
         listener = db.collection("boards").whereField("participants", arrayContains: deviceID).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
@@ -39,6 +42,9 @@ class BoardViewModel: ObservableObject {
                 self.boards = documents.compactMap { queryDocumentSnapshot in
                     do {
                         let board = try queryDocumentSnapshot.data(as: Board.self)
+                        if deletedBoardIDs.contains(board.id.uuidString) {
+                            return nil
+                        }
                         Crashlytics.log("Board fetched with ID: \(board.id)")
                         return board
                     } catch {
@@ -196,6 +202,16 @@ class BoardViewModel: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    func deleteBoardLocally(_ board: Board) {
+        if let index = boards.firstIndex(where: { $0.id == board.id }) {
+            boards.remove(at: index)
+            
+            var deletedBoardIDs = UserDefaults.standard.array(forKey: "deletedBoardIDs") as? [String] ?? []
+            deletedBoardIDs.append(board.id.uuidString)
+            UserDefaults.standard.set(deletedBoardIDs, forKey: "deletedBoardIDs")
         }
     }
     

@@ -91,6 +91,7 @@ struct BoardView: View {
                                                 .foregroundColor(.white)
                                         }
                                         .disabled(board.isExpired ?? false)
+
                                     }
                                 }
                             }
@@ -227,8 +228,6 @@ struct BoardView: View {
                         loadBoard()
                         Crashlytics.log("BoardView loading board with ID: \(boardID.uuidString)")
                     }
-                } else {
-                    Text("Failed to load board.")
                 }
             }
             .sheet(isPresented: $showAddSheet) {
