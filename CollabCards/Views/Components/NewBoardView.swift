@@ -47,7 +47,7 @@ struct NewBoardView: View {
                     isPasswordValid: $isPasswordValid
                 )
                 
-                TimerView()
+                TimerView(ideateDuration: $ideateDuration)
                 
                 QRCodeView(qrCode: qrCode, boardID: boardID)
             }
@@ -174,7 +174,7 @@ struct QRCodeView: View {
 // MARK: - TimerView
 
 struct TimerView: View {
-    @State private var ideateDuration = 15
+    @Binding var ideateDuration: Int
     
     var totalTime: Int {
         ideateDuration
