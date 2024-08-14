@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 import AVFoundation
+import FirebaseCrashlytics
 
 struct QRScannerAndManualEntryView: View {
     // MARK: - Properties
@@ -46,6 +47,7 @@ struct QRScannerAndManualEntryView: View {
             )
             
             SubmitButtonView {
+                Crashlytics.log("Submit button pressed with manual code: \(manualCode)")
                 handleScannedCode(manualCode)
             }
             
@@ -53,6 +55,7 @@ struct QRScannerAndManualEntryView: View {
         }
         .padding()
         .onChange(of: scannedCode) { newCode in
+            Crashlytics.log("QR code scanned: \(newCode)")
             handleScannedCode(newCode)
         }
         .alert(isPresented: $showAlert) {
@@ -73,6 +76,7 @@ struct QRScannerAndManualEntryView: View {
         guard isUsernameValid, isPasswordValid else {
             alertMessage = "Please fill in all fields."
             showAlert = true
+            Crashlytics.log("Validation failed: Missing username or password.")
             return
         }
         
@@ -81,8 +85,10 @@ struct QRScannerAndManualEntryView: View {
         if let scannedUUID = UUID(uuidString: code) {
             boardVM.verifyPassword(boardID: scannedUUID, enteredPassword: password) { isValid in
                 if isValid {
+                    Crashlytics.log("Password verified successfully for board ID: \(scannedUUID.uuidString)")
                     self.fetchBoard(withID: scannedUUID)
                 } else {
+                    Crashlytics.log("Password verification failed for board ID: \(scannedUUID.uuidString)")
                     self.isPasswordValid = false
                     self.alertMessage = "Incorrect password."
                     self.showAlert = true
@@ -91,6 +97,7 @@ struct QRScannerAndManualEntryView: View {
         } else {
             alertMessage = "The scanned code is not a valid Board ID."
             showAlert = true
+            Crashlytics.log("Invalid Board ID scanned or entered: \(code)")
             if scannedCode == code {
                 scannedCode = ""
             } else {
@@ -102,11 +109,13 @@ struct QRScannerAndManualEntryView: View {
     private func fetchBoard(withID id: UUID) {
         boardVM.addBoardToCurrentDevice(boardID: id) { board in
             if let board = board {
+                Crashlytics.log("Board successfully fetched with ID: \(id.uuidString)")
                 boardVM.updateUsernameInFirestore(boardID: id, username: self.username)
                 UserDefaults.standard.set(self.username, forKey: "username")
                 onCodeScanned(board, self.username)
                 dismiss()
             } else {
+                Crashlytics.log("Failed to fetch board with ID: \(id.uuidString)")
                 alertMessage = "Failed to decode board data or board not found."
                 showAlert = true
                 if scannedCode == id.uuidString {

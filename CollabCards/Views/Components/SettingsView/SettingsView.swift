@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseCrashlytics
 
 // MARK: - SettingsView
 struct SettingsView: View {
@@ -40,6 +41,7 @@ struct SettingsView: View {
             }
             .navigationBarItems(
                 leading: Button("Cancel") {
+                    Crashlytics.log("SettingsView: Cancel button tapped")
                     dismiss()
                 },
                 trailing: Button("Done") {
@@ -48,11 +50,12 @@ struct SettingsView: View {
                     hideCards = tempHideCards
                     boardVM.updateBoardSettings(
                         boardID: board.id,
-                        isDateVisible: isDateVisible, 
+                        isDateVisible: isDateVisible,
                         isMoveCardsDisabled: boardVM.isMoveCardsDisabled,
                         isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled,
                         hideCards: hideCards
                     )
+                    Crashlytics.log("SettingsView: Done button tapped, settings updated for board: \(board.name)")
                     dismiss()
                 }
             )
@@ -62,6 +65,7 @@ struct SettingsView: View {
             tempIsDateVisible = isDateVisible
             tempHideCards = hideCards
             boardVM.fetchBoardSettings(boardID: board.id)
+            Crashlytics.log("SettingsView appeared for board: \(board.name)")
         }
         .navigationBarBackButtonHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
@@ -153,7 +157,7 @@ struct DangerZoneView: View {
         Section(header: Text("Danger zone").foregroundColor(.red)) {
             ActionButtonView(action: { /* Reset votes logic */ }, label: "Reset all votes", systemImage: "arrow.counterclockwise")
             ActionButtonView(action: { /* Archive board logic */ }, label: "Archive board", systemImage: "archivebox")
-
+            
             ActionButtonView(action: {
                 showDeleteAllCardsAlert = true
             }, label: "Delete all cards", systemImage: "trash")
@@ -216,9 +220,9 @@ struct FeatureCardView: View {
 
 #Preview {
     SettingsView(
-        hideCards: .constant(true), 
+        hideCards: .constant(true),
         isAuthorVisible: .constant(false),
-        isDateVisible: .constant(true), 
+        isDateVisible: .constant(true),
         board: Board(
             id: UUID(),
             name: "Sample Board",
