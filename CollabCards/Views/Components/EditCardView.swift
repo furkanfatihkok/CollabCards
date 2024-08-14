@@ -84,7 +84,6 @@ struct EditCardForm: View {
         Form {
             Section {
                 CardTitleInput(title: $title)
-                CardStatusPicker(status: $status)
             }
         }
     }
