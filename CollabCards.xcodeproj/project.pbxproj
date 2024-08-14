@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020DA8D92C6CE3A700152C8E /* CollabCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DA8D82C6CE3A700152C8E /* CollabCardsTests.swift */; };
+		020DA8E22C6CE3EA00152C8E /* CardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DA8E12C6CE3EA00152C8E /* CardViewModelTests.swift */; };
+		020DA8E42C6CE3F900152C8E /* BoardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DA8E32C6CE3F900152C8E /* BoardViewModelTests.swift */; };
 		021509C92C512824002BFFED /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509C82C512824002BFFED /* EmptyView.swift */; };
 		021509E42C52374A002BFFED /* DurationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021509E32C52374A002BFFED /* DurationSettingView.swift */; };
 		021509E82C5250F6002BFFED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021509E72C5250F6002BFFED /* GoogleService-Info.plist */; };
@@ -44,7 +47,21 @@
 		02EBDCCF2C66395A009BC723 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBDCCE2C66395A009BC723 /* HeaderView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		020DA8DA2C6CE3A700152C8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02A6ABEE2C51254700234AF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02A6ABF52C51254700234AF3;
+			remoteInfo = CollabCards;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		020DA8D62C6CE3A700152C8E /* CollabCardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CollabCardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		020DA8D82C6CE3A700152C8E /* CollabCardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCardsTests.swift; sourceTree = "<group>"; };
+		020DA8E12C6CE3EA00152C8E /* CardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModelTests.swift; sourceTree = "<group>"; };
+		020DA8E32C6CE3F900152C8E /* BoardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModelTests.swift; sourceTree = "<group>"; };
 		021509C82C512824002BFFED /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		021509E32C52374A002BFFED /* DurationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationSettingView.swift; sourceTree = "<group>"; };
 		021509E72C5250F6002BFFED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -81,6 +98,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		020DA8D32C6CE3A700152C8E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		02A6ABF32C51254700234AF3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -95,6 +119,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		020DA8D72C6CE3A700152C8E /* CollabCardsTests */ = {
+			isa = PBXGroup;
+			children = (
+				020DA8DF2C6CE3D300152C8E /* CardViewModel */,
+				020DA8E02C6CE3D700152C8E /* BoardViewModel */,
+				020DA8D82C6CE3A700152C8E /* CollabCardsTests.swift */,
+			);
+			path = CollabCardsTests;
+			sourceTree = "<group>";
+		};
+		020DA8DF2C6CE3D300152C8E /* CardViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				020DA8E12C6CE3EA00152C8E /* CardViewModelTests.swift */,
+			);
+			path = CardViewModel;
+			sourceTree = "<group>";
+		};
+		020DA8E02C6CE3D700152C8E /* BoardViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				020DA8E32C6CE3F900152C8E /* BoardViewModelTests.swift */,
+			);
+			path = BoardViewModel;
+			sourceTree = "<group>";
+		};
 		021509CE2C513231002BFFED /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +216,7 @@
 			children = (
 				02A6ABF82C51254700234AF3 /* CollabCards */,
 				021509E72C5250F6002BFFED /* GoogleService-Info.plist */,
+				020DA8D72C6CE3A700152C8E /* CollabCardsTests */,
 				02A6ABF72C51254700234AF3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -174,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				02A6ABF62C51254700234AF3 /* CollabCards.app */,
+				020DA8D62C6CE3A700152C8E /* CollabCardsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,6 +293,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		020DA8D52C6CE3A700152C8E /* CollabCardsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 020DA8DC2C6CE3A700152C8E /* Build configuration list for PBXNativeTarget "CollabCardsTests" */;
+			buildPhases = (
+				020DA8D22C6CE3A700152C8E /* Sources */,
+				020DA8D32C6CE3A700152C8E /* Frameworks */,
+				020DA8D42C6CE3A700152C8E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				020DA8DB2C6CE3A700152C8E /* PBXTargetDependency */,
+			);
+			name = CollabCardsTests;
+			productName = CollabCardsTests;
+			productReference = 020DA8D62C6CE3A700152C8E /* CollabCardsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		02A6ABF52C51254700234AF3 /* CollabCards */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02A6AC042C51254800234AF3 /* Build configuration list for PBXNativeTarget "CollabCards" */;
@@ -274,6 +344,10 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					020DA8D52C6CE3A700152C8E = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 02A6ABF52C51254700234AF3;
+					};
 					02A6ABF52C51254700234AF3 = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -297,11 +371,19 @@
 			projectRoot = "";
 			targets = (
 				02A6ABF52C51254700234AF3 /* CollabCards */,
+				020DA8D52C6CE3A700152C8E /* CollabCardsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		020DA8D42C6CE3A700152C8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		02A6ABF42C51254700234AF3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -315,6 +397,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		020DA8D22C6CE3A700152C8E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				020DA8E22C6CE3EA00152C8E /* CardViewModelTests.swift in Sources */,
+				020DA8D92C6CE3A700152C8E /* CollabCardsTests.swift in Sources */,
+				020DA8E42C6CE3F900152C8E /* BoardViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		02A6ABF22C51254700234AF3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -352,7 +444,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		020DA8DB2C6CE3A700152C8E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02A6ABF52C51254700234AF3 /* CollabCards */;
+			targetProxy = 020DA8DA2C6CE3A700152C8E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		020DA8DD2C6CE3A700152C8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS5B289466;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ffk.CollabCardsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CollabCards.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CollabCards";
+			};
+			name = Debug;
+		};
+		020DA8DE2C6CE3A700152C8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS5B289466;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ffk.CollabCardsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CollabCards.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CollabCards";
+			};
+			name = Release;
+		};
 		02A6AC022C51254800234AF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -539,6 +675,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		020DA8DC2C6CE3A700152C8E /* Build configuration list for PBXNativeTarget "CollabCardsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				020DA8DD2C6CE3A700152C8E /* Debug */,
+				020DA8DE2C6CE3A700152C8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		02A6ABF12C51254700234AF3 /* Build configuration list for PBXProject "CollabCards" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
