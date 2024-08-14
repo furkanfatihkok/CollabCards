@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import FirebaseCrashlytics
 
 struct CardView: View {
     //MARK: - Properties
@@ -35,14 +36,19 @@ struct CardView: View {
                 .shadow(radius: 3)
                 .onTapGesture {
                     if !isAddEditCardsDisabled {
+                        Crashlytics.log("Card \(card.id) tapped for editing")
                         showEditSheet.toggle()
                     }
                 }
                 .onDrag {
-                    dragProvider(for: card.id)
+                    Crashlytics.log("Card \(card.id) dragged from status \(card.status)")
+                    return dragProvider(for: card.id)
                 }
             
-            DeleteButton(onDelete: { onDelete(card) })
+            DeleteButton(onDelete: {
+                Crashlytics.log("Card \(card.id) deleted")
+                onDelete(card)
+            })
                 .padding(.trailing, 5)
         }
         .sheet(isPresented: $showEditSheet) {
@@ -54,6 +60,7 @@ struct CardView: View {
                     cardVM: cardVM,
                     onSave: { updatedCard in
                         cardVM.editCard(updatedCard, in: boardID)
+                        Crashlytics.log("Card \(card.id) edited and saved")
                         showEditSheet = false
                     },
                     boardID: boardID,
