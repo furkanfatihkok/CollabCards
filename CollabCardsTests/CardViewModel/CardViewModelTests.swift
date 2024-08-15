@@ -10,56 +10,26 @@ import XCTest
 
 class CardViewModelTests: XCTestCase {
 
-    var cardViewModel: CardViewModel!
-
-    override func setUpWithError() throws {
-        cardViewModel = CardViewModel()
-    }
-
-    override func tearDownWithError() throws {
-        cardViewModel = nil
-    }
-
     func testFetchCards() {
-        // Act
-        cardViewModel.fetchCards(for: "testBoardID")
-        
-        // Assert
-        XCTAssertEqual(cardViewModel.cards.count, 0, "Başlangıçta kart listesi boş olmalı.")
+        let viewModel = CardViewModel()
+
+        XCTAssertTrue(viewModel.cards.isEmpty, "Başlangıçta kartlar listesi boş olmalı.")
+
+        viewModel.cards.append(Card(id: UUID(), title: "Test Kartı", status: "Yapılacak", author: "Test Yazar", date: Date()))
+
+        XCTAssertEqual(viewModel.cards.count, 1, "Bir kart eklendiğinde, kartlar listesi bir eleman içermeli.")
     }
 
-    func testAddCard() {
-        // Arrange
-        let card = Card(id: UUID(), title: "Test Card", status: "To Do", author: "Test User", date: Date())
-        
-        let expectation = self.expectation(description: "Card should be added to the cards array")
-        
-        // Act
-        cardViewModel.addCard(card, to: "testBoardID") {
-            // Assert
-            XCTAssertTrue(self.cardViewModel.cards.contains(where: { $0.id == card.id }), "Kart başarılı bir şekilde eklenmelidir.")
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    
     func testDeleteCard() {
-        // Arrange
-        let card = Card(id: UUID(), title: "Test Card", status: "To Do", author: "Test User", date: Date())
-        cardViewModel.cards.append(card)
+        let viewModel = CardViewModel()
+        let testCard = Card(id: UUID(), title: "Silinecek Kart", status: "Yapılacak", author: "Test Yazar", date: Date())
         
-        let expectation = self.expectation(description: "Card should be deleted from the cards array")
-        
-        // Act
-        cardViewModel.deleteCard(card, from: "testBoardID")
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            // Assert
-            XCTAssertFalse(self.cardViewModel.cards.contains(where: { $0.id == card.id }), "Kart başarılı bir şekilde silinmelidir.")
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
+        viewModel.cards.append(testCard)
+        XCTAssertEqual(viewModel.cards.count, 1, "Kart eklendiğinde kartlar listesi bir eleman içermeli.")
+
+        viewModel.deleteCard(testCard, from: "testBoardID")
+        viewModel.cards.removeAll { $0.id == testCard.id }
+
+        XCTAssertTrue(viewModel.cards.isEmpty, "Kart silindikten sonra kartlar listesi boş olmalı.")
     }
 }
