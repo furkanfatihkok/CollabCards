@@ -24,6 +24,8 @@ struct BoardView: View {
     @State private var isAuthorVisible = true
     @State private var isDateVisible = false
     @State private var isHideCards = false
+    @State private var isMoveCardsDisabled = false
+    @State private var isAddEditCardsDisabled = false
 
     var boardID: UUID
     var username: String
@@ -53,28 +55,11 @@ struct BoardView: View {
                                     Text(timerString(from: TimeInterval(timerValue)))
                                         .foregroundColor(.white)
                                         .onReceive(timer) { _ in
-                                            if !isPaused {
-                                                if timerValue > 0 {
-                                                    timerValue -= 1
-                                                    boardVM.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
-                                                    cardVM.fetchCards(for: boardID.uuidString)
-                                                    if timerValue == 60 {
-                                                        showAlert = true
-                                                    }
-                                                } else {
-                                                    Crashlytics.log("Timer reached zero.")
-                                                    isPaused = true
-                                                    boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                                    boardVM.setBoardExpired(boardID: boardID)
-                                                    dismiss()
-                                                }
-                                            }
+                                            handleTimerTick()
                                         }
                                     HStack {
                                         Button(action: {
-                                            isPaused.toggle()
-                                            boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                            Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
+                                            toggleTimerPause()
                                         }) {
                                             Image(systemName: isPaused ? "play.fill" : "pause.fill")
                                                 .foregroundColor(.white)
@@ -82,10 +67,7 @@ struct BoardView: View {
                                         .disabled(board.isExpired ?? false)
                                         
                                         Button(action: {
-                                            timerValue = board.timerValue ?? 15 * 60
-                                            isPaused = true
-                                            boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                            Crashlytics.log("Timer reset to initial duration.")
+                                            resetTimer()
                                         }) {
                                             Image(systemName: "stop.fill")
                                                 .foregroundColor(.white)
@@ -100,6 +82,8 @@ struct BoardView: View {
                                 hideCards: $isHideCards,
                                 isAuthorVisible: $isAuthorVisible,
                                 isDateVisible: $isDateVisible,
+                                isMoveCardsDisabled: $isMoveCardsDisabled,
+                                isAddEditCardsDisabled: $isAddEditCardsDisabled,
                                 board: board)
                             ) {
                                 Image(systemName: "ellipsis")
@@ -134,7 +118,7 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible, 
+                                        isDateVisible: isDateVisible,
                                         isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
                                     )
                                     .blur(radius: board.hideCards ? 5 : 0)
@@ -281,6 +265,37 @@ struct BoardView: View {
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
+    private func handleTimerTick() {
+        if !isPaused {
+            if timerValue > 0 {
+                timerValue -= 1
+                boardVM.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
+                if timerValue == 60 {
+                    showAlert = true
+                }
+            } else {
+                Crashlytics.log("Timer reached zero.")
+                isPaused = true
+                boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                boardVM.setBoardExpired(boardID: boardID)
+                dismiss()
+            }
+        }
+    }
+    
+    private func toggleTimerPause() {
+        isPaused.toggle()
+        boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+        Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
+    }
+    
+    private func resetTimer() {
+        timerValue = board?.timerValue ?? 15 * 60
+        isPaused = true
+        boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+        Crashlytics.log("Timer reset to initial duration.")
+    }
+    
     private func loadBoard() {
         boardVM.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
             if let fetchedBoard = fetchedBoard {
@@ -309,8 +324,4 @@ func timerString(from timeInterval: TimeInterval) -> String {
     let minutes = Int(timeInterval) / 60
     let seconds = Int(timeInterval) % 60
     return String(format: "%02d:%02d", minutes, seconds)
-}
-
-#Preview {
-    BoardView(boardID: UUID(), username: "SampleUser")
 }
