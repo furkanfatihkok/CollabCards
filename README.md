@@ -49,7 +49,7 @@ Welcome to CollabCards! This application is a task management tool where users c
 - CollabCards is designed to be responsive on iPads as well, optimized for different screen sizes and orientations.
 
 <p align="center">
-  <img src="https://github.com/yourusername/CollabCards/blob/main/Screenshots/iPadResponsive.png" alt="iPad Responsive View" width="400">
+  <img src="https://github.com/furkanfatihkok/CollabCards/blob/main/Screenshots/iPadResponsive.png" alt="iPad Responsive View" width="400">
 </p>
 
 ## Screenshots
