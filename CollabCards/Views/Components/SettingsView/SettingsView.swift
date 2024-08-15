@@ -18,6 +18,8 @@ struct SettingsView: View {
     @Binding var hideCards: Bool
     @Binding var isAuthorVisible: Bool
     @Binding var isDateVisible: Bool
+    @Binding var isMoveCardsDisabled: Bool
+    @Binding var isAddEditCardsDisabled: Bool
     
     var board: Board
     
@@ -32,10 +34,14 @@ struct SettingsView: View {
             Form {
                 FacilitatorControlsSection(hideCards: $tempHideCards)
                 VotingSettingsView()
-                EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible, tempIsDateVisible: $tempIsDateVisible)
+                EnableFeaturesSection(
+                    columns: columns,
+                    tempIsAuthorVisible: $tempIsAuthorVisible,
+                    tempIsDateVisible: $tempIsDateVisible
+                )
                 DisableFeaturesSection(
-                    isMoveCardsDisabled: $boardVM.isMoveCardsDisabled,
-                    isAddEditCardsDisabled: $boardVM.isAddEditCardsDisabled
+                    isMoveCardsDisabled: $isMoveCardsDisabled,
+                    isAddEditCardsDisabled: $isAddEditCardsDisabled
                 )
                 DangerZoneView(boardVM: boardVM, board: board)
             }
@@ -45,17 +51,7 @@ struct SettingsView: View {
                     dismiss()
                 },
                 trailing: Button("Done") {
-                    isAuthorVisible = tempIsAuthorVisible
-                    isDateVisible = tempIsDateVisible
-                    hideCards = tempHideCards
-                    boardVM.updateBoardSettings(
-                        boardID: board.id,
-                        isDateVisible: isDateVisible,
-                        isMoveCardsDisabled: boardVM.isMoveCardsDisabled,
-                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled,
-                        hideCards: hideCards
-                    )
-                    Crashlytics.log("SettingsView: Done button tapped, settings updated for board: \(board.name)")
+                    applyChanges()
                     dismiss()
                 }
             )
@@ -70,8 +66,22 @@ struct SettingsView: View {
         .navigationBarBackButtonHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
     }
+    
+    private func applyChanges() {
+        isAuthorVisible = tempIsAuthorVisible
+        isDateVisible = tempIsDateVisible
+        hideCards = tempHideCards
+        
+        boardVM.updateBoardSettings(
+            boardID: board.id,
+            isDateVisible: isDateVisible,
+            isMoveCardsDisabled: isMoveCardsDisabled,
+            isAddEditCardsDisabled: isAddEditCardsDisabled,
+            hideCards: hideCards
+        )
+        Crashlytics.log("SettingsView: Done button tapped, settings updated for board: \(board.name)")
+    }
 }
-
 
 // MARK: - Facilitator Controls Section
 struct FacilitatorControlsSection: View {
@@ -223,6 +233,8 @@ struct FeatureCardView: View {
         hideCards: .constant(true),
         isAuthorVisible: .constant(false),
         isDateVisible: .constant(true),
+        isMoveCardsDisabled: .constant(false),
+        isAddEditCardsDisabled: .constant(true),
         board: Board(
             id: UUID(),
             name: "Sample Board",
