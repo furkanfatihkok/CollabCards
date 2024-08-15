@@ -37,7 +37,7 @@ Welcome to CollabCards! This application is a task management tool where users c
 - All your boards and cards are synchronized across all your devices in real-time using [Firebase Firestore](https://firebase.google.com/).
   
 **QR Code Integration:**
-- Quickly join boards or access specific tasks by scanning QR codes or manually entering IDs. This feature is powered by the [QRCode](https://github.com/twostraws/QRCode) Swift Package.
+- Quickly join boards or access specific tasks by scanning QR codes or manually entering IDs. This feature is powered by the [QRCode](https://github.com/EFPrefix/EFQRCode) Swift Package.
 
 **Customizable Settings:**
 - Personalize your experience by customizing your username, visibility, and task durations.
