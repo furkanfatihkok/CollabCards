@@ -5,57 +5,56 @@
 //  Created by FFK on 12.08.2024.
 //
 
-//TODO: hide cards ile cardda yazan title gizlenecek.
-//TODO: highlight mode aktifkten cardın üzerine geldiğinde cardda borderlık olsun ve kenarları mavi olsun.
-//TODO: highlight mode ve hide cards'a tipkit ekle.
-//TODO: yapılan features'da seçildiğinde mavi renk olsun.
-//TODO: disable edit/add card buttonu etkinleştirlince sadece addcard bloklanıyor editi de blokla.
-//TODO: settings de kaydettiğin işlemlerden sonra boardview'Dan home view'a geçiş sağlaığında settings sıfırlanıyor. Bunu sıfırlattırma.
-
 import SwiftUI
+import FirebaseCrashlytics
 
-// MARK: - SettingsView
 struct SettingsView: View {
+    // MARK: - Properties
+    
     @Environment(\.dismiss) var dismiss
     @StateObject var boardVM = BoardViewModel()
     @State private var tempIsAuthorVisible: Bool = false
     @State private var tempIsDateVisible: Bool = false
+    @State private var tempHideCards: Bool = false
+    @Binding var hideCards: Bool
     @Binding var isAuthorVisible: Bool
     @Binding var isDateVisible: Bool
-    
+    @Binding var isMoveCardsDisabled: Bool
+    @Binding var isAddEditCardsDisabled: Bool
     var board: Board
+    var onDismiss: () -> Void
     
     let columns = [
-        GridItem(.flexible()),
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
     
+    // MARK: - Body
+    
     var body: some View {
         NavigationView {
             Form {
-                FacilitatorControlsSection()
-                VotingSettingsView()
-                BackgroundSettingsView()
-                EnableFeaturesSection(columns: columns, tempIsAuthorVisible: $tempIsAuthorVisible, tempIsDateVisible: $tempIsDateVisible)
+                FacilitatorControlsSection(hideCards: $tempHideCards)
+                EnableFeaturesSection(
+                    columns: columns,
+                    tempIsAuthorVisible: $tempIsAuthorVisible,
+                    tempIsDateVisible: $tempIsDateVisible
+                )
                 DisableFeaturesSection(
-                    isMoveCardsDisabled: $boardVM.isMoveCardsDisabled,
-                    isAddEditCardsDisabled: $boardVM.isAddEditCardsDisabled
+                    isMoveCardsDisabled: $isMoveCardsDisabled,
+                    isAddEditCardsDisabled: $isAddEditCardsDisabled
                 )
                 DangerZoneView(boardVM: boardVM, board: board)
             }
             .navigationBarItems(
                 leading: Button("Cancel") {
+                    Crashlytics.log("SettingsView: Cancel button tapped")
+                    onDismiss()
                     dismiss()
                 },
                 trailing: Button("Done") {
-                    isAuthorVisible = tempIsAuthorVisible
-                    isDateVisible = tempIsDateVisible
-                    boardVM.updateBoardSettings(
-                        boardID: board.id,
-                        isDateVisible: isDateVisible, isMoveCardsDisabled: boardVM.isMoveCardsDisabled,
-                        isAddEditCardsDisabled: boardVM.isAddEditCardsDisabled
-                    )
+                    applyChanges()
+                    onDismiss()
                     dismiss()
                 }
             )
@@ -63,50 +62,38 @@ struct SettingsView: View {
         .onAppear {
             tempIsAuthorVisible = isAuthorVisible
             tempIsDateVisible = isDateVisible
+            tempHideCards = hideCards
             boardVM.fetchBoardSettings(boardID: board.id)
+            Crashlytics.log("SettingsView appeared for board: \(board.name)")
         }
         .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    private func applyChanges() {
+        isAuthorVisible = tempIsAuthorVisible
+        isDateVisible = tempIsDateVisible
+        hideCards = tempHideCards
+        
+        boardVM.updateBoardSettings(
+            boardID: board.id,
+            isDateVisible: isDateVisible,
+            isMoveCardsDisabled: isMoveCardsDisabled,
+            isAddEditCardsDisabled: isAddEditCardsDisabled,
+            hideCards: hideCards
+        )
+        Crashlytics.log("SettingsView: Done button tapped, settings updated for board: \(board.name)")
     }
 }
 
 
 // MARK: - Facilitator Controls Section
 struct FacilitatorControlsSection: View {
+    @Binding var hideCards: Bool
+    
     var body: some View {
         Section(header: Text("Facilitator Controls")) {
-            CheckButtonView(isChecked: .constant(false), title: "Hide cards")
-            CheckButtonView(isChecked: .constant(false), title: "Disable voting")
-            CheckButtonView(isChecked: .constant(false), title: "Hide vote count")
-            CheckButtonView(isChecked: .constant(false), title: "Presentation mode")
-            CheckButtonView(isChecked: .constant(false), title: "Highlight mode")
-        }
-    }
-}
-
-// MARK: - Voting Settings Section
-struct VotingSettingsView: View {
-    var body: some View {
-        Section(header: Text("Voting Settings")) {
-            Picker("Max votes per user", selection: .constant("board")) {
-                Text("Board").tag("board")
-                Text("Column").tag("column")
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            
-            Stepper(value: .constant(6), in: 1...10) {
-                Text("6 votes per user")
-            }
-        }
-    }
-}
-
-// MARK: - Background Settings Section
-struct BackgroundSettingsView: View {
-    var body: some View {
-        Section(header: Text("Background")) {
-            Button("Add background image") {
-                // Background image addition logic
-            }
+            CheckButtonView(isChecked: $hideCards, title: "Hide cards")
         }
     }
 }
@@ -120,10 +107,6 @@ struct EnableFeaturesSection: View {
     var body: some View {
         Section(header: Text("Enable Features")) {
             LazyVGrid(columns: columns, spacing: 16) {
-                FeatureCardView(featureName: "GIFs", iconName: "photo")
-                FeatureCardView(featureName: "Reactions", iconName: "heart")
-                FeatureCardView(featureName: "Enable image", iconName: "photo.fill")
-                FeatureCardView(featureName: "One vote per card", iconName: "hand.thumbsup")
                 FeatureCardView(featureName: "Card's author", iconName: tempIsAuthorVisible ? "person.fill" : "person")
                     .onTapGesture {
                         tempIsAuthorVisible.toggle()
@@ -132,24 +115,21 @@ struct EnableFeaturesSection: View {
                     .onTapGesture {
                         tempIsDateVisible.toggle()
                     }
-                FeatureCardView(featureName: "Anon names", iconName: "eye.slash")
-                FeatureCardView(featureName: "Anyone can edit", iconName: "pencil")
-                FeatureCardView(featureName: "Password", iconName: "lock")
             }
             .padding(.vertical, 10)
         }
     }
 }
+
 // MARK: - Disable Features Section
 struct DisableFeaturesSection: View {
     @Binding var isMoveCardsDisabled: Bool
     @Binding var isAddEditCardsDisabled: Bool
-
+    
     var body: some View {
         Section(header: Text("Disable Features")) {
             CheckButtonView(isChecked: $isMoveCardsDisabled, title: "Disable Move cards")
             CheckButtonView(isChecked: $isAddEditCardsDisabled, title: "Disable Add/edit cards")
-            CheckButtonView(isChecked: .constant(false), title: "Hide Prime Directive")
         }
     }
 }
@@ -163,9 +143,6 @@ struct DangerZoneView: View {
     
     var body: some View {
         Section(header: Text("Danger zone").foregroundColor(.red)) {
-            ActionButtonView(action: { /* Reset votes logic */ }, label: "Reset all votes", systemImage: "arrow.counterclockwise")
-            ActionButtonView(action: { /* Archive board logic */ }, label: "Archive board", systemImage: "archivebox")
-
             ActionButtonView(action: {
                 showDeleteAllCardsAlert = true
             }, label: "Delete all cards", systemImage: "trash")
@@ -199,6 +176,21 @@ struct DangerZoneView: View {
     }
 }
 
+#Preview {
+    SettingsView(
+        hideCards: .constant(true),
+        isAuthorVisible: .constant(false),
+        isDateVisible: .constant(true),
+        isMoveCardsDisabled: .constant(false),
+        isAddEditCardsDisabled: .constant(true),
+        board: Board(
+            id: UUID(),
+            name: "Sample Board",
+            deviceID: "SampleDeviceID",
+            participants: ["SampleDeviceID"]
+        ), onDismiss: {}
+    )
+}
 
 // MARK: - FeatureCardView
 struct FeatureCardView: View {
@@ -225,17 +217,3 @@ struct FeatureCardView: View {
         .shadow(radius: 2)
     }
 }
-
-#Preview {
-    SettingsView(
-        isAuthorVisible: .constant(false),
-        isDateVisible: .constant(true),
-        board: Board(
-            id: UUID(),
-            name: "Sample Board",
-            deviceID: "SampleDeviceID",
-            participants: ["SampleDeviceID"]
-        )
-    )
-}
-

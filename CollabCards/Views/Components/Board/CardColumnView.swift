@@ -21,6 +21,8 @@ struct CardColumnView: View {
     var board: Board
     var isAuthorVisible: Bool
     var isDateVisible: Bool
+    var isAddEditCardsDisabled: Bool
+    var isMoveCardsDisabled: Bool
 
     var filteredCards: [Card] {
         allCards.filter { $0.status == statusFilter }
@@ -37,7 +39,9 @@ struct CardColumnView: View {
                 boardID: boardID,
                 board: board,
                 isAuthorVisible: isAuthorVisible,
-                isDateVisible: isDateVisible
+                isDateVisible: isDateVisible, 
+                isAddEditCardsDisabled: isAddEditCardsDisabled, 
+                isMoveCardsDisabled: isMoveCardsDisabled
             )
 
             if filteredCards.isEmpty {
@@ -60,7 +64,9 @@ struct CardColumnView: View {
         boardID: UUID().uuidString,
         board: Board(id: UUID(), name: "Sample Board", deviceID: "deviceID", participants: ["deviceID"]),
         isAuthorVisible: true,
-        isDateVisible: true
+        isDateVisible: true, 
+        isAddEditCardsDisabled: true, 
+        isMoveCardsDisabled: false
     )
 }
 
@@ -76,7 +82,9 @@ struct FilteredCardListView: View {
     var board: Board
     var isAuthorVisible: Bool
     var isDateVisible: Bool
-
+    var isAddEditCardsDisabled: Bool
+    var isMoveCardsDisabled: Bool
+    
     var body: some View {
         ForEach(filteredCards) { card in
             CardView(
@@ -95,7 +103,9 @@ struct FilteredCardListView: View {
                 boardID: boardID,
                 boardUsername: card.author ?? board.usernames?[board.deviceID] ?? "Unknown",
                 isAuthorVisible: isAuthorVisible,
-                isDateVisible: isDateVisible
+                isDateVisible: isDateVisible, 
+                isAddEditCardsDisabled: isAddEditCardsDisabled,
+                isMoveCardsDisabled: isMoveCardsDisabled
             )
             .onDrag {
                 let data = card.id.uuidString.data(using: .utf8) ?? Data()
@@ -114,12 +124,24 @@ struct EmptyColumnView: View {
 
     var body: some View {
         Spacer()
-        Text("Drag cards here")
-            .foregroundColor(.gray)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color(UIColor.systemGray5))
-            .cornerRadius(8)
-            .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
+
+        if allCards.isEmpty {
+            Text("Add card here")
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(UIColor.systemGray5))
+                .cornerRadius(8)
+                .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
+        } else {
+            Text("Drag cards here")
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(UIColor.systemGray5))
+                .cornerRadius(8)
+                .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
+        }
     }
 }
+

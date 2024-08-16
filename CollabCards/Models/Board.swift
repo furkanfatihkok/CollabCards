@@ -19,11 +19,6 @@ struct Board: Identifiable, Codable {
     var isDateVisible: Bool? = false
     var isMoveCardsDisabled: Bool? = false
     var isAddEditCardsDisabled: Bool? = false
+    var hideCards: Bool = false
     var usernames: [String: String]?
 }
-
-
-
-
-
-

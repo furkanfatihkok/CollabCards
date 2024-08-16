@@ -19,7 +19,7 @@ struct HomeView: View {
     @State private var scannedBoardID: String = ""
     @State private var showQRScanner = false
     @State private var showBoardView = false
-    @State private var selectedBoardUUID: UUID?
+    @State private var selectedBoard: Board?
     @State private var showBoardInfo = false
     @State private var searchText: String = ""
     @State private var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
@@ -39,8 +39,7 @@ struct HomeView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(boardVM.boards.filter {
-                        searchText.isEmpty ? true : $0.name.lowercased().contains(searchText.lowercased())
+                    ForEach(boardVM.boards.filter { searchText.isEmpty ? true : $0.name.lowercased().contains(searchText.lowercased())
                     }, id: \.id) { board in
                         HStack {
                             NavigationLink(destination: BoardView(boardID: board.id, username: username)) {
@@ -48,7 +47,7 @@ struct HomeView: View {
                             }
                             Spacer()
                             Button(action: {
-                                selectedBoardUUID = board.id
+                                selectedBoard = board
                                 showBoardInfo = true
                                 Crashlytics.log("Board info button tapped for board ID: \(board.id)")
                             }) {
@@ -62,29 +61,19 @@ struct HomeView: View {
                 }
                 .listStyle(PlainListStyle())
             }
+            .sheet(item: $selectedBoard) { board in
+                BoardInfoView(board: board)
+            }
             .sheet(isPresented: $showNewBoardSheet) {
                 NewBoardView { newBoard in
-                    selectedBoardUUID = newBoard.id
                     boardVM.addBoard(newBoard)
                     Crashlytics.log("New board created with ID: \(newBoard.id)")
-                    DispatchQueue.main.async {
-                        showBoardView = true
-                    }
-                }
-            }
-            .sheet(isPresented: $showBoardInfo) {
-                if let boardUUID = selectedBoardUUID {
-                    if let board = boardVM.boards.first(where: { $0.id == boardUUID }) {
-                        BoardInfoView(board: board)
-                    }
                 }
             }
             .sheet(isPresented: $showQRScanner) {
                 QRScannerAndManualEntryView { board, username in
                     boardVM.boards.append(board)
-                    selectedBoardUUID = board.id
                     self.username = username
-                    showBoardView = true
                 }
             }
             .alert(isPresented: $showAlert) {
@@ -108,6 +97,8 @@ struct HomeView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
     }
     // MARK: - Functions
@@ -187,15 +178,47 @@ struct BoardInfoView: View {
                     .frame(width: 200, height: 200)
                     .padding()
             }
-            Text("Board ID: \(board.id.uuidString)")
-                .font(.body)
-                .foregroundColor(.gray)
-                .padding()
+                Text("Board ID: \(board.id)")
+                    .font(.body)
+                    .foregroundColor(.gray)
+                Spacer()
+            
+            CopyButton(copyText: board.id.uuidString) {
+                UIPasteboard.general.string = board.id.uuidString
+            }
+            .padding()
             
             Spacer()
         }
         .padding()
     }
 }
+// MARK: - CopyButton
 
+struct CopyButton: View {
+    var copyText: String
+    var onCopy: () -> Void
+    
+    var body: some View {
+        Button(action: onCopy) {
+            HStack {
+                Image(systemName: "doc.on.doc")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 18, height: 18)
+                Text("Copy BoardID")
+                    .fontWeight(.semibold)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .foregroundColor(.white)
+            .background(LinearGradient(gradient: Gradient(colors: [.gray, .black]), startPoint: .top, endPoint: .bottom))
+            .cornerRadius(5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.black, lineWidth: 0.5)
+            )
+        }
+    }
+}
 

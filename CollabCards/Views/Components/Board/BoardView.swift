@@ -23,7 +23,10 @@ struct BoardView: View {
     @State private var showAlert = false
     @State private var isAuthorVisible = true
     @State private var isDateVisible = false
-    
+    @State private var isHideCards = false
+    @State private var isMoveCardsDisabled = false
+    @State private var isAddEditCardsDisabled = false
+
     var boardID: UUID
     var username: String
     
@@ -52,28 +55,11 @@ struct BoardView: View {
                                     Text(timerString(from: TimeInterval(timerValue)))
                                         .foregroundColor(.white)
                                         .onReceive(timer) { _ in
-                                            if !isPaused {
-                                                if timerValue > 0 {
-                                                    timerValue -= 1
-                                                    boardVM.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
-                                                    cardVM.fetchCards(for: boardID.uuidString)
-                                                    if timerValue == 60 {
-                                                        showAlert = true
-                                                    }
-                                                } else {
-                                                    Crashlytics.log("Timer reached zero.")
-                                                    isPaused = true
-                                                    boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                                    boardVM.setBoardExpired(boardID: boardID)
-                                                    dismiss()
-                                                }
-                                            }
+                                            handleTimerTick()
                                         }
                                     HStack {
                                         Button(action: {
-                                            isPaused.toggle()
-                                            boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                            Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
+                                            toggleTimerPause()
                                         }) {
                                             Image(systemName: isPaused ? "play.fill" : "pause.fill")
                                                 .foregroundColor(.white)
@@ -81,23 +67,35 @@ struct BoardView: View {
                                         .disabled(board.isExpired ?? false)
                                         
                                         Button(action: {
-                                            timerValue = board.timerValue ?? 15 * 60
-                                            isPaused = true
-                                            boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
-                                            Crashlytics.log("Timer reset to initial duration.")
+                                            resetTimer()
                                         }) {
                                             Image(systemName: "stop.fill")
                                                 .foregroundColor(.white)
                                         }
                                         .disabled(board.isExpired ?? false)
+
                                     }
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: SettingsView(isAuthorVisible: $isAuthorVisible, isDateVisible: $isDateVisible, board: board)) {
+                            NavigationLink(destination: SettingsView(
+                                hideCards: $isHideCards,
+                                isAuthorVisible: $isAuthorVisible,
+                                isDateVisible: $isDateVisible,
+                                isMoveCardsDisabled: $isMoveCardsDisabled,
+                                isAddEditCardsDisabled: $isAddEditCardsDisabled,
+                                board: board,
+                                onDismiss: {
+                                    toggleTimerPause()
+                                }
+                            )
+                            .onAppear {
+                                toggleTimerPause() // Timer'ı durdur SettingsView açıldığında
+                            }) {
                                 Image(systemName: "ellipsis")
                                     .foregroundColor(.white)
                             }
+                            .disabled(board.isExpired ?? false)
                         }
                         .padding()
                         .background(Color.blue)
@@ -113,7 +111,8 @@ struct BoardView: View {
                                 ScrollView(.vertical, showsIndicators: false) {
                                     CardColumnView(
                                         cards: $cardVM.cards,
-                                        allCards: $cardVM.cards, statusFilter: "went well",
+                                        allCards: $cardVM.cards,
+                                        statusFilter: "went well",
                                         cardVM: cardVM,
                                         onEdit: { card in
                                             cardToEdit = card
@@ -127,9 +126,11 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible
+                                        isDateVisible: isDateVisible,
+                                        isAddEditCardsDisabled: isAddEditCardsDisabled,
+                                        isMoveCardsDisabled: isMoveCardsDisabled
                                     )
-                                    .disabled(boardVM.isMoveCardsDisabled)
+                                    .blur(radius: board.hideCards ? 5 : 0)
                                 }
                             }
                             .frame(width: UIScreen.main.bounds.width * 0.8)
@@ -142,7 +143,8 @@ struct BoardView: View {
                                 ScrollView(.vertical, showsIndicators: false) {
                                     CardColumnView(
                                         cards: $cardVM.cards,
-                                        allCards: $cardVM.cards, statusFilter: "to improve",
+                                        allCards: $cardVM.cards,
+                                        statusFilter: "to improve",
                                         cardVM: cardVM,
                                         onEdit: { card in
                                             cardToEdit = card
@@ -156,9 +158,11 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible
+                                        isDateVisible: isDateVisible,
+                                        isAddEditCardsDisabled: isAddEditCardsDisabled,
+                                        isMoveCardsDisabled: isMoveCardsDisabled
                                     )
-                                    .disabled(boardVM.isMoveCardsDisabled)
+                                    .blur(radius: board.hideCards ? 5 : 0)
                                 }
                             }
                             .frame(width: UIScreen.main.bounds.width * 0.8)
@@ -171,7 +175,8 @@ struct BoardView: View {
                                 ScrollView(.vertical, showsIndicators: false) {
                                     CardColumnView(
                                         cards: $cardVM.cards,
-                                        allCards: $cardVM.cards, statusFilter: "action items",
+                                        allCards: $cardVM.cards,
+                                        statusFilter: "action items",
                                         cardVM: cardVM,
                                         onEdit: { card in
                                             cardToEdit = card
@@ -185,9 +190,11 @@ struct BoardView: View {
                                         boardID: boardID.uuidString,
                                         board: board,
                                         isAuthorVisible: isAuthorVisible,
-                                        isDateVisible: isDateVisible
+                                        isDateVisible: isDateVisible,
+                                        isAddEditCardsDisabled: isAddEditCardsDisabled,
+                                        isMoveCardsDisabled: isMoveCardsDisabled
                                     )
-                                    .disabled(boardVM.isMoveCardsDisabled)
+                                    .blur(radius: board.hideCards ? 5 : 0)
                                 }
                             }
                             .frame(width: UIScreen.main.bounds.width * 0.8)
@@ -195,17 +202,22 @@ struct BoardView: View {
                         .padding(.horizontal)
                     }
                     Button(action: {
-                        showAddSheet.toggle()
-                        Crashlytics.log("Add card button pressed.")
+                        if timerValue > 0 {
+                            showAddSheet.toggle()
+                            Crashlytics.log("Add card button pressed.")
+                        } else {
+                            Crashlytics.log("Ready all cards button pressed.")
+                        }
                     }) {
-                        Text("Add Card")
+                        Text(timerValue > 0 ? "Add Card" : "Ready All Cards")
                             .padding()
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
                     .padding()
-                    .disabled(board.isExpired ?? false || boardVM.isAddEditCardsDisabled)
+                    .disabled(board.isExpired ?? false || isAddEditCardsDisabled)
+
                 } else if isLoading {
                     VStack {
                         ProgressView()
@@ -215,8 +227,6 @@ struct BoardView: View {
                         loadBoard()
                         Crashlytics.log("BoardView loading board with ID: \(boardID.uuidString)")
                     }
-                } else {
-                    Text("Failed to load board.")
                 }
             }
             .sheet(isPresented: $showAddSheet) {
@@ -227,10 +237,10 @@ struct BoardView: View {
             .sheet(isPresented: $showEditSheet) {
                 if let card = cardToEdit, let board = board {
                     EditCardView(
-                        card: .constant(card), // Binding<Card> sağlanıyor
-                        title: .constant(card.title), // Binding<String> sağlanıyor
-                        status: .constant(card.status), // Binding<String> sağlanıyor
-                        cardVM: cardVM, // Bu doğru, çünkü `cardVM` zaten bir ViewModel
+                        card: .constant(card),
+                        title: .constant(card.title),
+                        status: .constant(card.status),
+                        cardVM: cardVM,
                         onSave: { updatedCard in
                             if let index = cardVM.cards.firstIndex(where: { $0.id == card.id }) {
                                 cardVM.cards[index] = updatedCard
@@ -251,6 +261,9 @@ struct BoardView: View {
                 boardVM.fetchBoardWithRealtimeUpdates(boardID: boardID) { fetchedBoard in
                     if let fetchedBoard = fetchedBoard {
                         self.isDateVisible = fetchedBoard.isDateVisible ?? false
+                        self.isHideCards = fetchedBoard.hideCards
+                        self.isMoveCardsDisabled = fetchedBoard.isMoveCardsDisabled ?? false
+                        self.isAddEditCardsDisabled = fetchedBoard.isAddEditCardsDisabled ?? false
                     }
                 }
             }
@@ -266,6 +279,38 @@ struct BoardView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    private func handleTimerTick() {
+        if !isPaused {
+            if timerValue > 0 {
+                timerValue -= 1
+                boardVM.updateTimerInFirestore(boardID: boardID, timerValue: timerValue)
+                if timerValue == 60 {
+                    showAlert = true
+                }
+            } else {
+                Crashlytics.log("Timer reached zero.")
+                isPaused = true
+                boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+                boardVM.setBoardExpired(boardID: boardID)
+                dismiss()
+            }
+        }
+    }
+    
+    private func toggleTimerPause() {
+        isPaused.toggle()
+        boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+        Crashlytics.log(isPaused ? "Timer paused." : "Timer resumed.")
+    }
+    
+    private func resetTimer() {
+        timerValue = board?.timerValue ?? 15 * 60
+        isPaused = true
+        boardVM.updateTimerStatusInFirestore(boardID: boardID, isPaused: isPaused)
+        Crashlytics.log("Timer reset to initial duration.")
     }
     
     private func loadBoard() {
@@ -273,6 +318,9 @@ struct BoardView: View {
             if let fetchedBoard = fetchedBoard {
                 self.board = fetchedBoard
                 self.isDateVisible = fetchedBoard.isDateVisible ?? false
+                self.isHideCards = fetchedBoard.hideCards
+                self.isMoveCardsDisabled = fetchedBoard.isMoveCardsDisabled ?? false
+                self.isAddEditCardsDisabled = fetchedBoard.isAddEditCardsDisabled ?? false
                 if let timerValue = fetchedBoard.timerValue {
                     self.timerValue = timerValue
                 }
@@ -298,5 +346,6 @@ func timerString(from timeInterval: TimeInterval) -> String {
 }
 
 #Preview {
-    BoardView(boardID: UUID(), username: "SampleUser")
+    BoardView(boardID: UUID(), username: "FFK")
 }
+

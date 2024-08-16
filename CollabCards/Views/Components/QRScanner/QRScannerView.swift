@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVFoundation
+import FirebaseCrashlytics
 
 struct QRScannerView: UIViewControllerRepresentable {
     // MARK: - Properties
@@ -30,6 +31,7 @@ struct QRScannerView: UIViewControllerRepresentable {
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 DispatchQueue.main.async {
                     self.parent.scannedCode = stringValue
+                    Crashlytics.log("QR code successfully scanned: \(stringValue)")
                     self.parent.presentationMode.wrappedValue.dismiss()
                 }
             }
@@ -48,18 +50,22 @@ struct QRScannerView: UIViewControllerRepresentable {
         let viewController = UIViewController()
 
         let captureSession = AVCaptureSession()
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return viewController }
+        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
+            Crashlytics.log("Failed to get the camera device")
+            return viewController }
         let videoInput: AVCaptureDeviceInput
 
         do {
             videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
         } catch {
+            Crashlytics.log("Failed to create AVCaptureDeviceInput: \(error.localizedDescription)")
             return viewController
         }
 
         if captureSession.canAddInput(videoInput) {
             captureSession.addInput(videoInput)
         } else {
+            Crashlytics.log("Failed to add input to capture session")
             return viewController
         }
 
@@ -71,6 +77,7 @@ struct QRScannerView: UIViewControllerRepresentable {
             metadataOutput.setMetadataObjectsDelegate(context.coordinator, queue: DispatchQueue.main)
             metadataOutput.metadataObjectTypes = [.qr]
         } else {
+            Crashlytics.log("Failed to add output to capture session")
             return viewController
         }
 

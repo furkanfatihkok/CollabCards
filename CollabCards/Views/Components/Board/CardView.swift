@@ -7,13 +7,15 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import FirebaseCrashlytics
 
 struct CardView: View {
-    //MARK: - Properties
+    // MARK: - Properties
     
     @Binding var card: Card
     @Binding var allCards: [Card]
     @State private var showEditSheet = false
+    @State private var isHovered: Bool = false
     
     var onDelete: (Card) -> Void
     var onEdit: (Card) -> Void
@@ -22,42 +24,60 @@ struct CardView: View {
     var boardUsername: String
     var isAuthorVisible: Bool
     var isDateVisible: Bool
+    var isAddEditCardsDisabled: Bool
+    var isMoveCardsDisabled: Bool
     
     // MARK: - Body
     
     var body: some View {
         HStack {
-            CardDetailsView(card: card, boardUsername: boardUsername, isAuthorVisible: isAuthorVisible, isDateVisible: isDateVisible)
-                .background(backgroundColor(for: card.status))
-                .cornerRadius(8)
-                .shadow(radius: 3)
-                .onTapGesture {
+            CardDetailsView(
+                card: card,
+                boardUsername: boardUsername,
+                isAuthorVisible: isAuthorVisible,
+                isDateVisible: isDateVisible
+            )
+            .background(backgroundColor(for: card.status))
+            .cornerRadius(8)
+            .shadow(radius: 3)
+            .onTapGesture {
+                if !isAddEditCardsDisabled {
+                    Crashlytics.log("Card \(card.id) tapped for editing")
                     showEditSheet.toggle()
                 }
-                .onDrag {
-                    dragProvider(for: card.id)
+            }
+            .onDrag {
+                if !isMoveCardsDisabled {
+                    Crashlytics.log("Card \(card.id) dragged from status \(card.status)")
+                    return dragProvider(for: card.id)
                 }
+                return NSItemProvider()
+            }
             
-            DeleteButton(onDelete: { onDelete(card) })
-                .padding(.trailing, 5)
+            DeleteButton(onDelete: {
+                Crashlytics.log("Card \(card.id) deleted")
+                onDelete(card)
+            })
+            .padding(.trailing, 5)
         }
         .sheet(isPresented: $showEditSheet) {
-            EditCardView(
-                card: $card,
-                title: $card.title,
-                status: $card.status, 
-                cardVM: cardVM,
-                onSave: { updatedCard in
-                    cardVM.editCard(updatedCard, in: boardID)
-                    showEditSheet = false
-                },
-                boardID: boardID,
-                boardUsername: boardUsername
-            )
+            if !isAddEditCardsDisabled {
+                EditCardView(
+                    card: $card,
+                    title: $card.title,
+                    status: $card.status,
+                    cardVM: cardVM,
+                    onSave: { updatedCard in
+                        cardVM.editCard(updatedCard, in: boardID)
+                        Crashlytics.log("Card \(card.id) edited and saved")
+                        showEditSheet = false
+                    },
+                    boardID: boardID,
+                    boardUsername: boardUsername
+                )
+            }
         }
     }
-    
-    // MARK: - Functions
     
     private func backgroundColor(for status: String) -> Color {
         switch status {
@@ -76,7 +96,6 @@ struct CardView: View {
         let data = id.uuidString.data(using: .utf8) ?? Data()
         return NSItemProvider(item: data as NSSecureCoding, typeIdentifier: UTType.text.identifier)
     }
-    
 }
 
 #Preview {
@@ -89,7 +108,9 @@ struct CardView: View {
         boardID: UUID().uuidString,
         boardUsername: "FFK",
         isAuthorVisible: true,
-        isDateVisible: true
+        isDateVisible: true,
+        isAddEditCardsDisabled: false,
+        isMoveCardsDisabled: false
     )
 }
 
