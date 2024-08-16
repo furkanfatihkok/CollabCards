@@ -119,12 +119,24 @@ struct EmptyColumnView: View {
 
     var body: some View {
         Spacer()
-        Text("Drag cards here")
-            .foregroundColor(.gray)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color(UIColor.systemGray5))
-            .cornerRadius(8)
-            .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
+
+        if allCards.isEmpty {
+            Text("Add card here")
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(UIColor.systemGray5))
+                .cornerRadius(8)
+                .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
+        } else {
+            Text("Drag cards here")
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(UIColor.systemGray5))
+                .cornerRadius(8)
+                .onDrop(of: [UTType.text], delegate: CardDropDelegate(card: nil, allCards: $allCards, cardVM: cardVM, boardID: boardID, status: statusFilter))
+        }
     }
 }
+
