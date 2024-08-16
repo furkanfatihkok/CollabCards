@@ -108,7 +108,7 @@ Also, make sure the following dependencies are added to your project target:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/CollabCards.git
+    git clone https://github.com/furkanfatihkok/CollabCards.git
     ```
 
 2. Open the project in Xcode:
