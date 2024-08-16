@@ -89,6 +89,7 @@ struct BoardView: View {
                                 Image(systemName: "ellipsis")
                                     .foregroundColor(.white)
                             }
+                            .disabled(board.isExpired ?? false)
                         }
                         .padding()
                         .background(Color.blue)
@@ -192,10 +193,14 @@ struct BoardView: View {
                         .padding(.horizontal)
                     }
                     Button(action: {
-                        showAddSheet.toggle()
-                        Crashlytics.log("Add card button pressed.")
+                        if timerValue > 0 {
+                            showAddSheet.toggle()
+                            Crashlytics.log("Add card button pressed.")
+                        } else {
+                            Crashlytics.log("Ready all cards button pressed.")
+                        }
                     }) {
-                        Text("Add Card")
+                        Text(timerValue > 0 ? "Add Card" : "Ready All Cards")
                             .padding()
                             .background(Color.blue)
                             .foregroundColor(.white)
@@ -203,6 +208,7 @@ struct BoardView: View {
                     }
                     .padding()
                     .disabled(board.isExpired ?? false || boardVM.isAddEditCardsDisabled)
+
                 } else if isLoading {
                     VStack {
                         ProgressView()
@@ -324,4 +330,8 @@ func timerString(from timeInterval: TimeInterval) -> String {
     let minutes = Int(timeInterval) / 60
     let seconds = Int(timeInterval) % 60
     return String(format: "%02d:%02d", minutes, seconds)
+}
+
+#Preview {
+    BoardView(boardID: UUID(), username: "FFK")
 }

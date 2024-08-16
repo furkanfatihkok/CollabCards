@@ -14,11 +14,13 @@ struct HeaderView: View {
     
     var body: some View {
         HStack {
-            Spacer()
-            Image("trello")
-                .resizable()
-                .frame(width: 130, height: 65)
-            Spacer()
+            Spacer(minLength: 32)
+            Text("CollabCards")
+                .bold()
+                .font(.title)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .center)
+            Spacer(minLength: 0)
             Menu {
                 Button(action: {
                     showNewBoardSheet = true
