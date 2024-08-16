@@ -48,20 +48,16 @@ Welcome to CollabCards! This application is a task management tool where users c
 **iPad Support:**
 - CollabCards is designed to be responsive on iPads as well, optimized for different screen sizes and orientations.
 
-<p align="center">
-  <img src="https://github.com/furkanfatihkok/CollabCards/blob/main/Screenshots/iPadResponsive.png" alt="iPad Responsive View" width="400">
-</p>
-
 ## Screenshots
 
 | Image 1                | Image 2                | Image 3                |
 |------------------------|------------------------|------------------------|
-| ![EmptyView](https://github.com/user-attachments/assets/66480944-2e43-47ca-b2ac-8d77431331e0) | ![CreateView](https://github.com/user-attachments/assets/09926689-e3ee-41e1-8d7f-c049d58c658e) | ![HomeView](https://github.com/user-attachments/assets/7c6a0fa9-d629-450a-81d4-26f240701ee6) |
+| ![EmptyView](https://github.com/user-attachments/assets/abf018cc-28eb-4a32-a972-df663b99679f) | ![CreateView](https://github.com/user-attachments/assets/09926689-e3ee-41e1-8d7f-c049d58c658e) | ![HomeView](https://github.com/user-attachments/assets/6338ea75-6149-4aaa-80a9-5b800ca9a7a5) |
 | Empty View | Create Board View | Home View |
 
 | Image 4                | Image 5                | Image 6                |
 |------------------------|------------------------|------------------------|
-| ![BoardInfoView](https://github.com/user-attachments/assets/c2248d16-4574-4a3b-9805-b32f148864e3) | ![BoardView](https://github.com/user-attachments/assets/7897438c-bf5f-4093-826c-e36c2c666ad4) | ![SettingsView](https://github.com/user-attachments/assets/33e963c1-c5aa-4499-afa6-4d441102434d) |
+| ![BoardInfoView](https://github.com/user-attachments/assets/c2248d16-4574-4a3b-9805-b32f148864e3) | ![BoardView](https://github.com/user-attachments/assets/7897438c-bf5f-4093-826c-e36c2c666ad4) | ![SettingsView](https://github.com/user-attachments/assets/159df1d6-c71e-412f-8f10-a800787e8cc1) |
 | Board Info View | Board View | Settings View |
 
 ## Tech Stack
@@ -70,7 +66,7 @@ Welcome to CollabCards! This application is a task management tool where users c
 - **Language:** Swift 5.10
 - **Minimum iOS Version:** 16.0
 - **Dependency Management:** Swift Package Manager (SPM)
-- **Backend:** [Firebase Firestore](https://firebase.google.com/) & Firebase Crashlytics
+- **Backend:** [Firebase Firestore](https://firebase.google.com/) & [Firebase Crashlytics](https://firebase.google.com/)
 - **QR Code Functionality:** Library integrated with Swift Package Manager [QRCode](https://github.com/EFPrefix/EFQRCode)
 
 ## Architecture
@@ -136,11 +132,6 @@ Also, make sure the following dependencies are added to your project target:
 1. Open the app on your simulator or device.
 2. Create a new board or select an existing one to start organizing your tasks.
 3. Add cards to your board.
-
-<p align="left">
-  <img src="https://github.com/youf" alt="Board Management" width="200" height="400">
-</p>
-
 ---
 
 ### Card Management 
@@ -148,11 +139,6 @@ Also, make sure the following dependencies are added to your project target:
 1. Tap the "+" button to add a new card to a column.
 2. Edit card details, such as the title and status, and move cards between columns.
 3. Delete cards that are no longer needed.
-
-<p align="left">
-  <img src="https://github.com/us" alt="Card Management" width="200" height="400">
-</p>
-
 ---
 
 ### Create Board
@@ -160,11 +146,6 @@ Also, make sure the following dependencies are added to your project target:
 1. To create a new board, click on the "Create Board" option.
 2. In the board creation screen, fields such as `username`, `password`, and `new board` must be filled out.
 3. These fields cannot be left blank; if they are, the board creation process cannot be completed.
-
-<p align="left">
-  <img src="https://github.com/user-attachments/assets/fc826b9c-2f2e-4468-8617-475fdea9071e" alt="Create Board" width="200" height="400">
-</p>
-
 ---
 
 ### Settings
@@ -172,11 +153,6 @@ Also, make sure the following dependencies are added to your project target:
 1. Go to the settings view to customize your experience.
 2. Toggle the visibility of your username and the date on the cards.
 3. Adjust task duration settings to your preference.
-
-<p align="left">
-  <img src="https://github.com/yourusername/CollabCards/blob/main/Screenshots/SettingsGIF.gif" alt="Settings" width="200" height="400">
-</p>
-
 ---
 
 ## Known Issues
