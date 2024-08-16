@@ -90,7 +90,7 @@ struct BoardView: View {
                                 }
                             )
                             .onAppear {
-                                toggleTimerPause() // Timer'ı durdur SettingsView açıldığında
+                                toggleTimerPause()
                             }) {
                                 Image(systemName: "ellipsis")
                                     .foregroundColor(.white)

@@ -114,7 +114,7 @@ struct CardView: View {
     )
 }
 
-//MARK: - CardDetailsView
+// MARK: - CardDetailsView
 
 struct CardDetailsView: View {
     var card: Card
@@ -153,7 +153,7 @@ struct CardDetailsView: View {
     }
 }
 
-//MARK: - DeleteButton
+// MARK: - DeleteButton
 
 struct DeleteButton: View {
     var onDelete: () -> Void
