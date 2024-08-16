@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AddCardView: View {
-    // MARK: - Properties
     @Environment(\.dismiss) var dismiss
     
     @State private var title = ""
@@ -19,8 +18,6 @@ struct AddCardView: View {
     var cardVM: CardViewModel
     var boardID: String
     var boardUsername: String
-    
-    //MARK: - Body
     
     var body: some View {
         NavigationView {

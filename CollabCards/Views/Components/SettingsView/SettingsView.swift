@@ -8,8 +8,9 @@
 import SwiftUI
 import FirebaseCrashlytics
 
-// MARK: - SettingsView
 struct SettingsView: View {
+    // MARK: - Properties
+    
     @Environment(\.dismiss) var dismiss
     @StateObject var boardVM = BoardViewModel()
     @State private var tempIsAuthorVisible: Bool = false
@@ -20,13 +21,15 @@ struct SettingsView: View {
     @Binding var isDateVisible: Bool
     @Binding var isMoveCardsDisabled: Bool
     @Binding var isAddEditCardsDisabled: Bool
-    
     var board: Board
+    var onDismiss: () -> Void
     
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+    
+    // MARK: - Body
     
     var body: some View {
         NavigationView {
@@ -46,10 +49,12 @@ struct SettingsView: View {
             .navigationBarItems(
                 leading: Button("Cancel") {
                     Crashlytics.log("SettingsView: Cancel button tapped")
+                    onDismiss()
                     dismiss()
                 },
                 trailing: Button("Done") {
                     applyChanges()
+                    onDismiss()
                     dismiss()
                 }
             )
@@ -80,6 +85,7 @@ struct SettingsView: View {
         Crashlytics.log("SettingsView: Done button tapped, settings updated for board: \(board.name)")
     }
 }
+
 
 // MARK: - Facilitator Controls Section
 struct FacilitatorControlsSection: View {
@@ -114,6 +120,7 @@ struct EnableFeaturesSection: View {
         }
     }
 }
+
 // MARK: - Disable Features Section
 struct DisableFeaturesSection: View {
     @Binding var isMoveCardsDisabled: Bool
@@ -169,6 +176,21 @@ struct DangerZoneView: View {
     }
 }
 
+#Preview {
+    SettingsView(
+        hideCards: .constant(true),
+        isAuthorVisible: .constant(false),
+        isDateVisible: .constant(true),
+        isMoveCardsDisabled: .constant(false),
+        isAddEditCardsDisabled: .constant(true),
+        board: Board(
+            id: UUID(),
+            name: "Sample Board",
+            deviceID: "SampleDeviceID",
+            participants: ["SampleDeviceID"]
+        ), onDismiss: {}
+    )
+}
 
 // MARK: - FeatureCardView
 struct FeatureCardView: View {
@@ -195,20 +217,3 @@ struct FeatureCardView: View {
         .shadow(radius: 2)
     }
 }
-
-#Preview {
-    SettingsView(
-        hideCards: .constant(true),
-        isAuthorVisible: .constant(false),
-        isDateVisible: .constant(true),
-        isMoveCardsDisabled: .constant(false),
-        isAddEditCardsDisabled: .constant(true),
-        board: Board(
-            id: UUID(),
-            name: "Sample Board",
-            deviceID: "SampleDeviceID",
-            participants: ["SampleDeviceID"]
-        )
-    )
-}
-
