@@ -1,3 +1,4 @@
+//
 //  CardViewModel.swift
 //  CollabCards
 //
@@ -9,10 +10,14 @@ import FirebaseFirestore
 import FirebaseCrashlytics
 
 class CardViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published var cards = [Card]()
+    
+    // MARK: - Private Properties
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     
+    // MARK: - Fetch Methods
     func fetchCards(for boardID: String) {
         listener?.remove()
         listener = db.collection("boards").document(boardID).collection("cards").addSnapshotListener { (querySnapshot, error) in
@@ -45,6 +50,7 @@ class CardViewModel: ObservableObject {
         }
     }
     
+    // MARK: - CRUD Methods
     func addCard(_ card: Card, to boardID: String, completion: @escaping () -> Void) {
         var newCard = card
         newCard.author = UserDefaults.standard.string(forKey: "username")

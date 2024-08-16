@@ -10,18 +10,26 @@ import FirebaseFirestore
 import FirebaseCrashlytics
 
 class BoardViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published var boards = [Board]()
     @Published var isDateVisible: Bool = false
     @Published var isMoveCardsDisabled: Bool = false
     @Published var isAddEditCardsDisabled: Bool = false
+    @Published var hideCards: Bool = false
+    
+    // MARK: - Private Properties
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     
+    // MARK: - Fetch Methods
     func fetchBoards() {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to fetch boards: deviceID not found")
             return
         }
+        
+        let deletedBoardIDs = UserDefaults.standard.array(forKey: "deletedBoardIDs") as? [String] ?? []
+        
         listener?.remove()
         listener = db.collection("boards").whereField("participants", arrayContains: deviceID).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
@@ -38,6 +46,9 @@ class BoardViewModel: ObservableObject {
                 self.boards = documents.compactMap { queryDocumentSnapshot in
                     do {
                         let board = try queryDocumentSnapshot.data(as: Board.self)
+                        if deletedBoardIDs.contains(board.id.uuidString) {
+                            return nil
+                        }
                         Crashlytics.log("Board fetched with ID: \(board.id)")
                         return board
                     } catch {
@@ -63,8 +74,10 @@ class BoardViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
+                self.isDateVisible = document.get("isDateVisible") as? Bool ?? false
                 self.isMoveCardsDisabled = document.get("isMoveCardsDisabled") as? Bool ?? false
                 self.isAddEditCardsDisabled = document.get("isAddEditCardsDisabled") as? Bool ?? false
+                self.hideCards = document.get("hideCards") as? Bool ?? false
             }
         }
     }
@@ -100,6 +113,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    // MARK: - CRUD Methods
     func addBoard(_ board: Board) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board: deviceID not found")
@@ -196,11 +210,23 @@ class BoardViewModel: ObservableObject {
         }
     }
     
-    func updateBoardSettings(boardID: UUID, isDateVisible:Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool) {
+    func deleteBoardLocally(_ board: Board) {
+        if let index = boards.firstIndex(where: { $0.id == board.id }) {
+            boards.remove(at: index)
+            
+            var deletedBoardIDs = UserDefaults.standard.array(forKey: "deletedBoardIDs") as? [String] ?? []
+            deletedBoardIDs.append(board.id.uuidString)
+            UserDefaults.standard.set(deletedBoardIDs, forKey: "deletedBoardIDs")
+        }
+    }
+    
+    // MARK: - Update Methods
+    func updateBoardSettings(boardID: UUID, isDateVisible: Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool, hideCards: Bool) {
         db.collection("boards").document(boardID.uuidString).updateData([
             "isDateVisible": isDateVisible,
             "isMoveCardsDisabled": isMoveCardsDisabled,
-            "isAddEditCardsDisabled": isAddEditCardsDisabled
+            "isAddEditCardsDisabled": isAddEditCardsDisabled,
+            "hideCards": hideCards
         ]) { error in
             if let error = error {
                 Crashlytics.log("Error updating board settings: \(error.localizedDescription)")
@@ -292,6 +318,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Helper Methods
     private func usernameForDevice() -> String {
         return UserDefaults.standard.string(forKey: "username") ?? "Unknown User"
     }
@@ -316,6 +343,4 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
 }
-
