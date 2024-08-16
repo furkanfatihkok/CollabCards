@@ -10,14 +10,18 @@ import FirebaseFirestore
 import FirebaseCrashlytics
 
 class BoardViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published var boards = [Board]()
     @Published var isDateVisible: Bool = false
     @Published var isMoveCardsDisabled: Bool = false
     @Published var isAddEditCardsDisabled: Bool = false
     @Published var hideCards: Bool = false
+    
+    // MARK: - Private Properties
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     
+    // MARK: - Fetch Methods
     func fetchBoards() {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to fetch boards: deviceID not found")
@@ -109,6 +113,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    // MARK: - CRUD Methods
     func addBoard(_ board: Board) {
         guard let deviceID = UserDefaults.standard.string(forKey: "deviceID") else {
             Crashlytics.log("Failed to add board: deviceID not found")
@@ -215,6 +220,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Update Methods
     func updateBoardSettings(boardID: UUID, isDateVisible: Bool, isMoveCardsDisabled: Bool, isAddEditCardsDisabled: Bool, hideCards: Bool) {
         db.collection("boards").document(boardID.uuidString).updateData([
             "isDateVisible": isDateVisible,
@@ -312,6 +318,7 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Helper Methods
     private func usernameForDevice() -> String {
         return UserDefaults.standard.string(forKey: "username") ?? "Unknown User"
     }
@@ -336,6 +343,4 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-    
 }
-
