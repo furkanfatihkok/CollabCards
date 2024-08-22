@@ -72,8 +72,10 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showQRScanner) {
                 QRScannerAndManualEntryView { board, username in
-                    boardVM.boards.append(board)
-                    self.username = username
+                    if !boardVM.boards.contains(where: { $0.id == board.id }) {
+                        boardVM.boards.append(board)
+                        self.username = username
+                    }
                 }
             }
             .alert(isPresented: $showAlert) {
